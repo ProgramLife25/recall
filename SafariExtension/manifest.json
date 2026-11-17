@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Save to Recall",
+  "description": "Save the current product or image to Recall with its source, name, and current price.",
+  "version": "1.0.0",
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_title": "Save to Recall",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [{
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["content.js"],
+    "run_at": "document_idle"
+  }]
+}
