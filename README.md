@@ -13,6 +13,11 @@
 
 ---
 
+<p align="center">
+  <img src="docs/images/recall_hero_mockup.jpg" alt="Recall macOS App on MacBook Pro" width="900">
+</p>
+
+
 ## 📑 Table of Contents
 
 - [Overview](#-overview)
