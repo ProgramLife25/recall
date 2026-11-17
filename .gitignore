@@ -1,0 +1,16 @@
+# Build products and compiler caches
+.build/
+work/
+outputs/
+DerivedData/
+
+# Local ML model (installed separately; too large for the source repository)
+Models/
+
+# Local application data and macOS metadata
+.DS_Store
+*.xcuserstate
+xcuserdata/
+
+# Design exports are kept outside the source distribution
+Design/

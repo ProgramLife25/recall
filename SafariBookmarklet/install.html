@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Install Save to Recall</title>
+  <style>
+    :root { color-scheme: light; font: 16px -apple-system, BlinkMacSystemFont, sans-serif; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f4f6f8; color: #1f2733; }
+    main { width: min(580px, calc(100vw - 48px)); padding: 42px; border: 1px solid #dfe3e8; border-radius: 24px; background: white; box-shadow: 0 20px 60px #24304118; }
+    .brand { color: #667085; letter-spacing: .02em; }
+    h1 { margin: 12px 0; font: 42px Georgia, serif; }
+    p, li { color: #657084; line-height: 1.55; }
+    .bookmark { display: block; margin: 28px 0 14px; padding: 16px 20px; border-radius: 13px; text-align: center; text-decoration: none; color: white; background: #f48220; font-weight: 650; box-shadow: 0 8px 20px #f4822033; cursor: grab; }
+    .bookmark:active { cursor: grabbing; }
+    button { border: 1px solid #d7dce3; border-radius: 10px; padding: 9px 14px; background: white; color: #344054; cursor: pointer; }
+    .small { font-size: 13px; }
+    #status { min-height: 20px; color: #15803d; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="brand">◌ RECALL FOR SAFARI</div>
+    <h1>Save anything you find.</h1>
+    <p>This adds a local Safari bookmark that captures the current image, product name, visible price, and original link. Nothing is sent to a server.</p>
+    <a id="bookmark" class="bookmark" href="#">Save to Recall</a>
+    <ol>
+      <li>In Safari choose <strong>View → Show Favorites Bar</strong>.</li>
+      <li>Drag the orange <strong>Save to Recall</strong> button onto that bar.</li>
+      <li>Visit a product or image page and click the new bookmark.</li>
+    </ol>
+    <button id="copy">Copy bookmark address</button>
+    <p id="status" class="small"></p>
+    <p class="small">If dragging is blocked, create any bookmark, choose <strong>Bookmarks → Edit Bookmarks</strong>, and replace its address with the copied address.</p>
+  </main>
+  <script src="install.js"></script>
+</body>
+</html>
