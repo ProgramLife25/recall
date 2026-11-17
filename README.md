@@ -9,6 +9,7 @@
 [![Swift](https://img.shields.io/badge/Swift-6.0%2B-orange?style=flat&logo=swift)](https://swift.org)
 [![Privacy](https://img.shields.io/badge/Privacy-100%25%20On--Device-success?style=flat&logo=apple)](https://support.apple.com)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat)](LICENSE)
+[![Download DMG](https://img.shields.io/badge/Download-Recall.dmg-brightgreen?style=for-the-badge&logo=apple)](https://github.com/ProgramLife25/recall/releases/latest)
 
 ---
 
@@ -19,8 +20,9 @@
 - [How It Works](#-how-it-works)
 - [Requirements](#-requirements)
 - [Installation & Quick Start](#-installation--quick-start)
-  - [Run with Swift Package Manager](#1-run-with-swift-package-manager-recommended-for-development)
-  - [Build Standalone macOS App (.app)](#2-build-a-standalone-macos-application)
+  - [Option A: 1-Click Installer (.dmg - Recommended)](#option-a-1-click-installer-dmg---recommended)
+  - [Option B: Run with Swift Package Manager](#option-b-run-with-swift-package-manager-developer-mode)
+  - [Option C: Build Standalone macOS App or DMG](#option-c-build-standalone-app-or-dmg-locally)
 - [Safari Integration](#-safari-integration)
   - [Safari Extension](#safari-extension)
   - [Safari Bookmarklet](#safari-bookmarklet)
@@ -106,37 +108,47 @@ flowchart TD
 
 ## 🚀 Installation & Quick Start
 
-### 1. Clone the Repository
+### Option A: 1-Click Installer (.dmg - Recommended)
+
+For everyday users who just want to use Recall without touching the terminal or installing Xcode:
+
+1. Download the latest **[Recall.dmg](https://github.com/ProgramLife25/recall/releases/latest)** from the Releases page.
+2. Double-click the downloaded `.dmg` file.
+3. Drag **Recall.app** into your **Applications** folder.
+4. Launch **Recall** from Spotlight or your Applications folder!
+
+---
+
+### Option B: Run with Swift Package Manager (Developer Mode)
+
+If you have Xcode or Command Line Tools installed and want to run directly from source:
 
 ```bash
 git clone https://github.com/ProgramLife25/recall.git
 cd recall
-```
-
-### 2. Run with Swift Package Manager (Recommended for Development)
-
-Launch Recall directly from your terminal:
-
-```bash
 swift run Recall
 ```
 
-### 3. Build a Standalone macOS Application
+---
 
-To compile a native double-clickable `.app` bundle:
+### Option C: Build Standalone App or DMG Locally
+
+To compile your own double-clickable `.app` bundle or package a new `.dmg` installer:
 
 ```bash
-# Make the build script executable
+# 1. Compile Recall.app
 chmod +x scripts/build-app.sh
-
-# Build the application
 ./scripts/build-app.sh
 
-# Launch the app
-open outputs/Recall.app
+# 2. Package into a distributable Recall.dmg installer
+chmod +x scripts/create-dmg.sh
+./scripts/create-dmg.sh
+
+# The finished installer is saved under outputs/Recall.dmg
+open outputs/Recall.dmg
 ```
 
-> **Note on SDK mismatch**: If your Command Line Tools report an SDK version mismatch, run with your installed macOS SDK:
+> **Note on SDK mismatch**: If your Command Line Tools report an SDK version mismatch, select your macOS SDK:
 > ```bash
 > SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk ./scripts/build-app.sh
 > ```
