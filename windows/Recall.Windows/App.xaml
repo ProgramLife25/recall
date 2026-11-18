@@ -1,0 +1,17 @@
+<Application
+    x:Class="Recall.Windows.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Custom styling tokens matching Recall's dark aesthetic -->
+            <SolidColorBrush x:Key="RecallAccentBrush" Color="#6366F1" />
+            <SolidColorBrush x:Key="RecallCardBackgroundBrush" Color="#1E2330" />
+            <SolidColorBrush x:Key="RecallBorderBrush" Color="#2E3547" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,12 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\recall]
+@="URL:Recall Protocol"
+"URL Protocol"=""
+
+[HKEY_CLASSES_ROOT\recall\shell]
+
+[HKEY_CLASSES_ROOT\recall\shell\open]
+
+[HKEY_CLASSES_ROOT\recall\shell\open\command]
+@="\"%LOCALAPPDATA%\\Programs\\Recall\\Recall.Windows.exe\" \"%1\""

@@ -6,6 +6,7 @@
 ---
 
 [![macOS](https://img.shields.io/badge/macOS-14.0%2B%20%28Sonoma%20%7C%20Sequoia%29-black?style=flat&logo=apple)](https://www.apple.com/macos)
+[![Windows](https://img.shields.io/badge/Windows-11%20%7C%2010%20%28Native%20WinUI%203%29-0078D6?style=flat&logo=windows)](windows/)
 [![Swift](https://img.shields.io/badge/Swift-6.0%2B-orange?style=flat&logo=swift)](https://swift.org)
 [![Privacy](https://img.shields.io/badge/Privacy-100%25%20On--Device-success?style=flat&logo=apple)](https://support.apple.com)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat)](LICENSE)
@@ -249,6 +250,19 @@ All persistent data is stored in standard macOS Application Support locations:
   Ensure CoreML models reside in `Models/MobileCLIP/` when running from custom builds.
 
 ---
+
+
+---
+
+## 🪟 Windows Version (Native C# / WinUI 3)
+
+Recall also features a **100% native Windows application** built with **C# / .NET 8, WinUI 3, and DirectML GPU acceleration**.
+
+- **Global Hotkey**: Press **`Alt + Space`** anywhere in Windows.
+- **On-Device OCR**: Built-in `Windows.Media.Ocr` engine.
+- **Browser Extension**: Includes Microsoft Edge & Google Chrome extensions for 1-click clipping.
+- **Location**: See the complete Windows project inside the [`windows/`](windows/) directory.
+- **Build**: Run `build.bat` or open `windows/Recall.Windows.sln` in Visual Studio 2022.
 
 ## 🤝 Contributing
 
