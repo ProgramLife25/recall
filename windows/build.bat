@@ -18,7 +18,7 @@ if %errorlevel% neq 0 (
 
 echo.
 echo [1/2] Restoring NuGet packages...
-dotnet restore Recall.Windows.sln
+dotnet restore Recall.Windows.sln -p:Platform=x64
 if %errorlevel% neq 0 (
     echo.
     echo [ERROR] Failed to restore NuGet packages. Check your internet connection.
@@ -28,7 +28,7 @@ if %errorlevel% neq 0 (
 
 echo.
 echo [2/2] Publishing standalone single-file x64 executable...
-dotnet publish Recall.Windows\Recall.Windows.csproj -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o publish\win-x64
+dotnet publish Recall.Windows\Recall.Windows.csproj -c Release -r win-x64 -p:Platform=x64 --self-contained -p:PublishSingleFile=true -o publish\win-x64
 
 if %errorlevel% equ 0 (
     echo.
