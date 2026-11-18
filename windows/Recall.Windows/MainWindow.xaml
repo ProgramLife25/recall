@@ -104,7 +104,7 @@
 
                                 <!-- Thumbnail Image -->
                                 <Border Grid.Row="0" CornerRadius="10,10,0,0">
-                                    <Image Source="{Binding Item.Path}" Stretch="UniformToFill" />
+                                    <Image Source="{Binding ThumbnailUri}" Stretch="UniformToFill" />
                                 </Border>
 
                                 <!-- Card Metadata Footer -->

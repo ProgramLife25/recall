@@ -22,8 +22,8 @@ public partial class MainWindow : Window
     private List<IndexedItem> _allItems = new();
     private string _currentMode = "Everything";
 
-    private static readonly SolidColorBrush ActiveTabBrush = new(Windows.UI.Color.FromArgb(255, 99, 102, 241));
-    private static readonly SolidColorBrush InactiveTabBrush = new(Windows.UI.Color.FromArgb(255, 42, 48, 66));
+    private static readonly SolidColorBrush ActiveTabBrush = new(global::Windows.UI.Color.FromArgb(255, 99, 102, 241));
+    private static readonly SolidColorBrush InactiveTabBrush = new(global::Windows.UI.Color.FromArgb(255, 42, 48, 66));
 
     public MainWindow()
     {
