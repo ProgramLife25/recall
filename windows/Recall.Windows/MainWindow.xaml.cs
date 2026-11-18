@@ -5,12 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.Storage.Pickers;
 using Microsoft.UI;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Recall.Windows.Models;
 using Recall.Windows.Services;
 using WinRT.Interop;
@@ -21,7 +20,10 @@ public partial class MainWindow : Window
 {
     private readonly HotKeyService _hotKeyService = new();
     private List<IndexedItem> _allItems = new();
-    private string _currentMode = "Everything"; // "Everything", "TopMind", "Serendipity"
+    private string _currentMode = "Everything";
+
+    private static readonly SolidColorBrush ActiveTabBrush = new(Windows.UI.Color.FromArgb(255, 99, 102, 241));
+    private static readonly SolidColorBrush InactiveTabBrush = new(Windows.UI.Color.FromArgb(255, 42, 48, 66));
 
     public MainWindow()
     {
@@ -29,7 +31,7 @@ public partial class MainWindow : Window
 
         // Customize window size and title
         var appWindow = GetAppWindowForCurrentWindow();
-        appWindow.Resize(new Windows.Graphics.SizeInt32(1380, 840));
+        appWindow.Resize(new global::Windows.Graphics.SizeInt32(1380, 840));
         appWindow.Title = "Recall";
 
         // Setup Win32 HotKey (Alt + Space)
@@ -60,7 +62,6 @@ public partial class MainWindow : Window
         }
         else if (_currentMode == "Serendipity")
         {
-            // Shuffled associative view
             var rng = new Random();
             currentPool = _allItems.OrderBy(_ => rng.Next());
         }
@@ -100,11 +101,11 @@ public partial class MainWindow : Window
 
     private void UpdateTabButtons(Button active)
     {
-        TabEverything.ClearValue(Button.StyleProperty);
-        TabTopMind.ClearValue(Button.StyleProperty);
-        TabSerendipity.ClearValue(Button.StyleProperty);
+        TabEverything.Background = InactiveTabBrush;
+        TabTopMind.Background = InactiveTabBrush;
+        TabSerendipity.Background = InactiveTabBrush;
 
-        active.Style = (Style)Application.Current.Resources["AccentButtonStyle"];
+        active.Background = ActiveTabBrush;
     }
 
     private async void OnToggleFavoriteClicked(object sender, RoutedEventArgs e)
@@ -120,7 +121,6 @@ public partial class MainWindow : Window
     {
         if (e.ClickedItem is SearchResult result && File.Exists(result.Item.Path))
         {
-            // Open in default Windows viewer
             Process.Start(new ProcessStartInfo(result.Item.Path) { UseShellExecute = true });
         }
     }
@@ -129,13 +129,13 @@ public partial class MainWindow : Window
 
     private void OnGridDragOver(object sender, DragEventArgs e)
     {
-        e.AcceptedOperation = DataPackageOperation.Copy;
+        e.AcceptedOperation = global::Windows.ApplicationModel.DataTransfer.DataPackageOperation.Copy;
         e.DragUIOverride.Caption = "Drop to remember in Recall";
     }
 
     private async void OnGridDrop(object sender, DragEventArgs e)
     {
-        if (e.DataView.Contains(StandardDataFormats.StorageItems))
+        if (e.DataView.Contains(global::Windows.ApplicationModel.DataTransfer.StandardDataFormats.StorageItems))
         {
             var items = await e.DataView.GetStorageItemsAsync();
             foreach (var storageItem in items)
@@ -156,7 +156,7 @@ public partial class MainWindow : Window
 
     private async void OnImportFileClicked(object sender, RoutedEventArgs e)
     {
-        var picker = new FileOpenPicker();
+        var picker = new global::Windows.Storage.Pickers.FileOpenPicker();
         IntPtr hwnd = WindowNative.GetWindowHandle(this);
         InitializeWithWindow.Initialize(picker, hwnd);
 

@@ -4,11 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:Recall.Windows.Models"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <!-- Custom TitleBar / Drag Region -->
+    <Grid Background="#0B0F19">
+        <!-- Main Layout -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -27,33 +26,36 @@
             <!-- Logo & Title -->
             <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
                 <TextBlock Text="🧠" FontSize="22" VerticalAlignment="Center" />
-                <TextBlock Text="Recall" FontWeight="SemiBold" FontSize="18" VerticalAlignment="Center" />
-                <Border Background="#2A3042" CornerRadius="4" Padding="6,2" Margin="4,0,0,0" VerticalAlignment="Center">
+                <TextBlock Text="Recall" FontWeight="SemiBold" FontSize="18" Foreground="#F8FAFC" VerticalAlignment="Center" />
+                <Border Background="#1E293B" CornerRadius="4" Padding="6,2" Margin="4,0,0,0" VerticalAlignment="Center">
                     <TextBlock Text="Windows" FontSize="11" Foreground="#94A3B8" />
                 </Border>
             </StackPanel>
 
-            <!-- Mode Selector Tabs (Everything / Top of Mind / Serendipity) -->
+            <!-- Mode Selector Tabs -->
             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="6">
-                <Button x:Name="TabEverything" Content="Everything" Click="OnTabEverythingClicked" Style="{StaticResource AccentButtonStyle}" />
-                <Button x:Name="TabTopMind" Content="❤️ Top of Mind" Click="OnTabTopMindClicked" />
-                <Button x:Name="TabSerendipity" Content="✨ Serendipity" Click="OnTabSerendipityClicked" />
+                <Button x:Name="TabEverything" Content="Everything" Background="#6366F1" Foreground="White" CornerRadius="6" Click="OnTabEverythingClicked" />
+                <Button x:Name="TabTopMind" Content="❤️ Top of Mind" Background="#1E293B" Foreground="#E2E8F0" CornerRadius="6" Click="OnTabTopMindClicked" />
+                <Button x:Name="TabSerendipity" Content="✨ Serendipity" Background="#1E293B" Foreground="#E2E8F0" CornerRadius="6" Click="OnTabSerendipityClicked" />
             </StackPanel>
 
-            <!-- Quick Add Menu -->
+            <!-- Action Buttons -->
             <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8">
-                <Button x:Name="BtnNewNote" Content="✏️ New Note" Click="OnNewNoteClicked" />
-                <Button x:Name="BtnImportFile" Content="➕ Add File" Click="OnImportFileClicked" />
+                <Button x:Name="BtnNewNote" Content="✏️ New Note" Background="#1E293B" Foreground="#E2E8F0" CornerRadius="6" Click="OnNewNoteClicked" />
+                <Button x:Name="BtnImportFile" Content="➕ Add File" Background="#1E293B" Foreground="#E2E8F0" CornerRadius="6" Click="OnImportFileClicked" />
             </StackPanel>
         </Grid>
 
-        <!-- 2. Search & Command Bar -->
+        <!-- 2. Search Bar -->
         <Grid Grid.Row="1" Margin="24,0,24,16">
             <TextBox x:Name="SearchBox"
                      PlaceholderText="Search visual memories, OCR text, or type filters (e.g. 'red car', 'type:pdf', 'today')..."
                      FontSize="15"
                      Padding="14,10"
                      CornerRadius="8"
+                     Background="#1E293B"
+                     Foreground="White"
+                     BorderBrush="#334155"
                      TextChanged="OnSearchTextChanged">
             </TextBox>
             <TextBlock Text="Alt + Space" 
@@ -64,7 +66,7 @@
                        FontSize="12" />
         </Grid>
 
-        <!-- 3. Drag & Drop Masonry Canvas -->
+        <!-- 3. Drag & Drop Canvas -->
         <Grid Grid.Row="2" Margin="24,0,24,12" 
               AllowDrop="True" 
               DragOver="OnGridDragOver" 
@@ -77,7 +79,7 @@
                         Spacing="12" 
                         Visibility="Collapsed">
                 <TextBlock Text="📥" FontSize="48" HorizontalAlignment="Center" />
-                <TextBlock Text="Drop any image, screenshot, or PDF here" FontWeight="SemiBold" FontSize="16" HorizontalAlignment="Center" />
+                <TextBlock Text="Drop any image, screenshot, or PDF here" FontWeight="SemiBold" FontSize="16" Foreground="#E2E8F0" HorizontalAlignment="Center" />
                 <TextBlock Text="Or use Alt + Space to invoke Recall instantly" Foreground="#94A3B8" FontSize="13" HorizontalAlignment="Center" />
             </StackPanel>
 
@@ -88,11 +90,11 @@
                           IsItemClickEnabled="True" 
                           ItemClick="OnCardItemClicked">
                     <GridView.ItemTemplate>
-                        <DataTemplate x:DataType="models:SearchResult">
+                        <DataTemplate>
                             <Grid Width="280" 
                                   Margin="6,8" 
-                                  Background="#1A202C" 
-                                  BorderBrush="#2D3748" 
+                                  Background="#1E293B" 
+                                  BorderBrush="#334155" 
                                   BorderThickness="1" 
                                   CornerRadius="10">
                                 <Grid.RowDefinitions>
@@ -102,15 +104,16 @@
 
                                 <!-- Thumbnail Image -->
                                 <Border Grid.Row="0" CornerRadius="10,10,0,0">
-                                    <Image Source="{x:Bind Item.Path}" Stretch="UniformToFill" />
+                                    <Image Source="{Binding Item.Path}" Stretch="UniformToFill" />
                                 </Border>
 
                                 <!-- Card Metadata Footer -->
                                 <StackPanel Grid.Row="1" Padding="12" Spacing="6">
                                     <Grid>
-                                        <TextBlock Text="{x:Bind Item.Name}" 
+                                        <TextBlock Text="{Binding Item.Name}" 
                                                    FontWeight="Medium" 
                                                    FontSize="13" 
+                                                   Foreground="#F8FAFC"
                                                    TextTrimming="CharacterEllipsis" 
                                                    MaxLines="1" 
                                                    VerticalAlignment="Center" />
@@ -120,17 +123,17 @@
                                                 Background="Transparent" 
                                                 BorderThickness="0"
                                                 Click="OnToggleFavoriteClicked" 
-                                                Tag="{x:Bind Item.Id}" />
+                                                Tag="{Binding Item.Id}" />
                                     </Grid>
 
                                     <!-- Tags / Match Reason -->
                                     <StackPanel Orientation="Horizontal" Spacing="6">
-                                        <Border Background="#2B6CB0" CornerRadius="4" Padding="4,2">
-                                            <TextBlock Text="{x:Bind Item.Kind}" FontSize="10" Foreground="White" />
+                                        <Border Background="#4338CA" CornerRadius="4" Padding="4,2">
+                                            <TextBlock Text="{Binding Item.Kind}" FontSize="10" Foreground="White" />
                                         </Border>
-                                        <TextBlock Text="{x:Bind MatchReason}" 
+                                        <TextBlock Text="{Binding MatchReason}" 
                                                    FontSize="11" 
-                                                   Foreground="#A0AEC0" 
+                                                   Foreground="#94A3B8" 
                                                    TextTrimming="CharacterEllipsis" 
                                                    VerticalAlignment="Center" />
                                     </StackPanel>
@@ -143,8 +146,8 @@
         </Grid>
 
         <!-- 4. Status Bar -->
-        <Grid Grid.Row="3" Background="#111827" Padding="24,8">
-            <TextBlock x:Name="StatusTextBlock" Text="Recall Ready • 100% Local &amp; Private • DirectML GPU Acceleration" FontSize="11" Foreground="#9CA3AF" />
+        <Grid Grid.Row="3" Background="#070A10" Padding="24,8">
+            <TextBlock x:Name="StatusTextBlock" Text="Recall Ready • 100% Local &amp; Private • DirectML GPU Acceleration" FontSize="11" Foreground="#64748B" />
         </Grid>
     </Grid>
 </Window>

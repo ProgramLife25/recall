@@ -1,9 +1,6 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Windows.Graphics.Imaging;
-using Windows.Media.Ocr;
-using Windows.Storage;
 
 namespace Recall.Windows.Services;
 
@@ -12,15 +9,14 @@ public class OcrService
     private static OcrService? _instance;
     public static OcrService Instance => _instance ??= new OcrService();
 
-    private OcrEngine? _ocrEngine;
+    private global::Windows.Media.Ocr.OcrEngine? _ocrEngine;
 
     public OcrService()
     {
         try
         {
-            // Initializes using the user's primary language profile, fallback to English
-            _ocrEngine = OcrEngine.TryCreateFromUserProfileLanguages() 
-                         ?? OcrEngine.TryCreateFromLanguage(new Windows.Globalization.Language("en-US"));
+            _ocrEngine = global::Windows.Media.Ocr.OcrEngine.TryCreateFromUserProfileLanguages() 
+                         ?? global::Windows.Media.Ocr.OcrEngine.TryCreateFromLanguage(new global::Windows.Globalization.Language("en-US"));
         }
         catch
         {
@@ -37,9 +33,9 @@ public class OcrService
 
         try
         {
-            var storageFile = await StorageFile.GetFileFromPathAsync(imagePath);
-            using var stream = await storageFile.OpenAsync(FileAccessMode.Read);
-            var decoder = await BitmapDecoder.CreateAsync(stream);
+            var storageFile = await global::Windows.Storage.StorageFile.GetFileFromPathAsync(imagePath);
+            using var stream = await storageFile.OpenAsync(global::Windows.Storage.FileAccessMode.Read);
+            var decoder = await global::Windows.Graphics.Imaging.BitmapDecoder.CreateAsync(stream);
             var softwareBitmap = await decoder.GetSoftwareBitmapAsync();
 
             var ocrResult = await _ocrEngine.RecognizeAsync(softwareBitmap);

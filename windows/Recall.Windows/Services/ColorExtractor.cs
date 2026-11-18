@@ -1,8 +1,6 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Windows.Graphics.Imaging;
-using Windows.Storage;
 
 namespace Recall.Windows.Services;
 
@@ -16,18 +14,18 @@ public class ColorExtractor
 
         try
         {
-            var storageFile = await StorageFile.GetFileFromPathAsync(imagePath);
-            using var stream = await storageFile.OpenAsync(FileAccessMode.Read);
-            var decoder = await BitmapDecoder.CreateAsync(stream);
+            var storageFile = await global::Windows.Storage.StorageFile.GetFileFromPathAsync(imagePath);
+            using var stream = await storageFile.OpenAsync(global::Windows.Storage.FileAccessMode.Read);
+            var decoder = await global::Windows.Graphics.Imaging.BitmapDecoder.CreateAsync(stream);
 
             // Downsample to 32x32 for instantaneous palette extraction
-            var transform = new BitmapTransform { ScaledWidth = 32, ScaledHeight = 32 };
+            var transform = new global::Windows.Graphics.Imaging.BitmapTransform { ScaledWidth = 32, ScaledHeight = 32 };
             var pixelData = await decoder.GetPixelDataAsync(
-                BitmapPixelFormat.Bgra8,
-                BitmapAlphaMode.Premultiplied,
+                global::Windows.Graphics.Imaging.BitmapPixelFormat.Bgra8,
+                global::Windows.Graphics.Imaging.BitmapAlphaMode.Premultiplied,
                 transform,
-                ExifOrientationMode.RespectExifOrientation,
-                ColorManagementMode.ColorManageToSRgb);
+                global::Windows.Graphics.Imaging.ExifOrientationMode.RespectExifOrientation,
+                global::Windows.Graphics.Imaging.ColorManagementMode.ColorManageToSRgb);
 
             var pixels = pixelData.DetachPixelData();
             long totalR = 0, totalG = 0, totalB = 0;
