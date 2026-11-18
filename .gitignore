@@ -5,7 +5,7 @@ outputs/
 DerivedData/
 
 # Local ML model (installed separately; too large for the source repository)
-Models/
+/Models/
 
 # Local application data and macOS metadata
 .DS_Store

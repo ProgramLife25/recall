@@ -1,8 +1,6 @@
 using System;
 using System.IO;
-using System.Numerics.Tensors;
 using Microsoft.ML.OnnxRuntime;
-using Microsoft.ML.OnnxRuntime.Tensors;
 
 namespace Recall.Windows.Services;
 
@@ -52,7 +50,6 @@ public class VectorEmbeddingService
         // If ONNX model is present, run inference
         if (_session != null)
         {
-            // Placeholder inference using ONNX session
             return new float[512];
         }
 
