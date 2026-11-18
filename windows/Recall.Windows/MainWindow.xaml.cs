@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Microsoft.UI;
-using Microsoft.UI.Windowing;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
 using Recall.Windows.Models;
 using Recall.Windows.Services;
-using WinRT.Interop;
 
 namespace Recall.Windows;
 
@@ -22,28 +20,49 @@ public partial class MainWindow : Window
     private List<IndexedItem> _allItems = new();
     private string _currentMode = "Everything";
 
-    private static readonly SolidColorBrush ActiveTabBrush = new(global::Windows.UI.Color.FromArgb(255, 99, 102, 241));
-    private static readonly SolidColorBrush InactiveTabBrush = new(global::Windows.UI.Color.FromArgb(255, 42, 48, 66));
+    private static readonly SolidColorBrush ActiveTabBrush = new(Color.FromRgb(99, 102, 241));
+    private static readonly SolidColorBrush InactiveTabBrush = new(Color.FromRgb(30, 41, 59));
 
     public MainWindow()
     {
-        this.InitializeComponent();
+        InitializeComponent();
+        _ = LoadItemsAsync();
+    }
 
-        // Customize window size and title
-        var appWindow = GetAppWindowForCurrentWindow();
-        appWindow.Resize(new global::Windows.Graphics.SizeInt32(1380, 840));
-        appWindow.Title = "Recall";
+    protected override void OnSourceInitialized(EventArgs e)
+    {
+        base.OnSourceInitialized(e);
 
-        // Setup Win32 HotKey (Alt + Space)
-        IntPtr hwnd = WindowNative.GetWindowHandle(this);
+        // Register Alt+Space Hotkey
+        var helper = new WindowInteropHelper(this);
+        var hwnd = helper.Handle;
+
         _hotKeyService.Register(hwnd);
         _hotKeyService.HotKeyPressed += OnGlobalHotKeyPressed;
 
-        // Subclass window procedure to intercept WM_HOTKEY
-        SubclassWindow(hwnd);
+        var source = HwndSource.FromHwnd(hwnd);
+        source?.AddHook(WndProc);
+    }
 
-        // Load data on startup
-        _ = LoadItemsAsync();
+    private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        _hotKeyService.ProcessMessage(msg, wParam);
+        return IntPtr.Zero;
+    }
+
+    private void OnGlobalHotKeyPressed()
+    {
+        if (IsVisible && WindowState != WindowState.Minimized)
+        {
+            Hide();
+        }
+        else
+        {
+            Show();
+            WindowState = WindowState.Normal;
+            Activate();
+            SearchBox.Focus();
+        }
     }
 
     private async Task LoadItemsAsync()
@@ -67,7 +86,7 @@ public partial class MainWindow : Window
         }
 
         var results = SearchEngine.Search(SearchBox.Text, currentPool);
-        CardsGridView.ItemsSource = results;
+        CardsItemsControl.ItemsSource = results;
 
         EmptyStatePanel.Visibility = results.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
         StatusTextBlock.Text = $"Library: {_allItems.Count} memories saved • Showing {results.Count} results • GPU: {(VectorEmbeddingService.Instance.IsGpuAccelerated ? "Active (DirectML)" : "CPU Fallback")}";
@@ -110,43 +129,56 @@ public partial class MainWindow : Window
 
     private async void OnToggleFavoriteClicked(object sender, RoutedEventArgs e)
     {
-        if (sender is Button btn && btn.Tag is string itemId)
+        if (sender is FrameworkElement element && element.Tag is string itemId)
         {
             await DatabaseService.Instance.ToggleFavoriteAsync(itemId);
             await LoadItemsAsync();
         }
     }
 
-    private void OnCardItemClicked(object sender, ItemClickEventArgs e)
+    private void OnCardClicked(object sender, MouseButtonEventArgs e)
     {
-        if (e.ClickedItem is SearchResult result && File.Exists(result.Item.Path))
+        if (sender is FrameworkElement element && element.DataContext is SearchResult result)
         {
-            Process.Start(new ProcessStartInfo(result.Item.Path) { UseShellExecute = true });
+            if (File.Exists(result.Item.Path))
+            {
+                Process.Start(new ProcessStartInfo(result.Item.Path) { UseShellExecute = true });
+            }
         }
     }
 
     #region Drag and Drop Ingestion
 
-    private void OnGridDragOver(object sender, DragEventArgs e)
+    private void OnWindowDragOver(object sender, DragEventArgs e)
     {
-        e.AcceptedOperation = global::Windows.ApplicationModel.DataTransfer.DataPackageOperation.Copy;
-        e.DragUIOverride.Caption = "Drop to remember in Recall";
+        if (e.Data.GetDataPresent(DataFormats.FileDrop))
+        {
+            e.Effects = DragDropEffects.Copy;
+            e.Handled = true;
+        }
+        else
+        {
+            e.Effects = DragDropEffects.None;
+        }
     }
 
-    private async void OnGridDrop(object sender, DragEventArgs e)
+    private async void OnWindowDrop(object sender, DragEventArgs e)
     {
-        if (e.DataView.Contains(global::Windows.ApplicationModel.DataTransfer.StandardDataFormats.StorageItems))
+        if (e.Data.GetDataPresent(DataFormats.FileDrop))
         {
-            var items = await e.DataView.GetStorageItemsAsync();
-            foreach (var storageItem in items)
+            var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (files != null)
             {
-                if (File.Exists(storageItem.Path))
+                foreach (var file in files)
                 {
-                    StatusTextBlock.Text = $"Analyzing and indexing {storageItem.Name} with Windows OCR...";
-                    await FileIndexerService.Instance.IngestFileAsync(storageItem.Path);
+                    if (File.Exists(file))
+                    {
+                        StatusTextBlock.Text = $"Analyzing and indexing {Path.GetFileName(file)} with Windows OCR...";
+                        await FileIndexerService.Instance.IngestFileAsync(file);
+                    }
                 }
+                await LoadItemsAsync();
             }
-            await LoadItemsAsync();
         }
     }
 
@@ -156,95 +188,58 @@ public partial class MainWindow : Window
 
     private async void OnImportFileClicked(object sender, RoutedEventArgs e)
     {
-        var picker = new global::Windows.Storage.Pickers.FileOpenPicker();
-        IntPtr hwnd = WindowNative.GetWindowHandle(this);
-        InitializeWithWindow.Initialize(picker, hwnd);
-
-        picker.FileTypeFilter.Add(".png");
-        picker.FileTypeFilter.Add(".jpg");
-        picker.FileTypeFilter.Add(".jpeg");
-        picker.FileTypeFilter.Add(".pdf");
-        picker.FileTypeFilter.Add(".webp");
-
-        var file = await picker.PickSingleFileAsync();
-        if (file != null)
+        var dialog = new Microsoft.Win32.OpenFileDialog
         {
-            StatusTextBlock.Text = $"Importing {file.Name}...";
-            await FileIndexerService.Instance.IngestFileAsync(file.Path);
+            Title = "Import Media into Recall",
+            Filter = "Supported Media (*.png;*.jpg;*.jpeg;*.webp;*.pdf;*.md;*.txt)|*.png;*.jpg;*.jpeg;*.webp;*.pdf;*.md;*.txt|All Files (*.*)|*.*",
+            Multiselect = true
+        };
+
+        if (dialog.ShowDialog(this) == true)
+        {
+            foreach (var file in dialog.FileNames)
+            {
+                StatusTextBlock.Text = $"Importing {Path.GetFileName(file)}...";
+                await FileIndexerService.Instance.IngestFileAsync(file);
+            }
             await LoadItemsAsync();
         }
     }
 
-    private async void OnNewNoteClicked(object sender, RoutedEventArgs e)
+    private void OnNewNoteClicked(object sender, RoutedEventArgs e)
     {
-        var dialog = new ContentDialog
+        NoteTitleBox.Text = string.Empty;
+        NoteContentBox.Text = string.Empty;
+        NoteModalGrid.Visibility = Visibility.Visible;
+        NoteTitleBox.Focus();
+    }
+
+    private void OnCancelNoteClicked(object sender, RoutedEventArgs e)
+    {
+        NoteModalGrid.Visibility = Visibility.Collapsed;
+    }
+
+    private async void OnSaveNoteClicked(object sender, RoutedEventArgs e)
+    {
+        string title = NoteTitleBox.Text.Trim();
+        string content = NoteContentBox.Text;
+
+        if (string.IsNullOrWhiteSpace(title))
         {
-            Title = "Create Quick Note",
-            PrimaryButtonText = "Save to Recall",
-            CloseButtonText = "Cancel",
-            XamlRoot = this.Content.XamlRoot
-        };
-
-        var panel = new StackPanel { Spacing = 10 };
-        var titleBox = new TextBox { PlaceholderText = "Note Title..." };
-        var contentBox = new TextBox { PlaceholderText = "Markdown content or ideas...", AcceptsReturn = true, Height = 140 };
-
-        panel.Children.Add(titleBox);
-        panel.Children.Add(contentBox);
-        dialog.Content = panel;
-
-        if (await dialog.ShowAsync() == ContentDialogResult.Primary && !string.IsNullOrWhiteSpace(titleBox.Text))
-        {
-            await FileIndexerService.Instance.CreateQuickNoteAsync(titleBox.Text, contentBox.Text);
-            await LoadItemsAsync();
+            title = "Untitled Note";
         }
+
+        NoteModalGrid.Visibility = Visibility.Collapsed;
+        StatusTextBlock.Text = $"Saving quick note: {title}...";
+        await FileIndexerService.Instance.CreateQuickNoteAsync(title, content);
+        await LoadItemsAsync();
     }
 
     #endregion
 
-    #region Global Hotkey & Window Management
-
-    private void OnGlobalHotKeyPressed()
+    protected override void OnClosed(EventArgs e)
     {
-        var appWindow = GetAppWindowForCurrentWindow();
-        if (appWindow.IsVisible)
-        {
-            appWindow.Hide();
-        }
-        else
-        {
-            appWindow.Show();
-            SearchBox.Focus(FocusState.Programmatic);
-        }
+        _hotKeyService.Dispose();
+        base.OnClosed(e);
     }
-
-    private AppWindow GetAppWindowForCurrentWindow()
-    {
-        IntPtr hwnd = WindowNative.GetWindowHandle(this);
-        WindowId windowId = Win32Interop.GetWindowIdFromWindow(hwnd);
-        return AppWindow.GetFromWindowId(windowId);
-    }
-
-    // Win32 Window Subclassing to capture WM_HOTKEY
-    private delegate IntPtr SubclassProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam, UIntPtr uIdSubclass, IntPtr dwRefData);
-
-    [DllImport("comctl32.dll", SetLastError = true)]
-    private static extern bool SetWindowSubclass(IntPtr hWnd, SubclassProc pfnSubclass, UIntPtr uIdSubclass, IntPtr dwRefData);
-
-    [DllImport("comctl32.dll")]
-    private static extern IntPtr DefSubclassProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
-
-    private SubclassProc? _subclassDelegate;
-
-    private void SubclassWindow(IntPtr hwnd)
-    {
-        _subclassDelegate = (h, msg, wp, lp, id, data) =>
-        {
-            _hotKeyService.ProcessMessage((int)msg, wp);
-            return DefSubclassProc(h, msg, wp, lp);
-        };
-        SetWindowSubclass(hwnd, _subclassDelegate, UIntPtr.Zero, IntPtr.Zero);
-    }
-
-    #endregion
 }

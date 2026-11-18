@@ -1,23 +1,14 @@
-using Microsoft.UI.Xaml;
+using System.Windows;
 using Recall.Windows.Services;
 
 namespace Recall.Windows;
 
 public partial class App : Application
 {
-    private MainWindow? _mainWindow;
-
-    public App()
+    private async void Application_Startup(object sender, StartupEventArgs e)
     {
-        this.InitializeComponent();
-    }
-
-    protected override async void OnLaunched(LaunchActivatedEventArgs args)
-    {
-        // Initialize local SQLite database
         await DatabaseService.Instance.InitializeAsync();
-
-        _mainWindow = new MainWindow();
-        _mainWindow.Activate();
+        var mainWindow = new MainWindow();
+        mainWindow.Show();
     }
 }
