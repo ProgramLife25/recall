@@ -1,0 +1,45 @@
+name: Build Windows Executable
+
+on:
+  push:
+    paths:
+      - 'windows/**'
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore NuGet Packages
+        run: dotnet restore windows/Recall.Windows.sln
+
+      - name: Publish Standalone Executable
+        run: |
+          dotnet publish windows/Recall.Windows/Recall.Windows.csproj -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o publish\win-x64
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Recall-Windows-x64
+          path: publish\win-x64\Recall.Windows.exe
+
+      - name: Attach to Release (if tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: publish\win-x64\Recall.Windows.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
