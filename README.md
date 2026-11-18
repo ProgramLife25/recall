@@ -6,7 +6,8 @@
 ---
 
 [![macOS](https://img.shields.io/badge/macOS-14.0%2B%20%28Sonoma%20%7C%20Sequoia%29-black?style=flat&logo=apple)](https://www.apple.com/macos)
-[![Windows](https://img.shields.io/badge/Windows-11%20%7C%2010%20%28Native%20WinUI%203%29-0078D6?style=flat&logo=windows)](windows/)
+[![Web](https://img.shields.io/badge/Web%20%2F%20PWA-Chrome%20%7C%20Edge%20%7C%20Safari-6366F1?style=flat&logo=googlechrome)](web/)
+[![Windows](https://img.shields.io/badge/Windows-11%20%7C%2010-0078D6?style=flat&logo=windows)](windows/)
 [![Swift](https://img.shields.io/badge/Swift-6.0%2B-orange?style=flat&logo=swift)](https://swift.org)
 [![Privacy](https://img.shields.io/badge/Privacy-100%25%20On--Device-success?style=flat&logo=apple)](https://support.apple.com)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=flat)](LICENSE)
@@ -158,6 +159,24 @@ open outputs/Recall.dmg
 > ```bash
 > SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk ./scripts/build-app.sh
 > ```
+
+---
+
+### Option D: Browser / Web Version (Cross-Platform PWA)
+
+Recall is also available as a **zero-install, 100% private Progressive Web App (PWA)** that runs inside any modern browser (Chrome, Edge, Safari, Brave, Firefox) on macOS, Windows, Linux, iPad, Android, or Chromebook:
+
+1. Open `web/index.html` directly in your browser, or start a local server:
+   ```bash
+   cd web
+   python3 -m http.server 8080
+   ```
+2. Navigate to [http://localhost:8080](http://localhost:8080).
+3. **Key Web Features**:
+   - **Local IndexedDB**: Memories, images, and notes stay 100% on your device.
+   - **In-Browser OCR**: Client-side text extraction using Tesseract.js.
+   - **Clipboard Paste**: Press `Cmd + V` / `Ctrl + V` anywhere to save a screenshot directly.
+   - **Installable PWA**: Click **Install** in your browser's address bar to run Recall as a standalone desktop app!
 
 ---
 

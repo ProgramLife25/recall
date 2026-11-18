@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0B0F19" />
+  <meta name="description" content="Recall - Private, local-first visual memory library for your screen, documents, and bookmarks." />
+  <title>Recall - Visual Memory Library</title>
+  
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
+</head>
+<body>
+
+  <!-- 1. Header Toolbar -->
+  <header>
+    <div class="brand">
+      <span class="logo">🧠</span>
+      <span class="title">Recall</span>
+      <span class="badge-platform">Web / PWA</span>
+    </div>
+
+    <!-- Mode Selector Tabs -->
+    <nav class="nav-tabs">
+      <button class="tab-btn active" data-tab="Everything">Everything</button>
+      <button class="tab-btn" data-tab="TopMind">❤️ Top of Mind</button>
+      <button class="tab-btn" data-tab="Serendipity">✨ Serendipity</button>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <button id="btnNewNote" class="btn">✏️ New Note</button>
+      <button id="btnAddMedia" class="btn btn-primary">➕ Add Media</button>
+      <button id="btnExport" class="btn" title="Export Backup">💾 Backup</button>
+      <button id="btnImport" class="btn" title="Import Backup">📥 Restore</button>
+      <button id="btnInstallPwa" class="btn btn-primary" style="display: none;">📲 Install</button>
+    </div>
+  </header>
+
+  <!-- 2. Search Bar -->
+  <div class="search-container">
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input type="text" 
+             id="searchInput" 
+             class="search-input" 
+             placeholder="Search by keywords, OCR text, tags, 'today', 'liked:true', or color ('blue', 'dark')..." 
+             autocomplete="off" />
+      <span class="search-shortcut">Cmd / Ctrl + K</span>
+    </div>
+  </div>
+
+  <!-- 3. Main Memory Canvas -->
+  <main>
+    <!-- Empty State -->
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <div class="icon">📥</div>
+      <h3>Your memory is empty</h3>
+      <p>Drag and drop images, screenshots, or PDFs here. You can also press <strong>Ctrl + V</strong> / <strong>Cmd + V</strong> anywhere to paste a screenshot directly!</p>
+    </div>
+
+    <!-- Cards Grid -->
+    <div id="cardsGrid" class="cards-grid"></div>
+  </main>
+
+  <!-- 4. Footer Status Bar -->
+  <footer>
+    <div class="status-left">
+      <span class="status-dot"></span>
+      <span id="statusText">Recall Ready • 100% Local &amp; Private • Client-Side IndexedDB</span>
+    </div>
+    <div class="status-right">
+      <span>Tip: Paste screenshot with Cmd/Ctrl + V</span>
+    </div>
+  </footer>
+
+  <!-- 5. Full-Window Drag & Drop Overlay -->
+  <div id="dropOverlay" class="drop-overlay">
+    <div class="icon">📥</div>
+    <h2>Drop files to remember</h2>
+    <p>Images will be indexed with in-browser OCR automatically</p>
+  </div>
+
+  <!-- 6. Hidden File Inputs -->
+  <input type="file" id="fileInput" multiple accept="image/*,.pdf,.txt,.md" style="display: none;" />
+  <input type="file" id="importInput" accept=".json" style="display: none;" />
+
+  <!-- 7. Quick Note Modal -->
+  <div id="noteModal" class="modal-backdrop">
+    <div class="modal-box">
+      <h3 class="modal-title">Create Quick Note</h3>
+      <div class="form-group">
+        <label class="form-label">Title</label>
+        <input type="text" id="noteTitleInput" class="form-input" placeholder="Note title..." />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Content (Markdown supported)</label>
+        <textarea id="noteContentInput" class="form-textarea" placeholder="Type thoughts, code snippets, or memories..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button id="btnCancelNote" class="btn">Cancel</button>
+        <button id="btnSaveNote" class="btn btn-primary">Save Note</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. Lightbox Memory Viewer Modal -->
+  <div id="lightboxModal" class="modal-backdrop">
+    <div class="modal-box lightbox-box">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h3 id="lightboxTitle" class="modal-title">Memory Preview</h3>
+        <button id="lightboxCloseBtn" class="btn" style="padding: 4px 10px;">✕</button>
+      </div>
+
+      <img id="lightboxImg" class="lightbox-img" alt="Memory" />
+
+      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+        <span id="lightboxMeta" style="font-size: 12px; color: var(--text-muted);"></span>
+        <span id="lightboxColorBadge" class="card-badge" style="display: none;"></span>
+      </div>
+
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">EXTRACTED OCR / NOTE TEXT</span>
+          <button id="copyOcrBtn" class="btn" style="padding: 4px 8px; font-size: 11px;">📋 Copy Text</button>
+        </div>
+        <div id="lightboxOcrText" class="ocr-box"></div>
+      </div>
+
+      <div class="modal-actions" style="justify-content: space-between;">
+        <button id="lightboxDeleteBtn" class="btn" style="color: var(--danger); border-color: rgba(239, 68, 68, 0.3);">🗑️ Delete</button>
+        <button onclick="document.getElementById('lightboxModal').classList.remove('open')" class="btn btn-primary">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-Browser OCR Library (Tesseract.js CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  
+  <!-- Recall Application Modules -->
+  <script src="js/db.js"></script>
+  <script src="js/ocr.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch((err) => {
+          console.warn('Service worker registration failed:', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
