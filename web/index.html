@@ -3,122 +3,100 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#E5E8F5" />
+  <meta name="theme-color" content="#E4EAF5" />
   <meta name="description" content="Recall - Private, local-first visual memory library." />
   <title>Recall</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="css/style.css?v=20261119c" />
+  <link rel="stylesheet" href="css/style.css?v=20261119_v3" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
 </head>
 <body>
 
-<!-- ══════════════════ APP SHELL ══════════════════ -->
-<main class="app-shell">
+<!-- ══════════════════ APP SHELL (3 COLUMNS) ══════════════════ -->
+<div class="app-shell">
 
-  <!-- ── Left Side Rail (92px) ── -->
-  <aside class="side-rail">
-    <div class="brand-mark">
-      <svg width="29" height="29" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="8.5" />
-        <path d="M12 7.5v5l3 2" />
-      </svg>
+  <!-- ── 1. LEFT SIDEBAR (140px) ── -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-circle"></div>
+      <span class="brand-name">Recall</span>
     </div>
-    <div class="brand-name">Recall</div>
-    <nav>
-      <button class="active" data-nav="home" aria-label="Home" title="Home">
-        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+
+    <nav class="sidebar-nav">
+      <button class="sidebar-btn active" data-nav="home" title="Home">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="m3.5 10 8.5-7 8.5 7" />
           <path d="M5.5 9v11h13V9M9 20v-6h6v6" />
         </svg>
+        <span>Home</span>
       </button>
-      <button data-nav="liked" aria-label="Liked" title="Liked">
-        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <button class="sidebar-btn" data-nav="liked" title="Liked">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
         </svg>
+        <span>Liked</span>
       </button>
-      <button data-nav="spaces" aria-label="Spaces" title="Spaces">
-        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <button class="sidebar-btn" data-nav="spaces" title="Spaces">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <rect x="4" y="7" width="16" height="13" rx="2" />
           <path d="M7 7V4h10v3" />
         </svg>
+        <span>Spaces</span>
       </button>
     </nav>
-    <button class="settings" id="settingsBtn" aria-label="Settings" title="Settings">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+
+    <button class="sidebar-settings" id="settingsBtn" title="Settings">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="3" />
         <path d="M19 13.5v-3l-2.2-.7a7 7 0 0 0-.7-1.6l1.1-2-2.1-2.1-2 1.1a7 7 0 0 0-1.6-.7L10.5 1h-3l-.7 2.5a7 7 0 0 0-1.6.7l-2-1.1-2.1 2.1 1.1 2a7 7 0 0 0-.7 1.6L-1 9.5v3l2.5.7a7 7 0 0 0 .7 1.6l-1.1 2 2.1 2.1 2-1.1a7 7 0 0 0 1.6.7l.7 2.5h3l.7-2.5a7 7 0 0 0 1.6-.7l2 1.1 2.1-2.1-1.1-2a7 7 0 0 0 .7-1.6Z" transform="translate(3)" />
       </svg>
+      <span>Settings</span>
     </button>
   </aside>
 
-  <!-- ── Right Workspace ── -->
-  <section class="workspace">
-    <header>
-      <div class="top-row">
-        <!-- Search Field -->
-        <label class="search">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+  <!-- ── 2. MAIN WORKSPACE (Center) ── -->
+  <main class="workspace">
+
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="control-row">
+        <!-- Search Bar -->
+        <div class="search-bar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="10.5" cy="10.5" r="6.5" />
             <path d="m15.5 15.5 5 5" />
           </svg>
           <input id="searchInput" placeholder="Search your memories…" autocomplete="off" spellcheck="false" />
-          <button id="searchClear" aria-label="Clear search">×</button>
-        </label>
+          <button class="search-clear" id="searchClear">×</button>
+        </div>
 
-        <!-- Add Button + Dropdown -->
-        <div class="add-wrapper">
-          <button class="add" id="addBtn" aria-label="Add memory">
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 5v14M5 12h14" />
-            </svg>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="m8 10 4 4 4-4" />
-            </svg>
+        <!-- Add Button -->
+        <div class="add-container">
+          <button class="add-btn" id="addBtn" aria-label="Add memory">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 10 4 4 4-4" /></svg>
           </button>
           <div class="add-menu" id="addMenu">
-            <div class="add-menu-item" id="menuAddMedia">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="8.5" cy="9" r="1.5" /><path d="m4 18 5-5 3 3 3-4 5 6" />
-              </svg>
-              Save Images or Files…
-            </div>
-            <div class="add-menu-item" id="menuNewNote">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" />
-              </svg>
-              New Note
-            </div>
-            <div class="add-menu-item" id="menuPaste">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15 2v5h4M9 12h7M9 16h7" /><path d="M6 2h9l4 4v16H6z" />
-              </svg>
-              Paste from Clipboard
-            </div>
-            <div class="add-menu-item" id="menuExport">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-              Export Backup…
-            </div>
-            <div class="add-menu-item" id="menuImport">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m8 10 4 4 4-4" />
-              </svg>
-              Restore Backup…
-            </div>
+            <div class="add-menu-item" id="menuAddMedia">Save Images or Files…</div>
+            <div class="add-menu-item" id="menuNewNote">New Note</div>
+            <div class="add-menu-item" id="menuPaste">Paste from Clipboard</div>
+            <div class="add-menu-item" id="menuExport">Export Backup…</div>
+            <div class="add-menu-item" id="menuImport">Restore Backup…</div>
           </div>
         </div>
 
+        <div class="spacer"></div>
+
         <!-- Mode Tabs -->
-        <div class="tabs">
-          <button class="active" data-tab="Everything">Everything</button>
-          <button data-tab="Spaces">Spaces</button>
-          <button data-tab="Articles">Articles</button>
+        <div class="segmented-tabs">
+          <button class="segmented-tab active" data-tab="Everything">Everything</button>
+          <button class="segmented-tab" data-tab="Spaces">Spaces</button>
+          <button class="segmented-tab" data-tab="Articles">Articles</button>
         </div>
 
         <!-- Select Button -->
-        <button class="select-button" id="selectBtn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <button class="select-btn" id="selectBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="9" />
             <path d="m8 12 2.5 2.5L16 9" />
           </svg>
@@ -128,380 +106,299 @@
 
       <!-- Filter Row -->
       <div class="filter-row">
-        <button class="filter-button" id="filterImages" data-filter="images">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="8.5" cy="9" r="1.5" /><path d="m4 18 5-5 3 3 3-4 5 6" />
-          </svg>
+        <button class="filter-chip" id="filterImages" data-filter="images">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="8.5" cy="9" r="1.5" /><path d="m4 18 5-5 3 3 3-4 5 6" /></svg>
           <span>Images</span>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4" /></svg>
+          <span class="filter-chevron">▾</span>
         </button>
 
-        <button class="filter-button" id="filterNotes" data-filter="notes">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" />
-          </svg>
+        <button class="filter-chip" id="filterNotes" data-filter="notes">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></svg>
           <span>Notes</span>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4" /></svg>
+          <span class="filter-chevron">▾</span>
         </button>
 
-        <button class="filter-button" id="filterArticles" data-filter="articles">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 2h9l4 4v16H6z" /><path d="M15 2v5h4M9 12h7M9 16h7" />
-          </svg>
+        <button class="filter-chip" id="filterArticles" data-filter="articles">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h9l4 4v16H6z" /><path d="M15 2v5h4M9 12h7M9 16h7" /></svg>
           <span>Articles</span>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4" /></svg>
+          <span class="filter-chevron">▾</span>
         </button>
 
-        <button class="filter-button" id="filterLiked" data-filter="liked">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
-          </svg>
+        <button class="filter-chip" id="filterLiked" data-filter="liked">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" /></svg>
           <span>Liked</span>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4" /></svg>
+          <span class="filter-chevron">▾</span>
         </button>
 
         <!-- Color Filter -->
         <div style="position:relative;">
-          <button class="color-filter" id="colorFilterBtn">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4" /></svg>
+          <button class="filter-chip" id="colorFilterBtn">
+            <span class="filter-chevron" style="transform:rotate(-90deg); margin-right:2px;">▾</span>
             <span id="colorFilterLabel">Color</span>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4" /></svg>
+            <span class="filter-chevron">▾</span>
           </button>
-          <div class="color-menu" id="colorMenu">
-            <div class="color-menu-item" data-color=""><span class="color-swatch-circle" style="background:transparent; border-style:dashed;"></span> All colors</div>
-            <div class="color-menu-item" data-color="red"><span class="color-swatch-circle" style="background:#EF4444;"></span> Red</div>
-            <div class="color-menu-item" data-color="orange"><span class="color-swatch-circle" style="background:#F97316;"></span> Orange</div>
-            <div class="color-menu-item" data-color="yellow"><span class="color-swatch-circle" style="background:#EAB308;"></span> Yellow</div>
-            <div class="color-menu-item" data-color="green"><span class="color-swatch-circle" style="background:#22C55E;"></span> Green</div>
-            <div class="color-menu-item" data-color="blue"><span class="color-swatch-circle" style="background:#3B82F6;"></span> Blue</div>
-            <div class="color-menu-item" data-color="purple"><span class="color-swatch-circle" style="background:#A855F7;"></span> Purple</div>
-            <div class="color-menu-item" data-color="dark"><span class="color-swatch-circle" style="background:#1F2937;"></span> Dark</div>
-            <div class="color-menu-item" data-color="light"><span class="color-swatch-circle" style="background:#F9FAFB;"></span> Light</div>
+          <div class="color-dropdown" id="colorMenu">
+            <div class="color-item" data-color=""><span class="color-dot" style="background:transparent; border-style:dashed;"></span> All</div>
+            <div class="color-item" data-color="orange"><span class="color-dot" style="background:#EF4444;"></span> Orange / Red</div>
+            <div class="color-item" data-color="yellow"><span class="color-dot" style="background:#EAB308;"></span> Yellow</div>
+            <div class="color-item" data-color="blue"><span class="color-dot" style="background:#3B82F6;"></span> Blue</div>
+            <div class="color-item" data-color="dark"><span class="color-dot" style="background:#1F2937;"></span> Dark</div>
+            <div class="color-item" data-color="light"><span class="color-dot" style="background:#F9FAFB;"></span> Light</div>
           </div>
         </div>
 
-        <div class="status">
-          <i id="statusDot"></i>
+        <div class="analysis-status">
+          <span class="status-dot" id="statusDot"></span>
           <span id="statusText">On-device analysis complete</span>
         </div>
       </div>
     </header>
 
-    <!-- Library Subhead -->
-    <div class="library-head">
-      <strong id="libraryHeadTitle">Good Afternoon</strong>
-      <span id="libraryHeadCount">17 memories</span>
+    <!-- Subhead Row -->
+    <div class="subhead-row">
+      <span id="subheadGreeting">Good Morning</span>
+      <span id="subheadCount">11 memories</span>
     </div>
 
-    <!-- Memory Scroll Area -->
-    <div class="memory-scroll" id="memoryScroll">
-
-      <!-- Dynamic Filtered Grid (shown when search/filters are active) -->
-      <div class="filtered-grid" id="filteredGrid" style="display:none;"></div>
-
-      <!-- Default 5-Column Grid (exact Figma showcase layout) -->
-      <div class="memory-grid default-grid" id="defaultGrid">
+    <!-- Gallery Scroll Container -->
+    <div class="gallery-scroll" id="galleryScroll">
+      <div class="masonry-5col" id="masonryContainer">
 
         <!-- Column 1 -->
-        <div class="column" id="defaultCol0">
-          <button class="new-note" id="defaultNewNoteBtn">
-            <b>Add new note</b>
-            <strong>Start typing here…</strong>
-            <i></i><i></i><i></i><i></i><i></i>
-          </button>
-          <article class="memory-card" data-id="3">
-            <img src="memories/memory-3.jpg" alt="Elephants crossing the grass at golden hour…" loading="lazy" />
-            <div class="card-shade"></div>
-            <div class="card-copy">
-              <strong>Elephants crossing the grass at golden hour…</strong>
-              <small>unsplash.com</small>
+        <div class="masonry-col" id="col0">
+          <!-- Add New Note Card -->
+          <div class="card-item card-add-note" id="noteAddCard">
+            <span class="note-label">ADD NEW NOTE</span>
+            <span class="note-heading">Start typing here…</span>
+            <span class="note-rule"></span>
+            <span class="note-rule"></span>
+            <span class="note-rule"></span>
+            <span class="note-rule"></span>
+            <span class="note-rule"></span>
+          </div>
+
+          <!-- Tables Always Turn Card -->
+          <div class="card-item" data-id="tables" data-title="Tables always turn." data-source="in.pinterest.com" data-type="structure" data-tags="typography,red,black,tables always turn">
+            <button class="card-trash-btn" title="Delete">🗑</button>
+            <img src="memories_exact/tables.jpg" alt="Tables always turn." />
+            <div class="card-badge">
+              <span class="card-badge-title">A black structure ima...</span>
+              <span class="card-badge-heart">♡</span>
             </div>
-            <button class="like-button" data-id="3" aria-label="Favorite">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
-              </svg>
-            </button>
-          </article>
-          <article class="memory-card" data-id="5">
-            <img src="memories/memory-5.jpg" alt="Soft minimal interior with natural textures…" loading="lazy" />
-            <div class="card-shade"></div>
-            <div class="card-copy">
-              <strong>Soft minimal interior with natural textures…</strong>
-              <small>unsplash.com</small>
+          </div>
+
+          <!-- You Attract Better Card -->
+          <div class="card-item" data-id="youattract" data-title="You attract better WHEN YOU-" data-source="in.pinterest.com" data-type="document" data-tags="typography,manifesto,self care,white,document">
+            <button class="card-trash-btn" title="Delete">🗑</button>
+            <img src="memories_exact/youattract.jpg" alt="You attract better WHEN YOU-" />
+            <div class="card-badge">
+              <span class="card-badge-title">A white document imag...</span>
+              <span class="card-badge-heart">♡</span>
             </div>
-            <button class="like-button" data-id="5" aria-label="Favorite">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
-              </svg>
-            </button>
-          </article>
+          </div>
         </div>
 
         <!-- Column 2 -->
-        <div class="column" id="defaultCol1">
-          <article class="memory-card tall" data-id="1">
-            <img src="memories/memory-1.jpg" alt="A warm portrait featuring fashion and light…" loading="lazy" />
-            <div class="card-shade"></div>
-            <div class="card-copy">
-              <strong>A warm portrait featuring fashion and light…</strong>
-              <small>unsplash.com</small>
+        <div class="masonry-col" id="col1">
+          <!-- Fran Lebowitz Quote Card -->
+          <div class="card-item" data-id="fran" data-title="In real life, I assure you, there is no such thing as algebra." data-source="www.google.com" data-type="quote" data-tags="quote,fran lebowitz,author,algebra,blue,portrait">
+            <button class="card-trash-btn" title="Delete">🗑</button>
+            <img src="memories_exact/fran.jpg" alt="In real life, I assure you, there is no such thing as algebra." />
+            <div class="card-badge">
+              <span class="card-badge-title">A blue face image featu...</span>
+              <span class="card-badge-heart">♡</span>
             </div>
-            <button class="like-button liked" data-id="1" aria-label="Favorite">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="#ff7f7f" stroke="#ff7f7f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
-              </svg>
-            </button>
-          </article>
-          <article class="memory-card" data-id="7">
-            <img src="memories/memory-7.jpg" alt="A calm living room built around warm neutrals…" loading="lazy" />
-            <div class="card-shade"></div>
-            <div class="card-copy">
-              <strong>A calm living room built around warm neutrals…</strong>
-              <small>unsplash.com</small>
+          </div>
+
+          <!-- Try Again Card -->
+          <div class="card-item" data-id="tryagain" data-title="TRY AGAIN UNTIL YOU SUCCEED" data-source="in.pinterest.com" data-type="sign" data-tags="typography,flame,motivation,sign">
+            <button class="card-trash-btn" title="Delete">🗑</button>
+            <img src="memories_exact/tryagain.jpg" alt="TRY AGAIN UNTIL YOU SUCCEED" />
+            <div class="card-badge">
+              <span class="card-badge-title">A white sign image fe...</span>
+              <span class="card-badge-heart">♡</span>
             </div>
-            <button class="like-button liked" data-id="7" aria-label="Favorite">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="#ff7f7f" stroke="#ff7f7f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
-              </svg>
-            </button>
-          </article>
-          <div class="book-card" data-id="book-1">
-            <div class="book-cover">
-              THE<br />
-              <b>GOOD<br />SISTER</b>
-              <small>A novel of secrets</small>
-            </div>
-            <div class="book-caption">
-              A book cover saved for later…
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
-              </svg>
+          </div>
+
+          <!-- Giving Up Card -->
+          <div class="card-item" data-id="givingup" data-title="Giving up is not in the blood sir" data-source="in.pinterest.com" data-type="document" data-tags="mountain,mountaineer,snow,perseverance">
+            <button class="card-trash-btn" title="Delete">🗑</button>
+            <img src="memories_exact/givingup.jpg" alt="Giving up is not in the blood sir" />
+            <div class="card-badge">
+              <span class="card-badge-title">A white document im...</span>
+              <span class="card-badge-heart">♡</span>
             </div>
           </div>
         </div>
 
         <!-- Column 3 -->
-        <div class="column" id="defaultCol2">
-          <article class="memory-card tall" data-id="2">
-            <img src="memories/memory-2.jpg" alt="A confident person in modern streetwear…" loading="lazy" />
-            <div class="card-shade"></div>
-            <div class="card-copy">
-              <strong>A confident person in modern streetwear…</strong>
-              <small>unsplash.com</small>
+        <div class="masonry-col" id="col2">
+          <!-- Lion Portrait Card (Active / Selected by default) -->
+          <div class="card-item selected" data-id="lion" data-title="Redirect Notice" data-source="www.google.com" data-tldr="A black animal image featuring feline, lion" data-type="animal" data-tags="animal,feline,lion,mammal,black,brown,orange,grass">
+            <button class="card-trash-btn" title="Delete">🗑</button>
+            <img src="memories_exact/lion_card.jpg" alt="Lion Portrait" />
+            <div class="card-badge">
+              <span class="card-badge-title">A black animal image fe...</span>
+              <span class="card-badge-heart">♡</span>
             </div>
-            <button class="like-button" data-id="2" aria-label="Favorite">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
-              </svg>
-            </button>
-          </article>
-          <article class="memory-card" data-id="4">
-            <img src="memories/memory-4.jpg" alt="A moment in the wild — special look" loading="lazy" />
-            <div class="card-shade"></div>
-            <span class="play">
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                <path d="m9 7 9 5-9 5z" />
-              </svg>
-            </span>
-            <div class="card-copy">
-              <strong>A moment in the wild — special look</strong>
-              <small>YouTube</small>
-            </div>
-            <button class="like-button" data-id="4" aria-label="Favorite">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
-              </svg>
-            </button>
-          </article>
-          <div class="book-card dark" data-id="book-2">
-            <div class="book-cover">
-              NIGHT<br />
-              <b>BOOKS</b>
-              <small>Tales after dark</small>
-            </div>
-            <div class="book-caption">
-              A striking book cover and illustration…
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
-              </svg>
+          </div>
+
+          <!-- Orange Silhouette Card -->
+          <div class="card-item" data-id="orange_silhouette" data-title="GO THE EXTRA MILE, IT'S NEVER CROWDED." data-source="in.pinterest.com" data-type="structure" data-tags="orange,silhouette,motivation,extra mile">
+            <button class="card-trash-btn" title="Delete">🗑</button>
+            <img src="memories_exact/orange_silhouette.jpg" alt="GO THE EXTRA MILE, IT'S NEVER CROWDED." />
+            <div class="card-badge">
+              <span class="card-badge-title">A orange structure ima...</span>
+              <span class="card-badge-heart">♡</span>
             </div>
           </div>
         </div>
 
         <!-- Column 4 -->
-        <div class="column" id="defaultCol3">
-          <article class="memory-card tall" data-id="10">
-            <img src="memories/memory-10.jpg" alt="Green accents and sculptural furniture…" loading="lazy" />
-            <div class="card-shade"></div>
-            <div class="card-copy">
-              <strong>Green accents and sculptural furniture…</strong>
-              <small>unsplash.com</small>
+        <div class="masonry-col" id="col3">
+          <!-- Studio Coder Card -->
+          <div class="card-item" data-id="studio" data-title="GET RICH OR DIE TRYIN'" data-source="in.pinterest.com" data-type="person" data-tags="studio,coder,person,get rich,audio,monitors,desk">
+            <button class="card-trash-btn" title="Delete">🗑</button>
+            <img src="memories_exact/studio.jpg" alt="GET RICH OR DIE TRYIN'" />
+            <div class="card-badge">
+              <span class="card-badge-title">A black person image f...</span>
+              <span class="card-badge-heart">♡</span>
             </div>
-            <button class="like-button" data-id="10" aria-label="Favorite">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
-              </svg>
-            </button>
-          </article>
-          <article class="memory-card" data-id="9">
-            <img src="memories/memory-9.jpg" alt="Designing a slow and intentional space" loading="lazy" />
-            <div class="card-shade"></div>
-            <span class="play">
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                <path d="m9 7 9 5-9 5z" />
-              </svg>
-            </span>
-            <div class="card-copy">
-              <strong>Designing a slow and intentional space</strong>
-              <small>YouTube</small>
+          </div>
+
+          <!-- Believe in Universe Card -->
+          <div class="card-item" data-id="believe" data-title="BELIEVE YOU DESERVE IT AND THE UNIVERSE WILL SERVE IT." data-source="in.pinterest.com" data-type="document" data-tags="red,universe,believe,texture,motivational">
+            <button class="card-trash-btn" title="Delete">🗑</button>
+            <img src="memories_exact/believe.jpg" alt="BELIEVE YOU DESERVE IT AND THE UNIVERSE WILL SERVE IT." />
+            <div class="card-badge">
+              <span class="card-badge-title">A red document imag f...</span>
+              <span class="card-badge-heart">♡</span>
             </div>
-            <button class="like-button" data-id="9" aria-label="Favorite">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
-              </svg>
-            </button>
-          </article>
-          <article class="memory-card" data-id="8">
-            <img src="memories/memory-8.jpg" alt="The beautiful homes redefining modern comfort" loading="lazy" />
-            <div class="card-shade"></div>
-            <span class="article-tag">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 2h9l4 4v16H6z" /><path d="M15 2v5h4M9 12h7M9 16h7" />
-              </svg>
-              Article
-            </span>
-            <div class="card-copy">
-              <strong>The beautiful homes redefining modern comfort</strong>
-              <small>archdaily.com</small>
-            </div>
-            <button class="like-button" data-id="8" aria-label="Favorite">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
-              </svg>
-            </button>
-          </article>
+          </div>
         </div>
 
         <!-- Column 5 -->
-        <div class="column" id="defaultCol4">
-          <div class="quote-card" data-id="quote-1">
-            <b>Quote</b>
-            <span>“</span>
-            <blockquote>“Be yourself; everyone else is already taken.”</blockquote>
-            <footer>
-              <small>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="8" /><path d="m9.5 14.5 5-5M8.5 11.5l-1 1a2.1 2.1 0 0 0 3 3l1-1M15.5 12.5l1-1a2.1 2.1 0 0 0-3-3l-1 1" />
-                </svg>
-                goodreads.com
-              </small>
-              <small>Aug 17, 2026</small>
-            </footer>
-          </div>
-          <div class="article-card" data-id="article-gta">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 2h9l4 4v16H6z" /><path d="M15 2v5h4M9 12h7M9 16h7" />
-            </svg>
-            <h2>Grand Theft Auto: every game and…</h2>
-            <img src="memories/memory-11.jpg" alt="City at night" loading="lazy" />
-            <b>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 2h9l4 4v16H6z" /><path d="M15 2v5h4M9 12h7M9 16h7" />
-              </svg>
-              Article
-            </b>
-          </div>
-          <article class="memory-card tall" data-id="6">
-            <img src="memories/memory-6.jpg" alt="Quiet corner, afternoon reading inspiration…" loading="lazy" />
-            <div class="card-shade"></div>
-            <div class="card-copy">
-              <strong>Quiet corner, afternoon reading inspiration…</strong>
-              <small>unsplash.com</small>
+        <div class="masonry-col" id="col4">
+          <!-- Red Bull Helmet Card -->
+          <div class="card-item" data-id="redbull" data-title="fall in love with the work." data-source="in.pinterest.com" data-type="clothing" data-tags="red bull,helmet,racing,fall in love with the work">
+            <button class="card-trash-btn" title="Delete">🗑</button>
+            <img src="memories_exact/redbull.jpg" alt="fall in love with the work." />
+            <div class="card-badge">
+              <span class="card-badge-title">A red clothing image fe...</span>
+              <span class="card-badge-heart">♡</span>
             </div>
-            <button class="like-button" data-id="6" aria-label="Favorite">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
-              </svg>
-            </button>
-          </article>
+          </div>
+
+          <!-- Nokia Memo Card -->
+          <div class="card-item" data-id="memo" data-title="Memo — You struggle for 4 years..." data-source="in.pinterest.com" data-type="document" data-tags="nokia,memo,retro,blue screen,trust your grind">
+            <button class="card-trash-btn" title="Delete">🗑</button>
+            <img src="memories_exact/memo.jpg" alt="Memo — You struggle for 4 years..." />
+            <div class="card-badge">
+              <span class="card-badge-title">A blue document image...</span>
+              <span class="card-badge-heart">♡</span>
+            </div>
+          </div>
         </div>
 
-      </div><!-- /defaultGrid -->
+      </div><!-- /masonry-5col -->
+    </div><!-- /gallery-scroll -->
 
-      <div class="no-results" id="noResults" style="display:none;">No memories found</div>
-    </div><!-- /memory-scroll -->
+  </main>
 
-  </section>
-</main>
+  <!-- ── 3. RIGHT INSPECTOR PANEL (260px) ── -->
+  <aside class="inspector" id="inspectorPanel">
+    <div class="inspector-top">
+      <span class="inspector-type">Web image</span>
+      <button class="inspector-close-btn" id="inspectorCloseBtn">✕</button>
+    </div>
 
-<!-- ══ Drag & Drop Overlay ══ -->
-<div id="dropOverlay" class="drop-overlay">
-  <div class="drop-inner">
-    <div class="drop-icon">📥</div>
-    <div class="drop-title">Drop to save in Recall</div>
-    <div class="drop-sub">Images will be indexed with on-device OCR</div>
+    <!-- Hero Image Thumbnail -->
+    <img class="inspector-hero-img" id="inspectorHeroImg" src="memories_exact/lion_hero.jpg" alt="Hero Preview" />
+
+    <!-- Title & Date -->
+    <h2 class="inspector-title" id="inspectorTitle">Redirect Notice</h2>
+    <div class="inspector-date" id="inspectorDate">Nov 17, 2026 at 11:04 PM</div>
+
+    <!-- TLDR Section -->
+    <div class="section-lbl">TLDR</div>
+    <div class="tldr-text" id="inspectorTldr">A black animal image featuring feline, lion</div>
+
+    <!-- SOURCE Section -->
+    <div class="section-lbl">SOURCE</div>
+    <div class="source-row">
+      <div class="source-link">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="m9 15 6-6M9 9h6v6" /></svg>
+        <span id="inspectorSource">www.google.com</span>
+      </div>
+      <span style="color:#8e8e93; font-size:12px;">›</span>
+    </div>
+
+    <!-- COLOR PALETTE Section -->
+    <div class="section-lbl">COLOR PALETTE</div>
+    <div class="palette-row" id="inspectorPalette">
+      <div class="swatch-box" style="background:#130F0C;"></div>
+      <div class="swatch-box" style="background:#583515;"></div>
+      <div class="swatch-box" style="background:#7F532E;"></div>
+      <div class="swatch-box" style="background:#D08B54;"></div>
+      <div class="swatch-box" style="background:#E5AB7E;"></div>
+    </div>
+
+    <!-- MIND TAGS Section -->
+    <div class="section-lbl">MIND TAGS</div>
+    <div class="tags-flow" id="inspectorTags">
+      <span class="mind-tag">animal</span>
+      <span class="mind-tag">feline</span>
+      <span class="mind-tag">lion</span>
+      <span class="mind-tag">mammal</span>
+      <span class="mind-tag">black</span>
+      <span class="mind-tag">brown</span>
+      <span class="mind-tag">orange</span>
+      <span class="mind-tag">grass</span>
+    </div>
+
+    <!-- MIND NOTES Section -->
+    <div class="section-lbl">MIND NOTES</div>
+    <div class="mind-notes-placeholder" id="inspectorNotes">Add a personal note in full details.</div>
+
+    <!-- Inspector Toolbar -->
+    <div class="inspector-toolbar">
+      <button class="tool-icon-btn" id="toolFavBtn" title="Favorite">☆</button>
+      <button class="tool-icon-btn" id="toolExpandBtn" title="Open in Lightbox">⤢</button>
+      <button class="tool-icon-btn" title="More">···</button>
+      <button class="tool-icon-btn" id="toolDeleteBtn" title="Delete">🗑</button>
+    </div>
+  </aside>
+
+</div><!-- /app-shell -->
+
+<!-- ══ Quick Note Modal ══ -->
+<div id="noteModal" class="modal-backdrop">
+  <div class="modal-box">
+    <div style="font-size:18px; font-weight:600; color:#1c1c1e;">New Note</div>
+    <input type="text" id="noteTitleInput" style="padding:10px 12px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; outline:none;" placeholder="Note title…" />
+    <textarea id="noteContentInput" style="padding:10px 12px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; outline:none; height:120px; resize:vertical;" placeholder="Start typing here…"></textarea>
+    <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:4px;">
+      <button id="btnCancelNote" style="padding:8px 16px; border:1px solid #d1d5db; border-radius:8px; font-size:13px;">Cancel</button>
+      <button id="btnSaveNote" style="padding:8px 18px; background:#ff8500; color:white; border-radius:8px; font-size:13px; font-weight:600;">Save Note</button>
+    </div>
   </div>
 </div>
 
 <!-- ══ Toast ══ -->
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="toast" id="toast"></div>
 
-<!-- ══ Hidden File Inputs ══ -->
+<!-- ══ Hidden File Input ══ -->
 <input type="file" id="fileInput" multiple accept="image/*,.pdf,.txt,.md" style="display:none;" />
-<input type="file" id="importInput" accept=".json" style="display:none;" />
 
-<!-- ══ Quick Note Modal ══ -->
-<div id="noteModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-label="New Note">
-  <div class="modal-box">
-    <div class="modal-title">New Note</div>
-    <div>
-      <label class="form-label" for="noteTitleInput">Title</label>
-      <input type="text" id="noteTitleInput" class="form-input" placeholder="Note title…" />
-    </div>
-    <div>
-      <label class="form-label" for="noteContentInput">Content</label>
-      <textarea id="noteContentInput" class="form-textarea" placeholder="Start typing your note here…"></textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" id="btnCancelNote">Cancel</button>
-      <button class="btn-primary" id="btnSaveNote">Save Note</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ Full Lightbox Modal ══ -->
-<div id="lightboxModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-label="Memory detail">
-  <div class="modal-box lightbox-box">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <div class="modal-title" id="lightboxTitle">Memory</div>
-      <button class="btn-cancel" id="lightboxCloseBtn" style="height:32px; padding:0 12px;">✕ Close</button>
-    </div>
-    <img id="lightboxImg" class="lightbox-img" alt="" style="display:none;" />
-    <div class="lightbox-meta" id="lightboxMeta"></div>
-    <div id="lightboxOcrSection">
-      <div style="font-size:11px; font-weight:700; color:#777f90; text-transform:uppercase; margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
-        EXTRACTED TEXT (OCR)
-        <button id="copyOcrBtn" style="background:transparent; border:0; color:#ff8300; font-weight:600; cursor:pointer;">📋 Copy</button>
-      </div>
-      <div id="lightboxOcrText" class="ocr-box"></div>
-    </div>
-    <div class="modal-actions" style="justify-content:space-between; margin-top:10px;">
-      <button class="btn-cancel" id="lightboxDeleteBtn" style="color:#ff3b30;">🗑 Delete</button>
-      <button class="btn-primary" id="lightboxDoneBtn">Done</button>
-    </div>
-  </div>
-</div>
-
-<!-- AI Models & Scripts with cache busting -->
+<!-- Scripts with cache busting -->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="js/db.js?v=20261119c"></script>
-<script src="js/ocr.js?v=20261119c"></script>
-<script src="js/search.js?v=20261119c"></script>
-<script src="js/app.js?v=20261119c"></script>
+<script src="js/db.js?v=20261119_v3"></script>
+<script src="js/ocr.js?v=20261119_v3"></script>
+<script src="js/search.js?v=20261119_v3"></script>
+<script src="js/app.js?v=20261119_v3"></script>
 <script>
-  // Purge any stale service worker and caches to guarantee latest UI
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.getRegistrations().then(regs => {
       for (const reg of regs) reg.unregister();
