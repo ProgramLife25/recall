@@ -12,6 +12,9 @@
 </head>
 <body>
 
+<!-- Animated mesh background -->
+<div class="bg-mesh"></div>
+
 <!-- ══════════════════ APP SHELL ══════════════════ -->
 <div class="app-shell">
 
@@ -51,37 +54,39 @@
     <!-- Top Bar -->
     <div class="top-bar">
       <div class="search-row">
+
         <!-- Search Field -->
         <div class="search-field">
-          <svg class="search-field-icon" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
+          <svg class="search-field-icon" width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
           <input type="text" id="searchInput" placeholder="Search your memories…" autocomplete="off" spellcheck="false" />
-          <button class="search-clear-btn" id="searchClear">✕</button>
+          <button class="search-clear-btn" id="searchClear" aria-label="Clear search">✕</button>
         </div>
 
         <!-- Add Button -->
         <div style="position:relative;">
-          <button class="add-btn" id="addBtn">
+          <button class="add-btn" id="addBtn" aria-label="Add memory" aria-expanded="false">
             <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
-            <svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor" style="color:rgba(0,0,0,0.4)"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+            <svg width="9" height="9" viewBox="0 0 20 20" fill="currentColor" style="color:rgba(0,0,0,0.38)"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
           </button>
-          <div class="add-menu" id="addMenu">
-            <div class="add-menu-item" id="menuAddMedia">
+          <div class="add-menu" id="addMenu" role="menu">
+            <div class="add-menu-item" id="menuAddMedia" role="menuitem">
               <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
               Save Images or Files…
             </div>
-            <div class="add-menu-item" id="menuNewNote">
+            <div class="add-menu-item" id="menuNewNote" role="menuitem">
               <svg viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
               New Note
             </div>
-            <div class="add-menu-item" id="menuPaste">
+            <div class="add-menu-item" id="menuPaste" role="menuitem">
               <svg viewBox="0 0 20 20" fill="currentColor"><path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"/><path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"/></svg>
-              Paste
+              Paste from Clipboard
             </div>
-            <div class="add-menu-item" id="menuExport">
+            <div class="add-menu-sep"></div>
+            <div class="add-menu-item" id="menuExport" role="menuitem">
               <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
               Export Backup…
             </div>
-            <div class="add-menu-item" id="menuImport">
+            <div class="add-menu-item" id="menuImport" role="menuitem">
               <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
               Restore Backup…
             </div>
@@ -91,15 +96,15 @@
         <div class="search-spacer"></div>
 
         <!-- Mode Tabs -->
-        <div class="mode-tabs">
-          <button class="mode-tab active" data-tab="Everything">Everything</button>
-          <button class="mode-tab" data-tab="TopMind">Top of Mind</button>
-          <button class="mode-tab" data-tab="Serendipity">Serendipity</button>
+        <div class="mode-tabs" role="tablist">
+          <button class="mode-tab active" data-tab="Everything" role="tab">Everything</button>
+          <button class="mode-tab" data-tab="TopMind" role="tab">Top of Mind</button>
+          <button class="mode-tab" data-tab="Serendipity" role="tab">Serendipity</button>
         </div>
 
         <!-- Select -->
         <button class="select-btn" id="selectBtn">
-          <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+          <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
           <span id="selectBtnLabel">Select</span>
         </button>
       </div>
@@ -123,14 +128,12 @@
       <!-- Color Picker -->
       <div class="color-picker-wrapper">
         <button class="filter-chip" id="colorFilterBtn">
-          <span id="colorSwatch" class="color-swatch" style="background:transparent; border:1px solid rgba(0,0,0,0.25);"></span>
+          <span id="colorSwatch" class="color-swatch" style="background:transparent; border:1px solid rgba(0,0,0,0.22);"></span>
           <span id="colorFilterLabel">Color</span>
           <span class="filter-chevron">▾</span>
         </button>
         <div class="color-picker-menu" id="colorMenu">
-          <div class="color-menu-item" data-color="">
-            <span class="color-swatch" style="background:transparent; border:1px dashed rgba(0,0,0,0.25);"></span> All colors
-          </div>
+          <div class="color-menu-item" data-color=""><span class="color-swatch" style="background:transparent; border:1px dashed rgba(0,0,0,0.22);"></span> All colors</div>
           <div class="color-menu-item" data-color="red"><span class="color-swatch" style="background:#EF4444;"></span> Red</div>
           <div class="color-menu-item" data-color="orange"><span class="color-swatch" style="background:#F97316;"></span> Orange</div>
           <div class="color-menu-item" data-color="yellow"><span class="color-swatch" style="background:#EAB308;"></span> Yellow</div>
@@ -148,7 +151,7 @@
 
       <div class="status-pill">
         <span class="status-dot" id="statusDot"></span>
-        <span id="statusText">On-device analysis complete</span>
+        <span id="statusText">Ready</span>
       </div>
     </div>
 
@@ -161,13 +164,19 @@
         <span class="canvas-count" id="canvasCount"></span>
       </div>
 
-      <div style="display:flex; flex:1; overflow:hidden; min-height:0;">
+      <div class="canvas-row">
         <div class="canvas-scroll" id="canvasScroll">
+
           <!-- Welcome / Empty State -->
           <div id="emptyState" class="empty-state" style="display:none;">
-            <div style="font-size:48px;">📚</div>
-            <h3>Nothing saved yet</h3>
-            <p>Use the + button above, paste a screenshot, or drag something here to begin.</p>
+            <div class="empty-icon">✦</div>
+            <h3>Your memory library is empty</h3>
+            <p>Drag images here, paste a screenshot, or tap <strong>+</strong> to start saving memories.</p>
+            <div class="empty-tips">
+              <span class="empty-tip">⌘V  Paste screenshot</span>
+              <span class="empty-tip">⌘K  Search</span>
+              <span class="empty-tip">Drop files anywhere</span>
+            </div>
           </div>
 
           <!-- 5-col Masonry Grid -->
@@ -181,16 +190,19 @@
         </div>
 
         <!-- Right Inspector Panel -->
-        <aside class="inspector hidden" id="inspectorPanel">
+        <aside class="inspector hidden" id="inspectorPanel" role="complementary" aria-label="Memory details">
           <div class="inspector-header">
             <span class="inspector-type" id="inspectorType">MEMORY</span>
-            <button class="inspector-close" id="inspectorClose">✕</button>
+            <button class="inspector-close" id="inspectorClose" aria-label="Close inspector">✕</button>
           </div>
           <div class="inspector-scroll">
             <img id="inspectorThumb" class="inspector-thumb" alt="" style="display:none;" />
             <div id="inspectorNotePreview" class="inspector-note-preview" style="display:none;"></div>
+
             <div id="inspectorName" class="inspector-name"></div>
             <div id="inspectorDate" class="inspector-date"></div>
+
+            <div class="inspector-sep"></div>
 
             <div class="inspector-section-label">TLDR / CAPTION</div>
             <div id="inspectorTldr" class="inspector-tldr">—</div>
@@ -203,12 +215,12 @@
             <div class="inspector-section-label">MIND TAGS</div>
             <div class="tags-flow" id="inspectorTags"></div>
 
-            <div class="inspector-section-label" style="margin-top:16px;">OCR / NOTE TEXT</div>
+            <div class="inspector-section-label" style="margin-top:14px;">OCR / NOTE TEXT</div>
             <div id="inspectorOcr" class="ocr-preview">—</div>
           </div>
           <div class="inspector-footer">
             <button class="inspector-action fav" id="inspectorFav" title="Favorite">☆</button>
-            <button class="inspector-action" id="inspectorOpen" title="Open full details">⤢</button>
+            <button class="inspector-action" id="inspectorOpen" title="Open full view">⤢</button>
             <button class="inspector-action del" id="inspectorDel" title="Delete">🗑</button>
           </div>
         </aside>
@@ -223,27 +235,27 @@
   <div class="drop-inner">
     <div class="drop-icon">📥</div>
     <div class="drop-title">Drop to save in Recall</div>
-    <div class="drop-sub">Images will be indexed with on-device OCR</div>
+    <div class="drop-sub">Images & files will be indexed with on-device OCR</div>
   </div>
 </div>
 
 <!-- ══ Toast ══ -->
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!-- ══ Hidden File Inputs ══ -->
 <input type="file" id="fileInput" multiple accept="image/*,.pdf,.txt,.md" style="display:none;" />
 <input type="file" id="importInput" accept=".json" style="display:none;" />
 
 <!-- ══ Quick Note Modal ══ -->
-<div id="noteModal" class="modal-backdrop">
+<div id="noteModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-label="New Note">
   <div class="modal-box">
     <div class="modal-title">New Note</div>
     <div>
-      <label class="form-label">Title</label>
+      <label class="form-label" for="noteTitleInput">Title</label>
       <input type="text" id="noteTitleInput" class="form-input" placeholder="Note title…" />
     </div>
     <div>
-      <label class="form-label">Content (Markdown supported)</label>
+      <label class="form-label" for="noteContentInput">Content (Markdown supported)</label>
       <textarea id="noteContentInput" class="form-textarea" placeholder="Write your thoughts, code, or memory here…"></textarea>
     </div>
     <div class="modal-actions">
@@ -254,7 +266,7 @@
 </div>
 
 <!-- ══ Full Lightbox Modal ══ -->
-<div id="lightboxModal" class="modal-backdrop">
+<div id="lightboxModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-label="Memory detail">
   <div class="modal-box lightbox-box">
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <div class="modal-title" id="lightboxTitle">Memory</div>
@@ -272,9 +284,9 @@
       </div>
       <div id="lightboxOcrText" class="ocr-box"></div>
     </div>
-    <div class="modal-actions" style="justify-content:space-between;">
+    <div class="modal-actions" style="justify-content:space-between; margin-top:6px;">
       <button class="btn-sm btn-danger" id="lightboxDeleteBtn">🗑 Delete</button>
-      <button class="btn-primary" onclick="document.getElementById('lightboxModal').classList.remove('open')">Done</button>
+      <button class="btn-primary" id="lightboxDoneBtn">Done</button>
     </div>
   </div>
 </div>
