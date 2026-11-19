@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#E8E4EF" />
+  <meta name="theme-color" content="#E5E8F5" />
   <meta name="description" content="Recall - Private, local-first visual memory library." />
   <title>Recall</title>
   <link rel="manifest" href="manifest.json" />
@@ -12,230 +12,434 @@
 </head>
 <body>
 
-<!-- Animated mesh background -->
-<div class="bg-mesh"></div>
-
 <!-- ══════════════════ APP SHELL ══════════════════ -->
-<div class="app-shell">
+<main class="app-shell">
 
-  <!-- ── Left Sidebar ── -->
-  <aside class="sidebar">
-    <div class="sidebar-brand">
-      <div class="sidebar-brand-circle"></div>
-      <span class="sidebar-brand-name">Recall</span>
+  <!-- ── Left Side Rail (92px) ── -->
+  <aside class="side-rail">
+    <div class="brand-mark">
+      <svg width="29" height="29" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="8.5" />
+        <path d="M12 7.5v5l3 2" />
+      </svg>
     </div>
-
-    <nav class="sidebar-nav">
-      <button class="sidebar-nav-item active" data-nav="home" title="Home">
-        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7A1 1 0 003 11h1v7a1 1 0 001 1h4v-4h2v4h4a1 1 0 001-1v-7h1a1 1 0 00.707-1.707l-7-7z"/></svg>
-        <span>Home</span>
+    <div class="brand-name">Recall</div>
+    <nav>
+      <button class="active" data-nav="home" aria-label="Home" title="Home">
+        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3.5 10 8.5-7 8.5 7" />
+          <path d="M5.5 9v11h13V9M9 20v-6h6v6" />
+        </svg>
       </button>
-      <button class="sidebar-nav-item" data-nav="liked" title="Liked">
-        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>
-        <span>Liked</span>
+      <button data-nav="liked" aria-label="Liked" title="Liked">
+        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+        </svg>
       </button>
-      <button class="sidebar-nav-item" data-nav="spaces" title="Spaces">
-        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
-        <span>Spaces</span>
+      <button data-nav="spaces" aria-label="Spaces" title="Spaces">
+        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="7" width="16" height="13" rx="2" />
+          <path d="M7 7V4h10v3" />
+        </svg>
       </button>
     </nav>
-
-    <div class="sidebar-footer">
-      <button class="sidebar-settings-btn" id="settingsBtn" title="Settings">
-        <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
-        <span>Settings</span>
-      </button>
-    </div>
+    <button class="settings" id="settingsBtn" aria-label="Settings" title="Settings">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3" />
+        <path d="M19 13.5v-3l-2.2-.7a7 7 0 0 0-.7-1.6l1.1-2-2.1-2.1-2 1.1a7 7 0 0 0-1.6-.7L10.5 1h-3l-.7 2.5a7 7 0 0 0-1.6.7l-2-1.1-2.1 2.1 1.1 2a7 7 0 0 0-.7 1.6L-1 9.5v3l2.5.7a7 7 0 0 0 .7 1.6l-1.1 2 2.1 2.1 2-1.1a7 7 0 0 0 1.6.7l.7 2.5h3l.7-2.5a7 7 0 0 0 1.6-.7l2 1.1 2.1-2.1-1.1-2a7 7 0 0 0 .7-1.6Z" transform="translate(3)" />
+      </svg>
+    </button>
   </aside>
 
-  <!-- ── Main Content ── -->
-  <div class="main-content">
-
-    <!-- Top Bar -->
-    <div class="top-bar">
-      <div class="search-row">
-
+  <!-- ── Right Workspace ── -->
+  <section class="workspace">
+    <header>
+      <div class="top-row">
         <!-- Search Field -->
-        <div class="search-field">
-          <svg class="search-field-icon" width="15" height="15" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
-          <input type="text" id="searchInput" placeholder="Search your memories…" autocomplete="off" spellcheck="false" />
-          <button class="search-clear-btn" id="searchClear" aria-label="Clear search">✕</button>
-        </div>
+        <label class="search">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10.5" cy="10.5" r="6.5" />
+            <path d="m15.5 15.5 5 5" />
+          </svg>
+          <input id="searchInput" placeholder="Search your memories…" autocomplete="off" spellcheck="false" />
+          <button id="searchClear" aria-label="Clear search">×</button>
+        </label>
 
-        <!-- Add Button -->
-        <div style="position:relative;">
-          <button class="add-btn" id="addBtn" aria-label="Add memory" aria-expanded="false">
-            <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
-            <svg width="9" height="9" viewBox="0 0 20 20" fill="currentColor" style="color:rgba(0,0,0,0.38)"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+        <!-- Add Button + Dropdown -->
+        <div class="add-wrapper">
+          <button class="add" id="addBtn" aria-label="Add memory">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m8 10 4 4 4-4" />
+            </svg>
           </button>
-          <div class="add-menu" id="addMenu" role="menu">
-            <div class="add-menu-item" id="menuAddMedia" role="menuitem">
-              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
+          <div class="add-menu" id="addMenu">
+            <div class="add-menu-item" id="menuAddMedia">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="8.5" cy="9" r="1.5" /><path d="m4 18 5-5 3 3 3-4 5 6" />
+              </svg>
               Save Images or Files…
             </div>
-            <div class="add-menu-item" id="menuNewNote" role="menuitem">
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
+            <div class="add-menu-item" id="menuNewNote">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" />
+              </svg>
               New Note
             </div>
-            <div class="add-menu-item" id="menuPaste" role="menuitem">
-              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"/><path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"/></svg>
+            <div class="add-menu-item" id="menuPaste">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 2v5h4M9 12h7M9 16h7" /><path d="M6 2h9l4 4v16H6z" />
+              </svg>
               Paste from Clipboard
             </div>
-            <div class="add-menu-sep"></div>
-            <div class="add-menu-item" id="menuExport" role="menuitem">
-              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+            <div class="add-menu-item" id="menuExport">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
               Export Backup…
             </div>
-            <div class="add-menu-item" id="menuImport" role="menuitem">
-              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+            <div class="add-menu-item" id="menuImport">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m8 10 4 4 4-4" />
+              </svg>
               Restore Backup…
             </div>
           </div>
         </div>
 
-        <div class="search-spacer"></div>
-
         <!-- Mode Tabs -->
-        <div class="mode-tabs" role="tablist">
-          <button class="mode-tab active" data-tab="Everything" role="tab">Everything</button>
-          <button class="mode-tab" data-tab="TopMind" role="tab">Top of Mind</button>
-          <button class="mode-tab" data-tab="Serendipity" role="tab">Serendipity</button>
+        <div class="tabs">
+          <button class="active" data-tab="Everything">Everything</button>
+          <button data-tab="Spaces">Spaces</button>
+          <button data-tab="Articles">Articles</button>
         </div>
 
-        <!-- Select -->
-        <button class="select-btn" id="selectBtn">
-          <svg width="13" height="13" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+        <!-- Select Button -->
+        <button class="select-button" id="selectBtn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9" />
+            <path d="m8 12 2.5 2.5L16 9" />
+          </svg>
           <span id="selectBtnLabel">Select</span>
         </button>
       </div>
-    </div>
 
-    <!-- Filter Bar -->
-    <div class="filter-bar">
-      <button class="filter-chip" id="filterImages" data-filter="images">
-        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
-        Images <span class="filter-chevron">▾</span>
-      </button>
-      <button class="filter-chip" id="filterNotes" data-filter="notes">
-        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
-        Notes <span class="filter-chevron">▾</span>
-      </button>
-      <button class="filter-chip" id="filterLiked" data-filter="liked">
-        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>
-        Liked <span class="filter-chevron">▾</span>
-      </button>
-
-      <!-- Color Picker -->
-      <div class="color-picker-wrapper">
-        <button class="filter-chip" id="colorFilterBtn">
-          <span id="colorSwatch" class="color-swatch" style="background:transparent; border:1px solid rgba(0,0,0,0.22);"></span>
-          <span id="colorFilterLabel">Color</span>
-          <span class="filter-chevron">▾</span>
+      <!-- Filter Row -->
+      <div class="filter-row">
+        <button class="filter-button" id="filterImages" data-filter="images">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="8.5" cy="9" r="1.5" /><path d="m4 18 5-5 3 3 3-4 5 6" />
+          </svg>
+          <span>Images</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4" /></svg>
         </button>
-        <div class="color-picker-menu" id="colorMenu">
-          <div class="color-menu-item" data-color=""><span class="color-swatch" style="background:transparent; border:1px dashed rgba(0,0,0,0.22);"></span> All colors</div>
-          <div class="color-menu-item" data-color="red"><span class="color-swatch" style="background:#EF4444;"></span> Red</div>
-          <div class="color-menu-item" data-color="orange"><span class="color-swatch" style="background:#F97316;"></span> Orange</div>
-          <div class="color-menu-item" data-color="yellow"><span class="color-swatch" style="background:#EAB308;"></span> Yellow</div>
-          <div class="color-menu-item" data-color="green"><span class="color-swatch" style="background:#22C55E;"></span> Green</div>
-          <div class="color-menu-item" data-color="blue"><span class="color-swatch" style="background:#3B82F6;"></span> Blue</div>
-          <div class="color-menu-item" data-color="purple"><span class="color-swatch" style="background:#A855F7;"></span> Purple</div>
-          <div class="color-menu-item" data-color="brown"><span class="color-swatch" style="background:#92400E;"></span> Brown</div>
-          <div class="color-menu-item" data-color="gray"><span class="color-swatch" style="background:#9CA3AF;"></span> Gray</div>
-          <div class="color-menu-item" data-color="dark"><span class="color-swatch" style="background:#1F2937;"></span> Dark</div>
-          <div class="color-menu-item" data-color="white"><span class="color-swatch" style="background:#F9FAFB; border:1px solid #ddd;"></span> Light</div>
-        </div>
-      </div>
 
-      <div class="filter-spacer"></div>
+        <button class="filter-button" id="filterNotes" data-filter="notes">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" />
+          </svg>
+          <span>Notes</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4" /></svg>
+        </button>
 
-      <div class="status-pill">
-        <span class="status-dot" id="statusDot"></span>
-        <span id="statusText">Ready</span>
-      </div>
-    </div>
+        <button class="filter-button" id="filterArticles" data-filter="articles">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2h9l4 4v16H6z" /><path d="M15 2v5h4M9 12h7M9 16h7" />
+          </svg>
+          <span>Articles</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4" /></svg>
+        </button>
 
-    <div class="top-divider"></div>
+        <button class="filter-button" id="filterLiked" data-filter="liked">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+          </svg>
+          <span>Liked</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4" /></svg>
+        </button>
 
-    <!-- Canvas Area -->
-    <div class="canvas-area">
-      <div class="canvas-header">
-        <span class="canvas-label" id="canvasLabel">ALL MEMORIES</span>
-        <span class="canvas-count" id="canvasCount"></span>
-      </div>
-
-      <div class="canvas-row">
-        <div class="canvas-scroll" id="canvasScroll">
-
-          <!-- Welcome / Empty State -->
-          <div id="emptyState" class="empty-state" style="display:none;">
-            <div class="empty-icon">✦</div>
-            <h3>Your memory library is empty</h3>
-            <p>Drag images here, paste a screenshot, or tap <strong>+</strong> to start saving memories.</p>
-            <div class="empty-tips">
-              <span class="empty-tip">⌘V  Paste screenshot</span>
-              <span class="empty-tip">⌘K  Search</span>
-              <span class="empty-tip">Drop files anywhere</span>
-            </div>
-          </div>
-
-          <!-- 5-col Masonry Grid -->
-          <div class="masonry-grid" id="masonryGrid">
-            <div class="masonry-col" id="col0"></div>
-            <div class="masonry-col" id="col1"></div>
-            <div class="masonry-col" id="col2"></div>
-            <div class="masonry-col" id="col3"></div>
-            <div class="masonry-col" id="col4"></div>
+        <!-- Color Filter -->
+        <div style="position:relative;">
+          <button class="color-filter" id="colorFilterBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4" /></svg>
+            <span id="colorFilterLabel">Color</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m8 10 4 4 4-4" /></svg>
+          </button>
+          <div class="color-menu" id="colorMenu">
+            <div class="color-menu-item" data-color=""><span class="color-swatch-circle" style="background:transparent; border-style:dashed;"></span> All colors</div>
+            <div class="color-menu-item" data-color="red"><span class="color-swatch-circle" style="background:#EF4444;"></span> Red</div>
+            <div class="color-menu-item" data-color="orange"><span class="color-swatch-circle" style="background:#F97316;"></span> Orange</div>
+            <div class="color-menu-item" data-color="yellow"><span class="color-swatch-circle" style="background:#EAB308;"></span> Yellow</div>
+            <div class="color-menu-item" data-color="green"><span class="color-swatch-circle" style="background:#22C55E;"></span> Green</div>
+            <div class="color-menu-item" data-color="blue"><span class="color-swatch-circle" style="background:#3B82F6;"></span> Blue</div>
+            <div class="color-menu-item" data-color="purple"><span class="color-swatch-circle" style="background:#A855F7;"></span> Purple</div>
+            <div class="color-menu-item" data-color="dark"><span class="color-swatch-circle" style="background:#1F2937;"></span> Dark</div>
+            <div class="color-menu-item" data-color="light"><span class="color-swatch-circle" style="background:#F9FAFB;"></span> Light</div>
           </div>
         </div>
 
-        <!-- Right Inspector Panel -->
-        <aside class="inspector hidden" id="inspectorPanel" role="complementary" aria-label="Memory details">
-          <div class="inspector-header">
-            <span class="inspector-type" id="inspectorType">MEMORY</span>
-            <button class="inspector-close" id="inspectorClose" aria-label="Close inspector">✕</button>
-          </div>
-          <div class="inspector-scroll">
-            <img id="inspectorThumb" class="inspector-thumb" alt="" style="display:none;" />
-            <div id="inspectorNotePreview" class="inspector-note-preview" style="display:none;"></div>
-
-            <div id="inspectorName" class="inspector-name"></div>
-            <div id="inspectorDate" class="inspector-date"></div>
-
-            <div class="inspector-sep"></div>
-
-            <div class="inspector-section-label">TLDR / CAPTION</div>
-            <div id="inspectorTldr" class="inspector-tldr">—</div>
-
-            <div id="paletteSection" style="display:none;">
-              <div class="inspector-section-label">COLOR PALETTE</div>
-              <div class="palette-row" id="inspectorPalette"></div>
-            </div>
-
-            <div class="inspector-section-label">MIND TAGS</div>
-            <div class="tags-flow" id="inspectorTags"></div>
-
-            <div class="inspector-section-label" style="margin-top:14px;">OCR / NOTE TEXT</div>
-            <div id="inspectorOcr" class="ocr-preview">—</div>
-          </div>
-          <div class="inspector-footer">
-            <button class="inspector-action fav" id="inspectorFav" title="Favorite">☆</button>
-            <button class="inspector-action" id="inspectorOpen" title="Open full view">⤢</button>
-            <button class="inspector-action del" id="inspectorDel" title="Delete">🗑</button>
-          </div>
-        </aside>
+        <div class="status">
+          <i id="statusDot"></i>
+          <span id="statusText">On-device analysis complete</span>
+        </div>
       </div>
+    </header>
+
+    <!-- Library Subhead -->
+    <div class="library-head">
+      <strong id="libraryHeadTitle">Good Afternoon</strong>
+      <span id="libraryHeadCount">17 memories</span>
     </div>
 
-  </div><!-- /main-content -->
-</div><!-- /app-shell -->
+    <!-- Memory Scroll Area -->
+    <div class="memory-scroll" id="memoryScroll">
+
+      <!-- Dynamic Filtered Grid (shown when search/filters are active) -->
+      <div class="filtered-grid" id="filteredGrid" style="display:none;"></div>
+
+      <!-- Default 5-Column Grid (exact Figma showcase layout) -->
+      <div class="memory-grid default-grid" id="defaultGrid">
+
+        <!-- Column 1 -->
+        <div class="column" id="defaultCol0">
+          <button class="new-note" id="defaultNewNoteBtn">
+            <b>Add new note</b>
+            <strong>Start typing here…</strong>
+            <i></i><i></i><i></i><i></i><i></i>
+          </button>
+          <article class="memory-card" data-id="3">
+            <img src="memories/memory-3.jpg" alt="Elephants crossing the grass at golden hour…" loading="lazy" />
+            <div class="card-shade"></div>
+            <div class="card-copy">
+              <strong>Elephants crossing the grass at golden hour…</strong>
+              <small>unsplash.com</small>
+            </div>
+            <button class="like-button" data-id="3" aria-label="Favorite">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+              </svg>
+            </button>
+          </article>
+          <article class="memory-card" data-id="5">
+            <img src="memories/memory-5.jpg" alt="Soft minimal interior with natural textures…" loading="lazy" />
+            <div class="card-shade"></div>
+            <div class="card-copy">
+              <strong>Soft minimal interior with natural textures…</strong>
+              <small>unsplash.com</small>
+            </div>
+            <button class="like-button" data-id="5" aria-label="Favorite">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+              </svg>
+            </button>
+          </article>
+        </div>
+
+        <!-- Column 2 -->
+        <div class="column" id="defaultCol1">
+          <article class="memory-card tall" data-id="1">
+            <img src="memories/memory-1.jpg" alt="A warm portrait featuring fashion and light…" loading="lazy" />
+            <div class="card-shade"></div>
+            <div class="card-copy">
+              <strong>A warm portrait featuring fashion and light…</strong>
+              <small>unsplash.com</small>
+            </div>
+            <button class="like-button liked" data-id="1" aria-label="Favorite">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="#ff7f7f" stroke="#ff7f7f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+              </svg>
+            </button>
+          </article>
+          <article class="memory-card" data-id="7">
+            <img src="memories/memory-7.jpg" alt="A calm living room built around warm neutrals…" loading="lazy" />
+            <div class="card-shade"></div>
+            <div class="card-copy">
+              <strong>A calm living room built around warm neutrals…</strong>
+              <small>unsplash.com</small>
+            </div>
+            <button class="like-button liked" data-id="7" aria-label="Favorite">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="#ff7f7f" stroke="#ff7f7f" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+              </svg>
+            </button>
+          </article>
+          <div class="book-card" data-id="book-1">
+            <div class="book-cover">
+              THE<br />
+              <b>GOOD<br />SISTER</b>
+              <small>A novel of secrets</small>
+            </div>
+            <div class="book-caption">
+              A book cover saved for later…
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 3 -->
+        <div class="column" id="defaultCol2">
+          <article class="memory-card tall" data-id="2">
+            <img src="memories/memory-2.jpg" alt="A confident person in modern streetwear…" loading="lazy" />
+            <div class="card-shade"></div>
+            <div class="card-copy">
+              <strong>A confident person in modern streetwear…</strong>
+              <small>unsplash.com</small>
+            </div>
+            <button class="like-button" data-id="2" aria-label="Favorite">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+              </svg>
+            </button>
+          </article>
+          <article class="memory-card" data-id="4">
+            <img src="memories/memory-4.jpg" alt="A moment in the wild — special look" loading="lazy" />
+            <div class="card-shade"></div>
+            <span class="play">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <path d="m9 7 9 5-9 5z" />
+              </svg>
+            </span>
+            <div class="card-copy">
+              <strong>A moment in the wild — special look</strong>
+              <small>YouTube</small>
+            </div>
+            <button class="like-button" data-id="4" aria-label="Favorite">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+              </svg>
+            </button>
+          </article>
+          <div class="book-card dark" data-id="book-2">
+            <div class="book-cover">
+              NIGHT<br />
+              <b>BOOKS</b>
+              <small>Tales after dark</small>
+            </div>
+            <div class="book-caption">
+              A striking book cover and illustration…
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 4 -->
+        <div class="column" id="defaultCol3">
+          <article class="memory-card tall" data-id="10">
+            <img src="memories/memory-10.jpg" alt="Green accents and sculptural furniture…" loading="lazy" />
+            <div class="card-shade"></div>
+            <div class="card-copy">
+              <strong>Green accents and sculptural furniture…</strong>
+              <small>unsplash.com</small>
+            </div>
+            <button class="like-button" data-id="10" aria-label="Favorite">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+              </svg>
+            </button>
+          </article>
+          <article class="memory-card" data-id="9">
+            <img src="memories/memory-9.jpg" alt="Designing a slow and intentional space" loading="lazy" />
+            <div class="card-shade"></div>
+            <span class="play">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <path d="m9 7 9 5-9 5z" />
+              </svg>
+            </span>
+            <div class="card-copy">
+              <strong>Designing a slow and intentional space</strong>
+              <small>YouTube</small>
+            </div>
+            <button class="like-button" data-id="9" aria-label="Favorite">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+              </svg>
+            </button>
+          </article>
+          <article class="memory-card" data-id="8">
+            <img src="memories/memory-8.jpg" alt="The beautiful homes redefining modern comfort" loading="lazy" />
+            <div class="card-shade"></div>
+            <span class="article-tag">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2h9l4 4v16H6z" /><path d="M15 2v5h4M9 12h7M9 16h7" />
+              </svg>
+              Article
+            </span>
+            <div class="card-copy">
+              <strong>The beautiful homes redefining modern comfort</strong>
+              <small>archdaily.com</small>
+            </div>
+            <button class="like-button" data-id="8" aria-label="Favorite">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+              </svg>
+            </button>
+          </article>
+        </div>
+
+        <!-- Column 5 -->
+        <div class="column" id="defaultCol4">
+          <div class="quote-card" data-id="quote-1">
+            <b>Quote</b>
+            <span>“</span>
+            <blockquote>“Be yourself; everyone else is already taken.”</blockquote>
+            <footer>
+              <small>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="8" /><path d="m9.5 14.5 5-5M8.5 11.5l-1 1a2.1 2.1 0 0 0 3 3l1-1M15.5 12.5l1-1a2.1 2.1 0 0 0-3-3l-1 1" />
+                </svg>
+                goodreads.com
+              </small>
+              <small>Aug 17, 2026</small>
+            </footer>
+          </div>
+          <div class="article-card" data-id="article-gta">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2h9l4 4v16H6z" /><path d="M15 2v5h4M9 12h7M9 16h7" />
+            </svg>
+            <h2>Grand Theft Auto: every game and…</h2>
+            <img src="memories/memory-11.jpg" alt="City at night" loading="lazy" />
+            <b>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2h9l4 4v16H6z" /><path d="M15 2v5h4M9 12h7M9 16h7" />
+              </svg>
+              Article
+            </b>
+          </div>
+          <article class="memory-card tall" data-id="6">
+            <img src="memories/memory-6.jpg" alt="Quiet corner, afternoon reading inspiration…" loading="lazy" />
+            <div class="card-shade"></div>
+            <div class="card-copy">
+              <strong>Quiet corner, afternoon reading inspiration…</strong>
+              <small>unsplash.com</small>
+            </div>
+            <button class="like-button" data-id="6" aria-label="Favorite">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+              </svg>
+            </button>
+          </article>
+        </div>
+
+      </div><!-- /defaultGrid -->
+
+      <div class="no-results" id="noResults" style="display:none;">No memories found</div>
+    </div><!-- /memory-scroll -->
+
+  </section>
+</main>
 
 <!-- ══ Drag & Drop Overlay ══ -->
 <div id="dropOverlay" class="drop-overlay">
   <div class="drop-inner">
     <div class="drop-icon">📥</div>
     <div class="drop-title">Drop to save in Recall</div>
-    <div class="drop-sub">Images & files will be indexed with on-device OCR</div>
+    <div class="drop-sub">Images will be indexed with on-device OCR</div>
   </div>
 </div>
 
@@ -255,8 +459,8 @@
       <input type="text" id="noteTitleInput" class="form-input" placeholder="Note title…" />
     </div>
     <div>
-      <label class="form-label" for="noteContentInput">Content (Markdown supported)</label>
-      <textarea id="noteContentInput" class="form-textarea" placeholder="Write your thoughts, code, or memory here…"></textarea>
+      <label class="form-label" for="noteContentInput">Content</label>
+      <textarea id="noteContentInput" class="form-textarea" placeholder="Start typing your note here…"></textarea>
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" id="btnCancelNote">Cancel</button>
@@ -270,22 +474,19 @@
   <div class="modal-box lightbox-box">
     <div style="display:flex; justify-content:space-between; align-items:center;">
       <div class="modal-title" id="lightboxTitle">Memory</div>
-      <button class="btn-sm" id="lightboxCloseBtn">✕ Close</button>
+      <button class="btn-cancel" id="lightboxCloseBtn" style="height:32px; padding:0 12px;">✕ Close</button>
     </div>
     <img id="lightboxImg" class="lightbox-img" alt="" style="display:none;" />
-    <div class="lightbox-meta">
-      <span id="lightboxMeta"></span>
-      <span id="lightboxColorBadge" class="color-badge"></span>
-    </div>
-    <div>
-      <div class="section-label-sm">
+    <div class="lightbox-meta" id="lightboxMeta"></div>
+    <div id="lightboxOcrSection">
+      <div style="font-size:11px; font-weight:700; color:#777f90; text-transform:uppercase; margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
         EXTRACTED TEXT (OCR)
-        <button class="btn-sm" id="copyOcrBtn">📋 Copy</button>
+        <button id="copyOcrBtn" style="background:transparent; border:0; color:#ff8300; font-weight:600; cursor:pointer;">📋 Copy</button>
       </div>
       <div id="lightboxOcrText" class="ocr-box"></div>
     </div>
-    <div class="modal-actions" style="justify-content:space-between; margin-top:6px;">
-      <button class="btn-sm btn-danger" id="lightboxDeleteBtn">🗑 Delete</button>
+    <div class="modal-actions" style="justify-content:space-between; margin-top:10px;">
+      <button class="btn-cancel" id="lightboxDeleteBtn" style="color:#ff3b30;">🗑 Delete</button>
       <button class="btn-primary" id="lightboxDoneBtn">Done</button>
     </div>
   </div>
