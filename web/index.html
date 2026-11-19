@@ -3,156 +3,292 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0B0F19" />
-  <meta name="description" content="Recall - Private, local-first visual memory library for your screen, documents, and bookmarks." />
-  <title>Recall - Visual Memory Library</title>
-  
+  <meta name="theme-color" content="#E8E4EF" />
+  <meta name="description" content="Recall - Private, local-first visual memory library." />
+  <title>Recall</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
 </head>
 <body>
 
-  <!-- 1. Header Toolbar -->
-  <header>
-    <div class="brand">
-      <span class="logo">🧠</span>
-      <span class="title">Recall</span>
-      <span class="badge-platform">Web / PWA</span>
+<!-- ══════════════════ APP SHELL ══════════════════ -->
+<div class="app-shell">
+
+  <!-- ── Left Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-circle"></div>
+      <span class="sidebar-brand-name">Recall</span>
     </div>
 
-    <!-- Mode Selector Tabs -->
-    <nav class="nav-tabs">
-      <button class="tab-btn active" data-tab="Everything">Everything</button>
-      <button class="tab-btn" data-tab="TopMind">❤️ Top of Mind</button>
-      <button class="tab-btn" data-tab="Serendipity">✨ Serendipity</button>
+    <nav class="sidebar-nav">
+      <button class="sidebar-nav-item active" data-nav="home" title="Home">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7A1 1 0 003 11h1v7a1 1 0 001 1h4v-4h2v4h4a1 1 0 001-1v-7h1a1 1 0 00.707-1.707l-7-7z"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="sidebar-nav-item" data-nav="liked" title="Liked">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>
+        <span>Liked</span>
+      </button>
+      <button class="sidebar-nav-item" data-nav="spaces" title="Spaces">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>
+        <span>Spaces</span>
+      </button>
     </nav>
 
-    <!-- Header Actions -->
-    <div class="header-actions">
-      <button id="btnNewNote" class="btn">✏️ New Note</button>
-      <button id="btnAddMedia" class="btn btn-primary">➕ Add Media</button>
-      <button id="btnExport" class="btn" title="Export Backup">💾 Backup</button>
-      <button id="btnImport" class="btn" title="Import Backup">📥 Restore</button>
-      <button id="btnInstallPwa" class="btn btn-primary" style="display: none;">📲 Install</button>
+    <div class="sidebar-footer">
+      <button class="sidebar-settings-btn" id="settingsBtn" title="Settings">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>
+        <span>Settings</span>
+      </button>
     </div>
-  </header>
+  </aside>
 
-  <!-- 2. Search Bar -->
-  <div class="search-container">
-    <div class="search-wrapper">
-      <span class="search-icon">🔍</span>
-      <input type="text" 
-             id="searchInput" 
-             class="search-input" 
-             placeholder="Search by keywords, OCR text, tags, 'today', 'liked:true', or color ('blue', 'dark')..." 
-             autocomplete="off" />
-      <span class="search-shortcut">Cmd / Ctrl + K</span>
-    </div>
-  </div>
+  <!-- ── Main Content ── -->
+  <div class="main-content">
 
-  <!-- 3. Main Memory Canvas -->
-  <main>
-    <!-- Empty State -->
-    <div id="emptyState" class="empty-state" style="display: none;">
-      <div class="icon">📥</div>
-      <h3>Your memory is empty</h3>
-      <p>Drag and drop images, screenshots, or PDFs here. You can also press <strong>Ctrl + V</strong> / <strong>Cmd + V</strong> anywhere to paste a screenshot directly!</p>
-    </div>
-
-    <!-- Cards Grid -->
-    <div id="cardsGrid" class="cards-grid"></div>
-  </main>
-
-  <!-- 4. Footer Status Bar -->
-  <footer>
-    <div class="status-left">
-      <span class="status-dot"></span>
-      <span id="statusText">Recall Ready • 100% Local &amp; Private • Client-Side IndexedDB</span>
-    </div>
-    <div class="status-right">
-      <span>Tip: Paste screenshot with Cmd/Ctrl + V</span>
-    </div>
-  </footer>
-
-  <!-- 5. Full-Window Drag & Drop Overlay -->
-  <div id="dropOverlay" class="drop-overlay">
-    <div class="icon">📥</div>
-    <h2>Drop files to remember</h2>
-    <p>Images will be indexed with in-browser OCR automatically</p>
-  </div>
-
-  <!-- 6. Hidden File Inputs -->
-  <input type="file" id="fileInput" multiple accept="image/*,.pdf,.txt,.md" style="display: none;" />
-  <input type="file" id="importInput" accept=".json" style="display: none;" />
-
-  <!-- 7. Quick Note Modal -->
-  <div id="noteModal" class="modal-backdrop">
-    <div class="modal-box">
-      <h3 class="modal-title">Create Quick Note</h3>
-      <div class="form-group">
-        <label class="form-label">Title</label>
-        <input type="text" id="noteTitleInput" class="form-input" placeholder="Note title..." />
-      </div>
-      <div class="form-group">
-        <label class="form-label">Content (Markdown supported)</label>
-        <textarea id="noteContentInput" class="form-textarea" placeholder="Type thoughts, code snippets, or memories..."></textarea>
-      </div>
-      <div class="modal-actions">
-        <button id="btnCancelNote" class="btn">Cancel</button>
-        <button id="btnSaveNote" class="btn btn-primary">Save Note</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 8. Lightbox Memory Viewer Modal -->
-  <div id="lightboxModal" class="modal-backdrop">
-    <div class="modal-box lightbox-box">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h3 id="lightboxTitle" class="modal-title">Memory Preview</h3>
-        <button id="lightboxCloseBtn" class="btn" style="padding: 4px 10px;">✕</button>
-      </div>
-
-      <img id="lightboxImg" class="lightbox-img" alt="Memory" />
-
-      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-        <span id="lightboxMeta" style="font-size: 12px; color: var(--text-muted);"></span>
-        <span id="lightboxColorBadge" class="card-badge" style="display: none;"></span>
-      </div>
-
-      <div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-          <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">EXTRACTED OCR / NOTE TEXT</span>
-          <button id="copyOcrBtn" class="btn" style="padding: 4px 8px; font-size: 11px;">📋 Copy Text</button>
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="search-row">
+        <!-- Search Field -->
+        <div class="search-field">
+          <svg class="search-field-icon" width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
+          <input type="text" id="searchInput" placeholder="Search your memories…" autocomplete="off" spellcheck="false" />
+          <button class="search-clear-btn" id="searchClear">✕</button>
         </div>
-        <div id="lightboxOcrText" class="ocr-box"></div>
-      </div>
 
-      <div class="modal-actions" style="justify-content: space-between;">
-        <button id="lightboxDeleteBtn" class="btn" style="color: var(--danger); border-color: rgba(239, 68, 68, 0.3);">🗑️ Delete</button>
-        <button onclick="document.getElementById('lightboxModal').classList.remove('open')" class="btn btn-primary">Done</button>
+        <!-- Add Button -->
+        <div style="position:relative;">
+          <button class="add-btn" id="addBtn">
+            <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>
+            <svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor" style="color:rgba(0,0,0,0.4)"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </button>
+          <div class="add-menu" id="addMenu">
+            <div class="add-menu-item" id="menuAddMedia">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
+              Save Images or Files…
+            </div>
+            <div class="add-menu-item" id="menuNewNote">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/></svg>
+              New Note
+            </div>
+            <div class="add-menu-item" id="menuPaste">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"/><path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"/></svg>
+              Paste
+            </div>
+            <div class="add-menu-item" id="menuExport">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+              Export Backup…
+            </div>
+            <div class="add-menu-item" id="menuImport">
+              <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
+              Restore Backup…
+            </div>
+          </div>
+        </div>
+
+        <div class="search-spacer"></div>
+
+        <!-- Mode Tabs -->
+        <div class="mode-tabs">
+          <button class="mode-tab active" data-tab="Everything">Everything</button>
+          <button class="mode-tab" data-tab="TopMind">Top of Mind</button>
+          <button class="mode-tab" data-tab="Serendipity">Serendipity</button>
+        </div>
+
+        <!-- Select -->
+        <button class="select-btn" id="selectBtn">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+          <span id="selectBtnLabel">Select</span>
+        </button>
       </div>
     </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <button class="filter-chip" id="filterImages" data-filter="images">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/></svg>
+        Images <span class="filter-chevron">▾</span>
+      </button>
+      <button class="filter-chip" id="filterNotes" data-filter="notes">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd"/></svg>
+        Notes <span class="filter-chevron">▾</span>
+      </button>
+      <button class="filter-chip" id="filterLiked" data-filter="liked">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>
+        Liked <span class="filter-chevron">▾</span>
+      </button>
+
+      <!-- Color Picker -->
+      <div class="color-picker-wrapper">
+        <button class="filter-chip" id="colorFilterBtn">
+          <span id="colorSwatch" class="color-swatch" style="background:transparent; border:1px solid rgba(0,0,0,0.25);"></span>
+          <span id="colorFilterLabel">Color</span>
+          <span class="filter-chevron">▾</span>
+        </button>
+        <div class="color-picker-menu" id="colorMenu">
+          <div class="color-menu-item" data-color="">
+            <span class="color-swatch" style="background:transparent; border:1px dashed rgba(0,0,0,0.25);"></span> All colors
+          </div>
+          <div class="color-menu-item" data-color="red"><span class="color-swatch" style="background:#EF4444;"></span> Red</div>
+          <div class="color-menu-item" data-color="orange"><span class="color-swatch" style="background:#F97316;"></span> Orange</div>
+          <div class="color-menu-item" data-color="yellow"><span class="color-swatch" style="background:#EAB308;"></span> Yellow</div>
+          <div class="color-menu-item" data-color="green"><span class="color-swatch" style="background:#22C55E;"></span> Green</div>
+          <div class="color-menu-item" data-color="blue"><span class="color-swatch" style="background:#3B82F6;"></span> Blue</div>
+          <div class="color-menu-item" data-color="purple"><span class="color-swatch" style="background:#A855F7;"></span> Purple</div>
+          <div class="color-menu-item" data-color="brown"><span class="color-swatch" style="background:#92400E;"></span> Brown</div>
+          <div class="color-menu-item" data-color="gray"><span class="color-swatch" style="background:#9CA3AF;"></span> Gray</div>
+          <div class="color-menu-item" data-color="dark"><span class="color-swatch" style="background:#1F2937;"></span> Dark</div>
+          <div class="color-menu-item" data-color="white"><span class="color-swatch" style="background:#F9FAFB; border:1px solid #ddd;"></span> Light</div>
+        </div>
+      </div>
+
+      <div class="filter-spacer"></div>
+
+      <div class="status-pill">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">On-device analysis complete</span>
+      </div>
+    </div>
+
+    <div class="top-divider"></div>
+
+    <!-- Canvas Area -->
+    <div class="canvas-area">
+      <div class="canvas-header">
+        <span class="canvas-label" id="canvasLabel">ALL MEMORIES</span>
+        <span class="canvas-count" id="canvasCount"></span>
+      </div>
+
+      <div style="display:flex; flex:1; overflow:hidden; min-height:0;">
+        <div class="canvas-scroll" id="canvasScroll">
+          <!-- Welcome / Empty State -->
+          <div id="emptyState" class="empty-state" style="display:none;">
+            <div style="font-size:48px;">📚</div>
+            <h3>Nothing saved yet</h3>
+            <p>Use the + button above, paste a screenshot, or drag something here to begin.</p>
+          </div>
+
+          <!-- 5-col Masonry Grid -->
+          <div class="masonry-grid" id="masonryGrid">
+            <div class="masonry-col" id="col0"></div>
+            <div class="masonry-col" id="col1"></div>
+            <div class="masonry-col" id="col2"></div>
+            <div class="masonry-col" id="col3"></div>
+            <div class="masonry-col" id="col4"></div>
+          </div>
+        </div>
+
+        <!-- Right Inspector Panel -->
+        <aside class="inspector hidden" id="inspectorPanel">
+          <div class="inspector-header">
+            <span class="inspector-type" id="inspectorType">MEMORY</span>
+            <button class="inspector-close" id="inspectorClose">✕</button>
+          </div>
+          <div class="inspector-scroll">
+            <img id="inspectorThumb" class="inspector-thumb" alt="" style="display:none;" />
+            <div id="inspectorNotePreview" class="inspector-note-preview" style="display:none;"></div>
+            <div id="inspectorName" class="inspector-name"></div>
+            <div id="inspectorDate" class="inspector-date"></div>
+
+            <div class="inspector-section-label">TLDR / CAPTION</div>
+            <div id="inspectorTldr" class="inspector-tldr">—</div>
+
+            <div id="paletteSection" style="display:none;">
+              <div class="inspector-section-label">COLOR PALETTE</div>
+              <div class="palette-row" id="inspectorPalette"></div>
+            </div>
+
+            <div class="inspector-section-label">MIND TAGS</div>
+            <div class="tags-flow" id="inspectorTags"></div>
+
+            <div class="inspector-section-label" style="margin-top:16px;">OCR / NOTE TEXT</div>
+            <div id="inspectorOcr" class="ocr-preview">—</div>
+          </div>
+          <div class="inspector-footer">
+            <button class="inspector-action fav" id="inspectorFav" title="Favorite">☆</button>
+            <button class="inspector-action" id="inspectorOpen" title="Open full details">⤢</button>
+            <button class="inspector-action del" id="inspectorDel" title="Delete">🗑</button>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+  </div><!-- /main-content -->
+</div><!-- /app-shell -->
+
+<!-- ══ Drag & Drop Overlay ══ -->
+<div id="dropOverlay" class="drop-overlay">
+  <div class="drop-inner">
+    <div class="drop-icon">📥</div>
+    <div class="drop-title">Drop to save in Recall</div>
+    <div class="drop-sub">Images will be indexed with on-device OCR</div>
   </div>
+</div>
 
-  <!-- In-Browser OCR Library (Tesseract.js CDN) -->
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-  
-  <!-- Recall Application Modules -->
-  <script src="js/db.js"></script>
-  <script src="js/ocr.js"></script>
-  <script src="js/search.js"></script>
-  <script src="js/app.js"></script>
+<!-- ══ Toast ══ -->
+<div class="toast" id="toast"></div>
 
-  <!-- Service Worker Registration -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch((err) => {
-          console.warn('Service worker registration failed:', err);
-        });
-      });
-    }
-  </script>
+<!-- ══ Hidden File Inputs ══ -->
+<input type="file" id="fileInput" multiple accept="image/*,.pdf,.txt,.md" style="display:none;" />
+<input type="file" id="importInput" accept=".json" style="display:none;" />
+
+<!-- ══ Quick Note Modal ══ -->
+<div id="noteModal" class="modal-backdrop">
+  <div class="modal-box">
+    <div class="modal-title">New Note</div>
+    <div>
+      <label class="form-label">Title</label>
+      <input type="text" id="noteTitleInput" class="form-input" placeholder="Note title…" />
+    </div>
+    <div>
+      <label class="form-label">Content (Markdown supported)</label>
+      <textarea id="noteContentInput" class="form-textarea" placeholder="Write your thoughts, code, or memory here…"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="btnCancelNote">Cancel</button>
+      <button class="btn-primary" id="btnSaveNote">Save Note</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Full Lightbox Modal ══ -->
+<div id="lightboxModal" class="modal-backdrop">
+  <div class="modal-box lightbox-box">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div class="modal-title" id="lightboxTitle">Memory</div>
+      <button class="btn-sm" id="lightboxCloseBtn">✕ Close</button>
+    </div>
+    <img id="lightboxImg" class="lightbox-img" alt="" style="display:none;" />
+    <div class="lightbox-meta">
+      <span id="lightboxMeta"></span>
+      <span id="lightboxColorBadge" class="color-badge"></span>
+    </div>
+    <div>
+      <div class="section-label-sm">
+        EXTRACTED TEXT (OCR)
+        <button class="btn-sm" id="copyOcrBtn">📋 Copy</button>
+      </div>
+      <div id="lightboxOcrText" class="ocr-box"></div>
+    </div>
+    <div class="modal-actions" style="justify-content:space-between;">
+      <button class="btn-sm btn-danger" id="lightboxDeleteBtn">🗑 Delete</button>
+      <button class="btn-primary" onclick="document.getElementById('lightboxModal').classList.remove('open')">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script src="js/db.js"></script>
+<script src="js/ocr.js"></script>
+<script src="js/search.js"></script>
+<script src="js/app.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+</script>
 </body>
 </html>
