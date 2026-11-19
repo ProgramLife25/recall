@@ -15,7 +15,7 @@
 ---
 
 <p align="center">
-  <img src="docs/images/recall_macbook_showcase.jpg" alt="Recall macOS App on MacBook Pro" width="900">
+  <img src="docs/images/recall_macbook_showcase_v2.jpg" alt="Recall macOS App on MacBook Pro" width="900">
 </p>
 
 
