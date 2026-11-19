@@ -7,7 +7,7 @@
   <meta name="description" content="Recall - Private, local-first visual memory library." />
   <title>Recall</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="css/style.css?v=20261119_v3" />
+  <link rel="stylesheet" href="css/style.css?v=20261119_v4" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
 </head>
 <body>
@@ -101,6 +101,14 @@
             <path d="m8 12 2.5 2.5L16 9" />
           </svg>
           <span id="selectBtnLabel">Select</span>
+        </button>
+
+        <!-- Bulk Delete Button (Visible in Select mode when 1+ cards are selected) -->
+        <button class="bulk-delete-btn" id="bulkDeleteBtn" style="display:none;" title="Delete Selected">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6" />
+          </svg>
+          <span id="bulkDeleteLabel">Delete</span>
         </button>
       </div>
 
@@ -394,10 +402,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="js/db.js?v=20261119_v3"></script>
-<script src="js/ocr.js?v=20261119_v3"></script>
-<script src="js/search.js?v=20261119_v3"></script>
-<script src="js/app.js?v=20261119_v3"></script>
+<script src="js/db.js?v=20261119_v4"></script>
+<script src="js/ocr.js?v=20261119_v4"></script>
+<script src="js/search.js?v=20261119_v4"></script>
+<script src="js/app.js?v=20261119_v4"></script>
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.getRegistrations().then(regs => {

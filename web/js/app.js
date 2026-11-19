@@ -159,6 +159,7 @@ let selectedCards = new Set();
 let currentTab = 'Everything';
 let currentNav = 'home';
 let searchQuery = '';
+let deletedCardIdsSet = new Set(JSON.parse(localStorage.getItem('recall_deleted_ids') || '[]'));
 
 /* DOM References */
 const inspectorPanel     = document.getElementById('inspectorPanel');
@@ -176,14 +177,119 @@ const searchInput        = document.getElementById('searchInput');
 const searchClear        = document.getElementById('searchClear');
 const selectBtn          = document.getElementById('selectBtn');
 const selectBtnLabel     = document.getElementById('selectBtnLabel');
+const bulkDeleteBtn      = document.getElementById('bulkDeleteBtn');
+const bulkDeleteLabel    = document.getElementById('bulkDeleteLabel');
 const noteModal          = document.getElementById('noteModal');
 const toast              = document.getElementById('toast');
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Apply persisted deletions
+  applyDeletedState();
   setupCardClicks();
   setupControls();
-  selectCard('lion');
+  setupKeyboardShortcuts();
+
+  // Pick first visible card if lion was deleted
+  if (deletedCardIdsSet.has('lion')) {
+    const firstVis = Array.from(document.querySelectorAll('.card-item[data-id]')).find(c => c.style.display !== 'none');
+    if (firstVis) selectCard(firstVis.dataset.id);
+  } else {
+    selectCard('lion');
+  }
+  updateMemoryCount();
 });
+
+/* ── Hide Persisted Deleted Cards on Load ── */
+function applyDeletedState() {
+  deletedCardIdsSet.forEach(id => {
+    const el = document.querySelector(`.card-item[data-id="${id}"]`);
+    if (el) el.style.display = 'none';
+  });
+}
+
+/* ── Update Memory Count in Subheader ── */
+function updateMemoryCount() {
+  const visibleCards = Array.from(document.querySelectorAll('.card-item[data-id]'))
+    .filter(c => c.style.display !== 'none' && !deletedCardIdsSet.has(c.dataset.id));
+  const countEl = document.getElementById('subheadCount');
+  if (countEl) {
+    countEl.textContent = `${visibleCards.length} memories`;
+  }
+}
+
+/* ── Central Delete Memory Function ── */
+function deleteMemory(cardIdOrIds, withUndo = true) {
+  const ids = (Array.isArray(cardIdOrIds) ? cardIdOrIds : [cardIdOrIds]).filter(Boolean);
+  if (ids.length === 0) return;
+
+  // Animate and mark as deleted
+  ids.forEach(id => {
+    deletedCardIdsSet.add(id);
+    const cardEl = document.querySelector(`.card-item[data-id="${id}"]`);
+    if (cardEl) {
+      cardEl.classList.add('deleting');
+      setTimeout(() => {
+        cardEl.style.display = 'none';
+        cardEl.classList.remove('deleting');
+      }, 220);
+    }
+  });
+
+  // Persist to localStorage
+  localStorage.setItem('recall_deleted_ids', JSON.stringify([...deletedCardIdsSet]));
+
+  // Remove from select set if needed
+  ids.forEach(id => selectedCards.delete(id));
+  if (selectMode) {
+    if (selectedCards.size > 0) {
+      selectBtnLabel.textContent = `${selectedCards.size} Selected`;
+      if (bulkDeleteBtn) {
+        bulkDeleteBtn.style.display = 'inline-flex';
+        bulkDeleteLabel.textContent = `Delete (${selectedCards.size})`;
+      }
+    } else {
+      selectBtnLabel.textContent = 'Done';
+      if (bulkDeleteBtn) bulkDeleteBtn.style.display = 'none';
+    }
+  }
+
+  // If deleted item was the active one in the inspector, select next available
+  if (ids.includes(activeCardId)) {
+    const remaining = Array.from(document.querySelectorAll('.card-item[data-id]'))
+      .filter(c => c.style.display !== 'none' && !deletedCardIdsSet.has(c.dataset.id) && !ids.includes(c.dataset.id));
+    if (remaining.length > 0) {
+      selectCard(remaining[0].dataset.id);
+    } else {
+      inspectorPanel.classList.add('hidden');
+    }
+  }
+
+  // Update memory count
+  setTimeout(updateMemoryCount, 230);
+
+  // Toast with interactive Undo
+  const msg = ids.length > 1 ? `${ids.length} memories deleted` : 'Memory deleted';
+  if (withUndo) {
+    showToast(msg, () => {
+      // Restore deleted memories
+      ids.forEach(id => {
+        deletedCardIdsSet.delete(id);
+        const cardEl = document.querySelector(`.card-item[data-id="${id}"]`);
+        if (cardEl) {
+          cardEl.style.display = 'flex';
+          cardEl.classList.add('restoring');
+          setTimeout(() => cardEl.classList.remove('restoring'), 300);
+        }
+      });
+      localStorage.setItem('recall_deleted_ids', JSON.stringify([...deletedCardIdsSet]));
+      updateMemoryCount();
+      if (ids.length > 0) selectCard(ids[0]);
+      showToast('Restored');
+    });
+  } else {
+    showToast(msg);
+  }
+}
 
 /* ── Select Card & Update Inspector ── */
 function selectCard(cardId) {
@@ -239,7 +345,16 @@ function setupCardClicks() {
         if (selectedCards.has(id)) selectedCards.delete(id);
         else selectedCards.add(id);
         card.classList.toggle('selected', selectedCards.has(id));
-        selectBtnLabel.textContent = selectedCards.size > 0 ? `${selectedCards.size} Selected` : 'Done';
+        if (selectedCards.size > 0) {
+          selectBtnLabel.textContent = `${selectedCards.size} Selected`;
+          if (bulkDeleteBtn) {
+            bulkDeleteBtn.style.display = 'inline-flex';
+            bulkDeleteLabel.textContent = `Delete (${selectedCards.size})`;
+          }
+        } else {
+          selectBtnLabel.textContent = 'Done';
+          if (bulkDeleteBtn) bulkDeleteBtn.style.display = 'none';
+        }
       } else {
         selectCard(id);
       }
@@ -256,15 +371,12 @@ function setupCardClicks() {
       });
     }
 
-    // Trash button
+    // Trash button (direct instantaneous delete with Undo toast)
     const trash = card.querySelector('.card-trash-btn');
     if (trash) {
       trash.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (confirm(`Delete "${card.dataset.title || 'this memory'}"?`)) {
-          card.style.display = 'none';
-          showToast('Memory deleted');
-        }
+        deleteMemory(id);
       });
     }
   });
@@ -277,6 +389,26 @@ function setupCardClicks() {
       document.getElementById('noteTitleInput').focus();
     });
   }
+}
+
+/* ── Keyboard Shortcuts (Backspace / Delete) ── */
+function setupKeyboardShortcuts() {
+  document.addEventListener('keydown', (e) => {
+    const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+    if (tag === 'input' || tag === 'textarea' || document.activeElement.isContentEditable) {
+      return;
+    }
+
+    if (e.key === 'Backspace' || e.key === 'Delete') {
+      if (selectMode && selectedCards.size > 0) {
+        e.preventDefault();
+        deleteMemory(Array.from(selectedCards));
+      } else if (activeCardId && !deletedCardIdsSet.has(activeCardId)) {
+        e.preventDefault();
+        deleteMemory(activeCardId);
+      }
+    }
+  });
 }
 
 /* ── Controls, Tabs, Search ── */
@@ -378,15 +510,28 @@ function setupControls() {
   selectBtn.addEventListener('click', () => {
     selectMode = !selectMode;
     selectBtn.classList.toggle('active', selectMode);
+    document.querySelectorAll('.card-item').forEach(c => c.classList.toggle('in-select-mode', selectMode));
     if (!selectMode) {
       selectedCards.clear();
       selectBtnLabel.textContent = 'Select';
+      if (bulkDeleteBtn) bulkDeleteBtn.style.display = 'none';
       document.querySelectorAll('.card-item').forEach(c => c.classList.remove('selected'));
-      selectCard(activeCardId);
+      if (activeCardId && !deletedCardIdsSet.has(activeCardId)) {
+        selectCard(activeCardId);
+      }
     } else {
       selectBtnLabel.textContent = 'Done';
     }
   });
+
+  // Bulk Delete in Select Mode
+  if (bulkDeleteBtn) {
+    bulkDeleteBtn.addEventListener('click', () => {
+      if (selectedCards.size > 0) {
+        deleteMemory(Array.from(selectedCards));
+      }
+    });
+  }
 
   // Note Modal Save
   document.getElementById('btnCancelNote').addEventListener('click', () => {
@@ -405,15 +550,28 @@ function setupControls() {
   });
 
   document.getElementById('toolDeleteBtn').addEventListener('click', () => {
-    if (confirm(`Delete "${EXACT_CARDS_DATA[activeCardId]?.title || 'this item'}"?`)) {
-      const cardEl = document.querySelector(`.card-item[data-id="${activeCardId}"]`);
-      if (cardEl) cardEl.style.display = 'none';
-      showToast('Memory deleted');
+    if (activeCardId && !deletedCardIdsSet.has(activeCardId)) {
+      deleteMemory(activeCardId);
     }
   });
 
   document.getElementById('settingsBtn').addEventListener('click', () => {
-    showToast('Settings opened');
+    if (deletedCardIdsSet.size > 0) {
+      if (confirm(`You have ${deletedCardIdsSet.size} deleted memories. Restore all of them?`)) {
+        deletedCardIdsSet.clear();
+        localStorage.removeItem('recall_deleted_ids');
+        document.querySelectorAll('.card-item[data-id]').forEach(card => {
+          card.style.display = 'flex';
+          card.classList.add('restoring');
+          setTimeout(() => card.classList.remove('restoring'), 300);
+        });
+        updateMemoryCount();
+        selectCard('lion');
+        showToast('All memories restored');
+        return;
+      }
+    }
+    showToast('Recall v2.4 (macOS Native Edition)');
   });
 }
 
@@ -429,6 +587,12 @@ function filterCards(colorFilter = '') {
     const id = card.dataset.id;
     if (!id && card.id === 'noteAddCard') {
       card.style.display = (searchQuery || colorFilter || imagesOnly) ? 'none' : 'flex';
+      return;
+    }
+
+    // Never show deleted cards
+    if (deletedCardIdsSet.has(id)) {
+      card.style.display = 'none';
       return;
     }
 
@@ -456,9 +620,27 @@ function filterCards(colorFilter = '') {
   document.getElementById('subheadCount').textContent = `${visibleCount} memories`;
 }
 
-function showToast(msg) {
-  toast.textContent = msg;
+function showToast(msg, onUndo = null) {
+  toast.innerHTML = '';
+  const span = document.createElement('span');
+  span.className = 'toast-msg';
+  span.textContent = msg;
+  toast.appendChild(span);
+
+  if (onUndo) {
+    const undoBtn = document.createElement('button');
+    undoBtn.className = 'toast-undo-btn';
+    undoBtn.textContent = 'Undo';
+    undoBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toast.classList.remove('visible');
+      clearTimeout(window._toastT);
+      onUndo();
+    });
+    toast.appendChild(undoBtn);
+  }
+
   toast.classList.add('visible');
   clearTimeout(window._toastT);
-  window._toastT = setTimeout(() => toast.classList.remove('visible'), 2200);
+  window._toastT = setTimeout(() => toast.classList.remove('visible'), onUndo ? 4500 : 2200);
 }
