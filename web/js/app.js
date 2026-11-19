@@ -1,13 +1,15 @@
 /**
- * Recall Web — Figma Make Interactive Application Controller
- * Drives the exact Figma design with live IndexedDB storage,
- * instant search, filtering, OCR, drag & drop, clipboard paste, and selection mode.
+ * Recall Web — Multi-Modal Entity Detection & Application Controller
+ * Features:
+ * - AI Entity Detection: People headcount, Animals, Books, Quotes, Articles, Colors
+ * - Local IndexedDB persistence
+ * - Real-time filtering, Search, Selection mode, Lightbox & Notes
  */
 
 'use strict';
 
 /* ═══════════════════════════════════════════════
-   PRELOADED SEED MEMORIES (FROM FIGMA DESIGN)
+   PRELOADED MEMORIES WITH RICH ENTITY METADATA
 ═══════════════════════════════════════════════ */
 const SEED_MEMORIES = [
   {
@@ -21,10 +23,15 @@ const SEED_MEMORIES = [
     source: 'unsplash.com',
     tall: true,
     isFavorite: true,
+    peopleCount: 1,
+    hasPeople: true,
+    hasAnimals: false,
+    animals: [],
     dominantColorName: 'orange',
     dominantColorHex: '#E29578',
+    tags: ['person', '1 person', 'portrait', 'woman', 'fashion', 'light', 'orange', 'warm'],
     modifiedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-    searchableText: 'A warm portrait featuring fashion, natural golden light and modern style'
+    searchableText: 'A warm portrait featuring fashion, natural golden light and modern style woman 1 person'
   },
   {
     id: 'mem_2',
@@ -37,10 +44,15 @@ const SEED_MEMORIES = [
     source: 'unsplash.com',
     tall: true,
     isFavorite: false,
+    peopleCount: 1,
+    hasPeople: true,
+    hasAnimals: false,
+    animals: [],
     dominantColorName: 'dark',
     dominantColorHex: '#2B2D42',
+    tags: ['person', '1 person', 'streetwear', 'fashion', 'urban', 'man', 'dark', 'style'],
     modifiedAt: new Date(Date.now() - 3600000 * 4).toISOString(),
-    searchableText: 'A confident person in modern streetwear, urban fashion'
+    searchableText: 'A confident person in modern streetwear, urban fashion man 1 person'
   },
   {
     id: 'mem_3',
@@ -53,10 +65,15 @@ const SEED_MEMORIES = [
     source: 'unsplash.com',
     tall: false,
     isFavorite: false,
+    peopleCount: 0,
+    hasPeople: false,
+    hasAnimals: true,
+    animals: ['elephant', 'elephants'],
     dominantColorName: 'yellow',
     dominantColorHex: '#D4A373',
+    tags: ['animal', 'animals', 'elephant', 'elephants', 'wildlife', 'savannah', 'nature', 'yellow'],
     modifiedAt: new Date(Date.now() - 3600000 * 6).toISOString(),
-    searchableText: 'Elephants crossing the savannah grass at golden hour sunset nature wildlife'
+    searchableText: 'Elephants crossing the savannah grass at golden hour sunset nature wildlife animal animals'
   },
   {
     id: 'mem_4',
@@ -69,10 +86,15 @@ const SEED_MEMORIES = [
     source: 'YouTube',
     tall: false,
     isFavorite: false,
+    peopleCount: 0,
+    hasPeople: false,
+    hasAnimals: true,
+    animals: ['wildlife', 'animal'],
     dominantColorName: 'green',
     dominantColorHex: '#4A5759',
+    tags: ['video', 'wildlife', 'animal', 'nature', 'documentary', 'green'],
     modifiedAt: new Date(Date.now() - 3600000 * 8).toISOString(),
-    searchableText: 'A moment in the wild special look documentary nature wildlife video'
+    searchableText: 'A moment in the wild special look documentary nature wildlife video animal'
   },
   {
     id: 'mem_5',
@@ -85,10 +107,15 @@ const SEED_MEMORIES = [
     source: 'unsplash.com',
     tall: false,
     isFavorite: false,
+    peopleCount: 0,
+    hasPeople: false,
+    hasAnimals: false,
+    animals: [],
     dominantColorName: 'light',
     dominantColorHex: '#EDF2F4',
+    tags: ['interior', 'minimal', 'furniture', 'chair', 'textures', 'architecture', 'decor', 'light'],
     modifiedAt: new Date(Date.now() - 3600000 * 12).toISOString(),
-    searchableText: 'Soft minimal interior with natural textures aesthetic architecture design room'
+    searchableText: 'Soft minimal interior with natural textures aesthetic architecture design room chair furniture'
   },
   {
     id: 'mem_6',
@@ -101,10 +128,16 @@ const SEED_MEMORIES = [
     source: 'unsplash.com',
     tall: true,
     isFavorite: false,
+    peopleCount: 0,
+    hasPeople: false,
+    hasAnimals: false,
+    animals: [],
+    isBook: true,
     dominantColorName: 'orange',
     dominantColorHex: '#DDA15E',
+    tags: ['book', 'books', 'reading', 'interior', 'chair', 'peaceful', 'orange', 'cozy'],
     modifiedAt: new Date(Date.now() - 3600000 * 15).toISOString(),
-    searchableText: 'Quiet corner afternoon reading inspiration books chair coffee cozy'
+    searchableText: 'Quiet corner afternoon reading inspiration books book chair coffee cozy literature'
   },
   {
     id: 'mem_7',
@@ -117,10 +150,15 @@ const SEED_MEMORIES = [
     source: 'unsplash.com',
     tall: false,
     isFavorite: true,
+    peopleCount: 0,
+    hasPeople: false,
+    hasAnimals: false,
+    animals: [],
     dominantColorName: 'light',
     dominantColorHex: '#F4F1DE',
+    tags: ['interior', 'living room', 'couch', 'furniture', 'warm neutrals', 'light', 'home'],
     modifiedAt: new Date(Date.now() - 3600000 * 18).toISOString(),
-    searchableText: 'A calm living room built around warm neutrals furniture sofa interior'
+    searchableText: 'A calm living room built around warm neutrals furniture sofa interior couch'
   },
   {
     id: 'mem_8',
@@ -134,10 +172,16 @@ const SEED_MEMORIES = [
     article: true,
     tall: false,
     isFavorite: false,
+    peopleCount: 0,
+    hasPeople: false,
+    hasAnimals: false,
+    animals: [],
+    isArticle: true,
     dominantColorName: 'blue',
     dominantColorHex: '#8E9AAF',
+    tags: ['article', 'articles', 'architecture', 'homes', 'modern', 'blue', 'reading'],
     modifiedAt: new Date(Date.now() - 3600000 * 20).toISOString(),
-    searchableText: 'The beautiful homes redefining modern comfort architecture design modern living'
+    searchableText: 'The beautiful homes redefining modern comfort architecture design modern living article'
   },
   {
     id: 'mem_9',
@@ -150,10 +194,15 @@ const SEED_MEMORIES = [
     source: 'YouTube',
     tall: false,
     isFavorite: false,
+    peopleCount: 0,
+    hasPeople: false,
+    hasAnimals: false,
+    animals: [],
     dominantColorName: 'light',
     dominantColorHex: '#CBC0D3',
+    tags: ['video', 'interior', 'intentional space', 'minimalism', 'design', 'light'],
     modifiedAt: new Date(Date.now() - 3600000 * 24).toISOString(),
-    searchableText: 'Designing a slow and intentional space interior minimalism life design'
+    searchableText: 'Designing a slow and intentional space interior minimalism life design video'
   },
   {
     id: 'mem_10',
@@ -166,10 +215,15 @@ const SEED_MEMORIES = [
     source: 'unsplash.com',
     tall: true,
     isFavorite: false,
+    peopleCount: 0,
+    hasPeople: false,
+    hasAnimals: false,
+    animals: [],
     dominantColorName: 'green',
     dominantColorHex: '#588157',
+    tags: ['interior', 'plants', 'furniture', 'sculptural', 'green', 'decor'],
     modifiedAt: new Date(Date.now() - 3600000 * 28).toISOString(),
-    searchableText: 'Green accents and sculptural furniture modern plants decor'
+    searchableText: 'Green accents and sculptural furniture modern plants decor green'
   },
   {
     id: 'mem_11',
@@ -182,12 +236,82 @@ const SEED_MEMORIES = [
     source: 'unsplash.com',
     tall: false,
     isFavorite: false,
+    peopleCount: 0,
+    hasPeople: false,
+    hasAnimals: false,
+    animals: [],
     dominantColorName: 'blue',
     dominantColorHex: '#22577A',
+    tags: ['architecture', 'city', 'night', 'windows', 'blue', 'building'],
     modifiedAt: new Date(Date.now() - 3600000 * 32).toISOString(),
-    searchableText: 'Light-filled architecture for everyday living windows city night'
+    searchableText: 'Light-filled architecture for everyday living windows city night blue'
+  },
+  {
+    id: 'book-1',
+    type: 'book',
+    contentType: 'Book',
+    title: 'THE GOOD SISTER',
+    name: 'THE GOOD SISTER — A novel of secrets',
+    source: 'Book Cover',
+    isBook: true,
+    isFavorite: false,
+    dominantColorName: 'dark',
+    tags: ['book', 'books', 'novel', 'reading', 'fiction', 'literature', 'cover'],
+    modifiedAt: new Date(Date.now() - 3600000 * 34).toISOString(),
+    searchableText: 'The Good Sister A novel of secrets book books novel reading fiction'
+  },
+  {
+    id: 'book-2',
+    type: 'book',
+    contentType: 'Book',
+    title: 'NIGHT BOOKS',
+    name: 'NIGHT BOOKS — Tales after dark',
+    source: 'Book Cover',
+    isBook: true,
+    isFavorite: false,
+    dominantColorName: 'dark',
+    tags: ['book', 'books', 'reading', 'tales', 'dark', 'illustration', 'cover', 'literature'],
+    modifiedAt: new Date(Date.now() - 3600000 * 36).toISOString(),
+    searchableText: 'Night Books Tales after dark book books reading illustration dark'
+  },
+  {
+    id: 'quote-1',
+    type: 'quote',
+    contentType: 'Quote',
+    title: 'Quote — Oscar Wilde',
+    name: '“Be yourself; everyone else is already taken.”',
+    source: 'goodreads.com',
+    isQuote: true,
+    isFavorite: false,
+    dominantColorName: 'orange',
+    tags: ['quote', 'quotes', 'saying', 'goodreads', 'oscar wilde', 'inspiration', 'orange'],
+    modifiedAt: new Date(Date.now() - 3600000 * 38).toISOString(),
+    searchableText: 'Be yourself everyone else is already taken quote quotes saying goodreads oscar wilde'
+  },
+  {
+    id: 'article-gta',
+    type: 'article',
+    contentType: 'Article',
+    title: 'Grand Theft Auto: every game and…',
+    name: 'Grand Theft Auto: every game and…',
+    image: 'memories/memory-11.jpg',
+    source: 'Article',
+    isArticle: true,
+    article: true,
+    isFavorite: false,
+    dominantColorName: 'blue',
+    tags: ['article', 'articles', 'game', 'gaming', 'city', 'rockstar', 'reading', 'blue'],
+    modifiedAt: new Date(Date.now() - 3600000 * 40).toISOString(),
+    searchableText: 'Grand Theft Auto every game gaming article reading city night'
   }
 ];
+
+/* Pre-compute embeddings for seed memories */
+SEED_MEMORIES.forEach(m => {
+  if (!m.embedding && window.searchEngine) {
+    m.embedding = window.searchEngine.generateEmbedding(`${m.title} ${m.name} ${(m.tags || []).join(' ')} ${m.searchableText}`);
+  }
+});
 
 /* ═══════════════════════════════════════════════
    APP STATE
@@ -255,17 +379,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   await window.recallDB.init();
   const stored = await window.recallDB.getAllItems();
 
+  const seedMap = new Map(SEED_MEMORIES.map(m => [m.id, m]));
+
   if (!stored || stored.length === 0) {
-    // Seed initial memories
     for (const mem of SEED_MEMORIES) {
       await window.recallDB.saveItem(mem);
     }
     memories = [...SEED_MEMORIES];
   } else {
-    // Merge seed memories with stored user memories
-    const seedIds = new Set(SEED_MEMORIES.map(m => m.id));
-    const userOnly = stored.filter(s => !seedIds.has(s.id));
-    memories = [...SEED_MEMORIES, ...userOnly];
+    // Preserve favorites & user uploads
+    const userItems = stored.filter(s => !seedMap.has(s.id));
+    const mergedSeeds = SEED_MEMORIES.map(s => {
+      const existing = stored.find(item => item.id === s.id);
+      return existing ? { ...s, isFavorite: existing.isFavorite } : s;
+    });
+    memories = [...mergedSeeds, ...userItems];
   }
 
   setupEventListeners();
@@ -291,7 +419,6 @@ function isFiltering() {
 function updateView() {
   const filtering = isFiltering();
 
-  // Title
   if (activeNav === 'liked' || likedFilter) {
     libraryHeadTitle.textContent = 'Liked Memories';
   } else if (activeNav === 'spaces' || activeTab === 'Spaces') {
@@ -304,11 +431,10 @@ function updateView() {
   }
 
   if (!filtering) {
-    // Show default Figma 5-column layout
     defaultGrid.style.display = 'grid';
     filteredGrid.style.display = 'none';
     noResults.style.display = 'none';
-    libraryHeadCount.textContent = `${memories.length + 6} memories`;
+    libraryHeadCount.textContent = `${memories.length} memories`;
 
     // Sync like state on default grid cards
     document.querySelectorAll('.default-grid .like-button').forEach(btn => {
@@ -330,7 +456,6 @@ function updateView() {
     });
 
   } else {
-    // Show filtered grid
     defaultGrid.style.display = 'none';
     filteredGrid.style.display = 'grid';
 
@@ -344,18 +469,18 @@ function updateView() {
     } else {
       noResults.style.display = 'none';
 
-      // If note filter is on, show "Add new note" card first
       if (noteFilter) {
         filteredGrid.appendChild(createNewNoteCard());
       }
 
-      results.forEach(mem => {
-        filteredGrid.appendChild(createMemoryCard(mem));
+      results.forEach(res => {
+        const mem = res.item || res;
+        const matchReason = res.matchReason;
+        filteredGrid.appendChild(createMemoryCard(mem, matchReason));
       });
     }
   }
 
-  // Update selection button label
   if (selectMode) {
     selectBtnLabel.textContent = selectedIds.size > 0 ? `${selectedIds.size} Selected` : 'Done';
     selectBtn.classList.add('active');
@@ -366,33 +491,35 @@ function updateView() {
 }
 
 function filterMemories() {
-  return memories.filter(mem => {
-    // Text search
-    if (query) {
-      const hay = `${mem.title || ''} ${mem.name || ''} ${mem.source || ''} ${mem.searchableText || ''}`.toLowerCase();
-      if (!hay.includes(query.toLowerCase())) return false;
-    }
+  let pool = [...memories];
 
-    // Liked
-    if ((likedFilter || activeNav === 'liked') && !mem.isFavorite) return false;
+  // Liked filter
+  if (likedFilter || activeNav === 'liked') {
+    pool = pool.filter(m => m.isFavorite);
+  }
 
-    // Type filters
-    if (imageFilter && mem.type !== 'image' && mem.contentType !== 'Image') return false;
-    if (noteFilter && mem.type !== 'note' && mem.contentType !== 'Note') return false;
-    if (articleFilter && mem.type !== 'article' && !mem.article) return false;
-    if (activeTab === 'Articles' && mem.type !== 'article' && !mem.article) return false;
+  // Type filters
+  if (imageFilter) pool = pool.filter(m => m.type === 'image' || m.contentType === 'Image');
+  if (noteFilter) pool = pool.filter(m => m.type === 'note' || m.contentType === 'Note');
+  if (articleFilter || activeTab === 'Articles') {
+    pool = pool.filter(m => m.type === 'article' || m.article || m.isArticle);
+  }
 
-    // Color filter
-    if (selectedColor && (mem.dominantColorName || '').toLowerCase() !== selectedColor.toLowerCase()) {
-      return false;
-    }
+  // Color filter
+  if (selectedColor) {
+    pool = pool.filter(m => (m.dominantColorName || '').toLowerCase() === selectedColor.toLowerCase());
+  }
 
-    return true;
-  });
+  // Search Engine Scoring (runs entity, text, color & vector similarity)
+  if (query) {
+    return window.searchEngine.search(query, pool);
+  }
+
+  return pool.map(item => ({ item, matchReason: '' }));
 }
 
 /* ═══════════════════════════════════════════════
-   CARD CREATION (MATCHING FIGMA CSS)
+   CARD CREATION
 ═══════════════════════════════════════════════ */
 function createNewNoteCard() {
   const btn = document.createElement('button');
@@ -406,20 +533,55 @@ function createNewNoteCard() {
   return btn;
 }
 
-function createMemoryCard(mem) {
+function createMemoryCard(mem, matchReason = '') {
+  // Render Book card if it's a book
+  if (mem.isBook && !mem.image && !mem.dataUrl) {
+    const bookEl = document.createElement('div');
+    bookEl.className = `book-card ${mem.id === 'book-2' ? 'dark' : ''}`;
+    bookEl.innerHTML = `
+      <div class="book-cover">
+        ${escHtml(mem.title || mem.name)}
+        <small>${escHtml(mem.source || 'Book')}</small>
+      </div>
+      <div class="book-caption">
+        ${escHtml(mem.title || 'Book saved')}
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="${mem.isFavorite ? '#ff7f7f' : 'none'}" stroke="${mem.isFavorite ? '#ff7f7f' : 'currentColor'}" stroke-width="1.7"><path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z"/></svg>
+      </div>
+    `;
+    bookEl.addEventListener('click', () => openLightbox(mem));
+    return bookEl;
+  }
+
+  // Render Quote card if it's a quote
+  if (mem.isQuote && !mem.image) {
+    const quoteEl = document.createElement('div');
+    quoteEl.className = 'quote-card';
+    quoteEl.innerHTML = `
+      <b>Quote</b>
+      <span>“</span>
+      <blockquote>${escHtml(mem.name || mem.title)}</blockquote>
+      <footer>
+        <small>${escHtml(mem.source || 'goodreads.com')}</small>
+        <small>${new Date(mem.modifiedAt).toLocaleDateString()}</small>
+      </footer>
+    `;
+    quoteEl.addEventListener('click', () => openLightbox(mem));
+    return quoteEl;
+  }
+
   const card = document.createElement('article');
   card.className = `memory-card ${mem.tall ? 'tall' : ''} ${selectedIds.has(mem.id) ? 'selected' : ''}`;
   card.dataset.id = mem.id;
 
   const imgSrc = mem.image || mem.dataUrl || 'memories/memory-1.jpg';
   const title = mem.title || mem.name || 'Untitled Memory';
-  const source = mem.source || (mem.contentType === 'Note' ? 'Personal Note' : 'Recall');
+  const source = matchReason || mem.source || (mem.contentType === 'Note' ? 'Personal Note' : 'Recall');
 
   let extraHtml = '';
   if (mem.type === 'video') {
     extraHtml += `<span class="play"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="m9 7 9 5-9 5z" /></svg></span>`;
   }
-  if (mem.article || mem.type === 'article') {
+  if (mem.article || mem.type === 'article' || mem.isArticle) {
     extraHtml += `<span class="article-tag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 2h9l4 4v16H6z" /><path d="M15 2v5h4M9 12h7M9 16h7" /></svg> Article</span>`;
   }
   if (selectMode) {
@@ -441,7 +603,6 @@ function createMemoryCard(mem) {
     </button>
   `;
 
-  // Like button
   card.querySelector('.like-button').addEventListener('click', async e => {
     e.stopPropagation();
     mem.isFavorite = !mem.isFavorite;
@@ -450,7 +611,6 @@ function createMemoryCard(mem) {
     updateView();
   });
 
-  // Card click: Select mode toggle or Lightbox open
   card.addEventListener('click', () => {
     if (selectMode) {
       if (selectedIds.has(mem.id)) selectedIds.delete(mem.id);
@@ -486,13 +646,14 @@ function openLightbox(mem) {
     lightboxImg.style.display = 'none';
   }
 
-  lightboxMeta.textContent = `${mem.source || 'Recall'} • ${new Date(mem.modifiedAt || Date.now()).toLocaleDateString()}`;
+  const tagList = (mem.tags || []).slice(0, 5).join(' • ');
+  lightboxMeta.textContent = `${mem.source || 'Recall'} • ${new Date(mem.modifiedAt || Date.now()).toLocaleDateString()}${tagList ? ` • ${tagList}` : ''}`;
   lightboxOcrText.textContent = mem.searchableText || '(No OCR text extracted)';
   lightboxModal.classList.add('open');
 }
 
 /* ═══════════════════════════════════════════════
-   FILE INGESTION & OCR
+   FULL INGESTION PIPELINE: VISION + OCR + ENTITIES
 ═══════════════════════════════════════════════ */
 async function ingestFile(file) {
   showStatus(`Analyzing ${file.name}…`, true);
@@ -503,22 +664,36 @@ async function ingestFile(file) {
     const isImage = file.type.startsWith('image/');
     let ocrText = '';
     let colorProfile = { hex: '#2B2D42', name: 'dark' };
+    let entities = { peopleCount: 0, hasPeople: false, animals: [], hasAnimals: false, isBook: false, isQuote: false, isArticle: false, tags: [] };
 
     if (isImage) {
       const img = new Image();
       img.src = dataUrl;
       await new Promise(r => { img.onload = r; });
+
+      // 1. Color extraction
       colorProfile = await window.visualAnalyzer.extractColorProfile(img);
 
-      showStatus('Running on-device OCR…', true);
+      // 2. OCR text extraction
+      showStatus('Extracting text (OCR)…', true);
       ocrText = await window.visualAnalyzer.extractText(dataUrl, p => {
         showStatus(`OCR: ${p}% complete…`, true);
       });
+
+      // 3. AI Entity Detection (People, Animals, Books, Objects)
+      showStatus('Detecting entities & objects…', true);
+      entities = await window.visualAnalyzer.detectEntities(img, `${file.name} ${ocrText}`);
     } else {
-      try { ocrText = await file.text(); } catch {}
+      try {
+        ocrText = await file.text();
+        entities = await window.visualAnalyzer.detectEntities(null, `${file.name} ${ocrText}`);
+      } catch {}
     }
 
     const title = file.name.replace(/\.[^/.]+$/, '');
+    const combinedContent = `${title} ${entities.tags.join(' ')} ${ocrText}`;
+    const embedding = window.searchEngine.generateEmbedding(combinedContent);
+
     const newMem = {
       id: `mem_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       type: isImage ? 'image' : 'note',
@@ -530,16 +705,25 @@ async function ingestFile(file) {
       source: 'Local Upload',
       tall: false,
       isFavorite: false,
+      peopleCount: entities.peopleCount,
+      hasPeople: entities.hasPeople,
+      hasAnimals: entities.hasAnimals,
+      animals: entities.animals,
+      isBook: entities.isBook,
+      isQuote: entities.isQuote,
+      isArticle: entities.isArticle,
+      tags: entities.tags,
       dominantColorName: colorProfile.name,
       dominantColorHex: colorProfile.hex,
       modifiedAt: new Date().toISOString(),
-      searchableText: `${title} ${ocrText}`
+      searchableText: `${title} ${ocrText}`,
+      embedding
     };
 
     memories.unshift(newMem);
     await window.recallDB.saveItem(newMem);
     showStatus('On-device analysis complete', false);
-    showToast(`Saved "${title}"`);
+    showToast(`Saved "${title}" (${entities.tags.slice(0, 3).join(', ') || 'Indexed'})`);
     updateView();
   };
 
@@ -554,7 +738,6 @@ async function ingestFile(file) {
    EVENT LISTENERS
 ═══════════════════════════════════════════════ */
 function setupEventListeners() {
-  // Search
   searchInput.addEventListener('input', () => {
     query = searchInput.value.trim();
     searchClear.classList.toggle('visible', query.length > 0);
@@ -569,7 +752,6 @@ function setupEventListeners() {
     searchInput.focus();
   });
 
-  // Top Tabs
   document.querySelectorAll('.tabs button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tabs button').forEach(b => b.classList.remove('active'));
@@ -579,7 +761,6 @@ function setupEventListeners() {
     });
   });
 
-  // Side Rail Navigation
   document.querySelectorAll('.side-rail nav button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.side-rail nav button').forEach(b => b.classList.remove('active'));
@@ -596,7 +777,6 @@ function setupEventListeners() {
     });
   });
 
-  // Filter Buttons
   filterImagesBtn.addEventListener('click', () => {
     imageFilter = !imageFilter;
     filterImagesBtn.classList.toggle('active', imageFilter);
@@ -621,7 +801,6 @@ function setupEventListeners() {
     updateView();
   });
 
-  // Color Filter
   colorFilterBtn.addEventListener('click', e => {
     e.stopPropagation();
     colorMenu.classList.toggle('open');
@@ -638,14 +817,12 @@ function setupEventListeners() {
     });
   });
 
-  // Select Mode Toggle
   selectBtn.addEventListener('click', () => {
     selectMode = !selectMode;
     if (!selectMode) selectedIds.clear();
     updateView();
   });
 
-  // Add Menu Toggle
   addBtn.addEventListener('click', e => {
     e.stopPropagation();
     addMenu.classList.toggle('open');
@@ -657,7 +834,6 @@ function setupEventListeners() {
     if (!colorFilterBtn.contains(e.target)) colorMenu.classList.remove('open');
   });
 
-  // Add Menu Actions
   document.getElementById('menuAddMedia').addEventListener('click', () => {
     addMenu.classList.remove('open');
     document.getElementById('fileInput').click();
@@ -668,7 +844,8 @@ function setupEventListeners() {
     openNoteModal();
   });
 
-  document.getElementById('defaultNewNoteBtn').addEventListener('click', openNoteModal);
+  const defaultNoteBtn = document.getElementById('defaultNewNoteBtn');
+  if (defaultNoteBtn) defaultNoteBtn.addEventListener('click', openNoteModal);
 
   document.getElementById('menuPaste').addEventListener('click', async () => {
     addMenu.classList.remove('open');
@@ -724,7 +901,6 @@ function setupEventListeners() {
     }
   });
 
-  // Default Grid Likes
   document.querySelectorAll('.default-grid .like-button').forEach(btn => {
     btn.addEventListener('click', async e => {
       e.stopPropagation();
@@ -739,7 +915,6 @@ function setupEventListeners() {
     });
   });
 
-  // Default Grid Card Clicks
   document.querySelectorAll('.default-grid article.memory-card').forEach(card => {
     card.addEventListener('click', () => {
       const id = card.dataset.id;
@@ -754,7 +929,14 @@ function setupEventListeners() {
     });
   });
 
-  // Note Modal Save
+  document.querySelectorAll('.default-grid .book-card, .default-grid .quote-card, .default-grid .article-card').forEach(el => {
+    el.addEventListener('click', () => {
+      const id = el.dataset.id;
+      const mem = memories.find(m => m.id === id);
+      if (mem) openLightbox(mem);
+    });
+  });
+
   document.getElementById('btnCancelNote').addEventListener('click', () => {
     noteModal.classList.remove('open');
   });
@@ -763,6 +945,9 @@ function setupEventListeners() {
     const title = noteTitleInput.value.trim() || 'Untitled Note';
     const content = noteContentInput.value.trim();
     if (!content) return;
+
+    const entities = await window.visualAnalyzer.detectEntities(null, `${title} ${content}`);
+    const embedding = window.searchEngine.generateEmbedding(`${title} ${entities.tags.join(' ')} ${content}`);
 
     const newNote = {
       id: `mem_${Date.now()}`,
@@ -773,8 +958,13 @@ function setupEventListeners() {
       source: 'Personal Note',
       tall: false,
       isFavorite: false,
+      isQuote: entities.isQuote,
+      isBook: entities.isBook,
+      isArticle: entities.isArticle,
+      tags: entities.tags,
       modifiedAt: new Date().toISOString(),
-      searchableText: `${title} ${content}`
+      searchableText: `${title} ${content}`,
+      embedding
     };
 
     memories.unshift(newNote);
@@ -784,7 +974,6 @@ function setupEventListeners() {
     updateView();
   });
 
-  // Lightbox Close & Delete
   lightboxCloseBtn.addEventListener('click', () => lightboxModal.classList.remove('open'));
   lightboxDoneBtn.addEventListener('click', () => lightboxModal.classList.remove('open'));
 
@@ -808,7 +997,6 @@ function setupEventListeners() {
     }
   });
 
-  // Drag & Drop
   window.addEventListener('dragenter', e => {
     if (e.dataTransfer.types.includes('Files')) dropOverlay.classList.add('active');
   });
@@ -827,7 +1015,6 @@ function setupEventListeners() {
     for (const file of e.dataTransfer.files) await ingestFile(file);
   });
 
-  // Clipboard Paste
   window.addEventListener('paste', async e => {
     const tag = document.activeElement?.tagName?.toLowerCase();
     if (tag === 'input' || tag === 'textarea') return;
@@ -841,7 +1028,6 @@ function setupEventListeners() {
     }
   });
 
-  // Keyboard Shortcuts
   window.addEventListener('keydown', e => {
     if ((e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) && document.activeElement !== searchInput) {
       e.preventDefault();
@@ -860,7 +1046,6 @@ function setupEventListeners() {
     }
   });
 
-  // Settings
   document.getElementById('settingsBtn').addEventListener('click', () => {
     showToast('Settings opened');
   });

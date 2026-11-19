@@ -1,18 +1,43 @@
 /**
- * Recall Web - Hybrid Associative Search Engine
- * Combines Vector Semantic Similarity, OCR Text, Exact Keywords, Colors, and Recency
+ * Recall Web - Multi-Modal Entity & Associative Search Engine
+ * Detects:
+ * - People & Headcount ("people", "1 person", "2 people", "portrait", "crowd")
+ * - Animals & Wildlife ("animals", "elephant", "dog", "cat", "birds", "wildlife")
+ * - Books, Reading & Literature ("book", "books", "novel", "author", "cover")
+ * - Quotes & Sayings ("quote", "quotes", "saying")
+ * - Colors & Palette ("orange", "green", "blue", "yellow", "dark", "light", etc.)
+ * - Objects & Scenes ("interior", "furniture", "architecture", "video", "fashion")
+ * - Full OCR Text & Vector Cosine Similarity
  */
 
 class SearchEngine {
   constructor() {
     this.colorKeywords = new Set([
-      'red', 'green', 'blue', 'yellow', 'orange', 'purple', 'white', 'black', 'dark', 'light', 'gray'
+      'red', 'green', 'blue', 'yellow', 'orange', 'purple', 'white', 'black', 'dark', 'light', 'gray', 'brown'
+    ]);
+
+    this.peopleKeywords = new Set([
+      'people', 'person', 'persons', 'portrait', 'portraits', 'human', 'humans',
+      'woman', 'man', 'girl', 'boy', 'face', 'selfie', 'couple', 'crowd', 'group',
+      '1 person', '2 people', '3 people', 'two people', 'single person'
+    ]);
+
+    this.animalKeywords = new Set([
+      'animal', 'animals', 'wildlife', 'elephant', 'elephants', 'dog', 'dogs',
+      'cat', 'cats', 'bird', 'birds', 'horse', 'horses', 'safari', 'lion', 'tiger', 'pet', 'pets'
+    ]);
+
+    this.bookKeywords = new Set([
+      'book', 'books', 'novel', 'novels', 'reading', 'read', 'literature', 'author', 'cover', 'tales'
+    ]);
+
+    this.quoteKeywords = new Set([
+      'quote', 'quotes', 'saying', 'sayings', 'proverb', 'quotation'
     ]);
   }
 
   generateEmbedding(text, dimensions = 128) {
     if (!text) return new Float32Array(dimensions);
-
     const vector = new Float32Array(dimensions);
     const words = text.toLowerCase().split(/[\s,.;:!?_/\-\\]+/).filter(Boolean);
 
@@ -25,18 +50,12 @@ class SearchEngine {
       vector[index] += 1.0;
     }
 
-    // Unit normalize
     let sumSquares = 0;
-    for (let i = 0; i < dimensions; i++) {
-      sumSquares += vector[i] * vector[i];
-    }
+    for (let i = 0; i < dimensions; i++) sumSquares += vector[i] * vector[i];
     const norm = Math.sqrt(sumSquares);
     if (norm > 0) {
-      for (let i = 0; i < dimensions; i++) {
-        vector[i] /= norm;
-      }
+      for (let i = 0; i < dimensions; i++) vector[i] /= norm;
     }
-
     return Array.from(vector);
   }
 
@@ -57,123 +76,134 @@ class SearchEngine {
       return items.map((item) => ({
         item,
         score: 1.0,
-        reasons: []
+        matchReason: ''
       }));
     }
 
-    const tokens = query.trim().split(/\s+/);
-    let typeFilter = null;
-    let favoriteFilter = null;
-    let afterDate = null;
+    const queryLower = query.trim().toLowerCase();
+    const tokens = queryLower.split(/\s+/);
+
+    // Intent detections
+    const wantsPeople = this.peopleKeywords.has(queryLower) || tokens.some(t => this.peopleKeywords.has(t));
+    const wantsAnimals = this.animalKeywords.has(queryLower) || tokens.some(t => this.animalKeywords.has(t));
+    const wantsBooks = this.bookKeywords.has(queryLower) || tokens.some(t => this.bookKeywords.has(t));
+    const wantsQuotes = this.quoteKeywords.has(queryLower) || tokens.some(t => this.quoteKeywords.has(t));
+
+    // Specific people counts
+    let targetPeopleCount = null;
+    if (queryLower.includes('1 person') || queryLower === 'portrait' || queryLower === 'single person') targetPeopleCount = 1;
+    else if (queryLower.includes('2 people') || queryLower.includes('two people') || queryLower === 'couple') targetPeopleCount = 2;
+    else if (queryLower.includes('crowd') || queryLower.includes('group')) targetPeopleCount = 3;
+
+    // Color intent
     let targetColor = null;
-    const searchWords = [];
-
-    const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-    for (const token of tokens) {
-      const lower = token.toLowerCase();
-      if (lower.startsWith('type:')) {
-        typeFilter = lower.substring(5);
-      } else if (lower === 'liked:true' || lower === 'favorite:true' || lower === 'fav:true') {
-        favoriteFilter = true;
-      } else if (lower === 'today') {
-        afterDate = today;
-      } else if (lower === 'yesterday') {
-        const y = new Date(today);
-        y.setDate(y.getDate() - 1);
-        afterDate = y;
-      } else if (lower === 'week' || lower === 'lastweek') {
-        const w = new Date(today);
-        w.setDate(w.getDate() - 7);
-        afterDate = w;
-      } else if (this.colorKeywords.has(lower)) {
-        targetColor = lower;
-        searchWords.push(lower);
-      } else {
-        searchWords.push(lower);
+    for (const t of tokens) {
+      if (this.colorKeywords.has(t)) {
+        targetColor = t;
+        break;
       }
     }
 
-    const cleanQuery = searchWords.join(' ');
-    const queryVector = this.generateEmbedding(cleanQuery);
-
+    const queryVector = this.generateEmbedding(queryLower);
     const results = [];
 
     for (const item of items) {
-      // 1. Hard Filter Checks
-      if (typeFilter) {
-        const itemType = (item.contentType || '').toLowerCase();
-        const itemKind = (item.kind || '').toLowerCase();
-        if (itemType !== typeFilter && itemKind !== typeFilter) {
-          continue;
-        }
-      }
-
-      if (favoriteFilter !== null && item.isFavorite !== favoriteFilter) {
-        continue;
-      }
-
-      if (afterDate) {
-        const itemDate = new Date(item.modifiedAt);
-        if (itemDate < afterDate) {
-          continue;
-        }
-      }
-
       let score = 0;
       const reasons = [];
 
-      // 2. Semantic Vector Similarity (Weight: 45%)
-      if (cleanQuery && item.embedding) {
-        const sim = this.cosineSimilarity(queryVector, item.embedding);
-        if (sim > 0.22) {
-          score += sim * 45;
-          reasons.push(`Semantic Match (${Math.round(sim * 100)}%)`);
+      const title = (item.title || item.name || '').toLowerCase();
+      const text = (item.searchableText || '').toLowerCase();
+      const tags = (item.tags || []).map(t => String(t).toLowerCase());
+      const domColor = (item.dominantColorName || '').toLowerCase();
+      const peopleCount = item.peopleCount || (item.hasPeople ? 1 : 0);
+
+      // ── 1. People Detection Match ──
+      if (wantsPeople) {
+        if (targetPeopleCount !== null) {
+          if (peopleCount === targetPeopleCount || (targetPeopleCount === 3 && peopleCount >= 3)) {
+            score += 45;
+            reasons.push(`${peopleCount} ${peopleCount === 1 ? 'person' : 'people'} detected`);
+          }
+        } else if (item.hasPeople || peopleCount > 0 || tags.includes('people') || tags.includes('person') || tags.includes('portrait')) {
+          score += 40;
+          reasons.push(`People detected (${peopleCount > 0 ? peopleCount : 1})`);
         }
       }
 
-      // 3. Exact Title & Substring Matches (Weight: 30%)
-      const name = (item.name || '').toLowerCase();
-      const searchableText = (item.searchableText || '').toLowerCase();
+      // ── 2. Animals & Wildlife Match ──
+      if (wantsAnimals) {
+        const itemAnimals = (item.animals || []).map(a => a.toLowerCase());
+        const hasAnimalTag = tags.includes('animal') || tags.includes('animals') || tags.includes('wildlife');
+        const matchesSpecificAnimal = tokens.some(t => itemAnimals.includes(t) || title.includes(t) || text.includes(t));
 
-      if (cleanQuery && name.includes(cleanQuery)) {
-        score += 30;
-        reasons.push('Title Match');
-      } else if (cleanQuery && searchableText.includes(cleanQuery)) {
-        score += 20;
-        reasons.push('OCR Text Match');
+        if (item.hasAnimals || itemAnimals.length > 0 || hasAnimalTag || matchesSpecificAnimal) {
+          score += 45;
+          const label = itemAnimals.length > 0 ? itemAnimals.join(', ') : 'Animal';
+          reasons.push(`Animal detected: ${label}`);
+        }
       }
 
-      // Token overlap
-      for (const word of searchWords) {
-        if (name.includes(word)) score += 6;
-        if (searchableText.includes(word)) score += 4;
+      // ── 3. Books & Reading Material Match ──
+      if (wantsBooks) {
+        if (item.isBook || item.id === 'book-1' || item.id === 'book-2' || tags.includes('book') || tags.includes('books') || tags.includes('reading')) {
+          score += 45;
+          reasons.push('Book / Reading detected');
+        }
       }
 
-      // 4. Color Match (Weight: 15%)
-      if (targetColor && item.dominantColorName) {
-        if (item.dominantColorName.toLowerCase() === targetColor) {
-          score += 15;
+      // ── 4. Quotes Match ──
+      if (wantsQuotes) {
+        if (item.isQuote || item.id === 'quote-1' || tags.includes('quote') || tags.includes('quotes')) {
+          score += 45;
+          reasons.push('Quote detected');
+        }
+      }
+
+      // ── 5. Color Match ──
+      if (targetColor) {
+        if (domColor === targetColor || tags.includes(targetColor)) {
+          score += 25;
           reasons.push(`Color: ${targetColor}`);
         }
       }
 
-      // 5. Favorite Boost (Weight: 10%)
-      if (item.isFavorite) {
-        score += 10;
+      // ── 6. Full Text & Keyword Matching ──
+      if (title.includes(queryLower)) {
+        score += 35;
+        reasons.push('Title match');
+      } else if (text.includes(queryLower)) {
+        score += 25;
+        reasons.push('OCR text match');
       }
 
-      // 6. Recency Boost (Up to 5%)
-      const daysAgo = (now - new Date(item.modifiedAt)) / (1000 * 60 * 60 * 24);
-      if (daysAgo < 7) score += 5;
-      else if (daysAgo < 30) score += 2;
+      // Multi-token overlap
+      let tokenMatches = 0;
+      for (const token of tokens) {
+        if (token.length < 2) continue;
+        if (title.includes(token)) { score += 8; tokenMatches++; }
+        if (text.includes(token)) { score += 5; tokenMatches++; }
+        if (tags.includes(token)) { score += 8; tokenMatches++; }
+      }
 
-      if (score > 8 || !cleanQuery) {
+      // ── 7. Vector Semantic Similarity ──
+      if (item.embedding) {
+        const sim = this.cosineSimilarity(queryVector, item.embedding);
+        if (sim > 0.22) {
+          score += sim * 30;
+          if (reasons.length === 0) {
+            reasons.push(`Semantic Match (${Math.round(sim * 100)}%)`);
+          }
+        }
+      }
+
+      // ── 8. Favorite Boost ──
+      if (item.isFavorite) score += 5;
+
+      if (score > 10) {
         results.push({
           item,
           score,
-          matchReason: reasons.join(' • ')
+          matchReason: reasons.slice(0, 2).join(' • ')
         });
       }
     }

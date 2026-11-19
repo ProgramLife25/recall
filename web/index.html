@@ -7,7 +7,7 @@
   <meta name="description" content="Recall - Private, local-first visual memory library." />
   <title>Recall</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="css/style.css?v=20261119b" />
+  <link rel="stylesheet" href="css/style.css?v=20261119c" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
 </head>
 <body>
@@ -492,12 +492,14 @@
   </div>
 </div>
 
-<!-- Scripts with cache busting -->
+<!-- AI Models & Scripts with cache busting -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="js/db.js?v=20261119b"></script>
-<script src="js/ocr.js?v=20261119b"></script>
-<script src="js/search.js?v=20261119b"></script>
-<script src="js/app.js?v=20261119b"></script>
+<script src="js/db.js?v=20261119c"></script>
+<script src="js/ocr.js?v=20261119c"></script>
+<script src="js/search.js?v=20261119c"></script>
+<script src="js/app.js?v=20261119c"></script>
 <script>
   // Purge any stale service worker and caches to guarantee latest UI
   if ('serviceWorker' in navigator) {
