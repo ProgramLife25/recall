@@ -1,18 +1,8 @@
-// Auto-purge old caches and unregister
+// Self-unregistering service worker to cleanly retire any previously installed PWA worker
 self.addEventListener('install', () => {
   self.skipWaiting();
 });
 
-self.addEventListener('activate', (e) => {
-  e.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
-  );
-  self.clients.claim();
-});
-
-// Network first, bypass cache
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    fetch(e.request).catch(() => caches.match(e.request))
-  );
+self.addEventListener('activate', () => {
+  self.registration.unregister();
 });

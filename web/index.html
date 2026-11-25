@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,416 +8,1085 @@
   <meta name="description" content="Recall - Private, local-first visual memory library." />
   <title>Recall</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="css/style.css?v=20261119_v4" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
+  <link rel="stylesheet" href="css/style.css?v=20261125_v84" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
 </head>
+
 <body>
 
-<!-- ══════════════════ APP SHELL (3 COLUMNS) ══════════════════ -->
-<div class="app-shell">
+  <!-- ══════════════════ AUTHENTICATION GATE (LOGIN REQUIRED) ══════════════════ -->
+  <div class="auth-gate-overlay hidden" id="recallAuthGate" style="display:none;">
+    <div class="auth-gate-modal">
+      <div class="auth-gate-brand">
+        <div class="auth-gate-logo-circle"></div>
+        <span class="auth-gate-title">Recall</span>
+      </div>
+      <h1 class="auth-gate-heading">Welcome to Recall</h1>
+      <p class="auth-gate-subheading">Your private, visual memory space. Sign in with Google to access and sync your memories across all your devices.</p>
 
-  <!-- ── 1. LEFT SIDEBAR (140px) ── -->
-  <aside class="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-circle"></div>
-      <span class="brand-name">Recall</span>
+      <button class="auth-gate-google-btn" id="authGateGoogleSignInBtn" type="button">
+        <svg class="google-icon" width="20" height="20" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+        </svg>
+        <span>Continue with Google</span>
+      </button>
+
+      <div class="auth-gate-notice">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+        <span>End-to-end synced to your Google account • Private & secure</span>
+      </div>
     </div>
+  </div>
 
-    <nav class="sidebar-nav">
-      <button class="sidebar-btn active" data-nav="home" title="Home">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="m3.5 10 8.5-7 8.5 7" />
-          <path d="M5.5 9v11h13V9M9 20v-6h6v6" />
-        </svg>
-        <span>Home</span>
-      </button>
-      <button class="sidebar-btn" data-nav="liked" title="Liked">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
-        </svg>
-        <span>Liked</span>
-      </button>
-      <button class="sidebar-btn" data-nav="spaces" title="Spaces">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="4" y="7" width="16" height="13" rx="2" />
-          <path d="M7 7V4h10v3" />
-        </svg>
-        <span>Spaces</span>
-      </button>
-    </nav>
+  <!-- ══════════════════ APP SHELL (3 COLUMNS) ══════════════════ -->
+  <div class="app-shell">
 
-    <button class="sidebar-settings" id="settingsBtn" title="Settings">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3" />
-        <path d="M19 13.5v-3l-2.2-.7a7 7 0 0 0-.7-1.6l1.1-2-2.1-2.1-2 1.1a7 7 0 0 0-1.6-.7L10.5 1h-3l-.7 2.5a7 7 0 0 0-1.6.7l-2-1.1-2.1 2.1 1.1 2a7 7 0 0 0-.7 1.6L-1 9.5v3l2.5.7a7 7 0 0 0 .7 1.6l-1.1 2 2.1 2.1 2-1.1a7 7 0 0 0 1.6.7l.7 2.5h3l.7-2.5a7 7 0 0 0 1.6-.7l2 1.1 2.1-2.1-1.1-2a7 7 0 0 0 .7-1.6Z" transform="translate(3)" />
-      </svg>
-      <span>Settings</span>
-    </button>
-  </aside>
-
-  <!-- ── 2. MAIN WORKSPACE (Center) ── -->
-  <main class="workspace">
-
-    <!-- Top Header -->
-    <header class="top-header">
-      <div class="control-row">
-        <!-- Search Bar -->
-        <div class="search-bar">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="10.5" cy="10.5" r="6.5" />
-            <path d="m15.5 15.5 5 5" />
-          </svg>
-          <input id="searchInput" placeholder="Search your memories…" autocomplete="off" spellcheck="false" />
-          <button class="search-clear" id="searchClear">×</button>
-        </div>
-
-        <!-- Add Button -->
-        <div class="add-container">
-          <button class="add-btn" id="addBtn" aria-label="Add memory">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14" /></svg>
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 10 4 4 4-4" /></svg>
-          </button>
-          <div class="add-menu" id="addMenu">
-            <div class="add-menu-item" id="menuAddMedia">Save Images or Files…</div>
-            <div class="add-menu-item" id="menuNewNote">New Note</div>
-            <div class="add-menu-item" id="menuPaste">Paste from Clipboard</div>
-            <div class="add-menu-item" id="menuExport">Export Backup…</div>
-            <div class="add-menu-item" id="menuImport">Restore Backup…</div>
-          </div>
-        </div>
-
-        <div class="spacer"></div>
-
-        <!-- Mode Tabs -->
-        <div class="segmented-tabs">
-          <button class="segmented-tab active" data-tab="Everything">Everything</button>
-          <button class="segmented-tab" data-tab="Spaces">Spaces</button>
-          <button class="segmented-tab" data-tab="Articles">Articles</button>
-        </div>
-
-        <!-- Select Button -->
-        <button class="select-btn" id="selectBtn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9" />
-            <path d="m8 12 2.5 2.5L16 9" />
-          </svg>
-          <span id="selectBtnLabel">Select</span>
-        </button>
-
-        <!-- Bulk Delete Button (Visible in Select mode when 1+ cards are selected) -->
-        <button class="bulk-delete-btn" id="bulkDeleteBtn" style="display:none;" title="Delete Selected">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6" />
-          </svg>
-          <span id="bulkDeleteLabel">Delete</span>
-        </button>
+    <!-- ── 1. LEFT SIDEBAR (140px) ── -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-circle"></div>
+        <span class="brand-name">Recall</span>
       </div>
 
-      <!-- Filter Row -->
-      <div class="filter-row">
-        <button class="filter-chip" id="filterImages" data-filter="images">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="8.5" cy="9" r="1.5" /><path d="m4 18 5-5 3 3 3-4 5 6" /></svg>
-          <span>Images</span>
-          <span class="filter-chevron">▾</span>
+      <nav class="sidebar-nav">
+        <button class="sidebar-btn active" data-nav="home" title="Home">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3.5 10 8.5-7 8.5 7" />
+            <path d="M5.5 9v11h13V9M9 20v-6h6v6" />
+          </svg>
+          <span>Home</span>
         </button>
-
-        <button class="filter-chip" id="filterNotes" data-filter="notes">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2" /><path d="M8 8h8M8 12h8M8 16h5" /></svg>
-          <span>Notes</span>
-          <span class="filter-chevron">▾</span>
-        </button>
-
-        <button class="filter-chip" id="filterArticles" data-filter="articles">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2h9l4 4v16H6z" /><path d="M15 2v5h4M9 12h7M9 16h7" /></svg>
-          <span>Articles</span>
-          <span class="filter-chevron">▾</span>
-        </button>
-
-        <button class="filter-chip" id="filterLiked" data-filter="liked">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" /></svg>
+        <button class="sidebar-btn" data-nav="liked" title="Liked">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+          </svg>
           <span>Liked</span>
-          <span class="filter-chevron">▾</span>
         </button>
+        <button class="sidebar-btn" data-nav="spaces" title="Spaces">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="7" width="16" height="13" rx="2" />
+            <path d="M7 7V4h10v3" />
+          </svg>
+          <span>Spaces</span>
+        </button>
+      </nav>
 
-        <!-- Color Filter -->
-        <div style="position:relative;">
-          <button class="filter-chip" id="colorFilterBtn">
-            <span class="filter-chevron" style="transform:rotate(-90deg); margin-right:2px;">▾</span>
-            <span id="colorFilterLabel">Color</span>
-            <span class="filter-chevron">▾</span>
+      <button class="sidebar-settings" id="settingsBtn" title="Settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19 13.5v-3l-2.2-.7a7 7 0 0 0-.7-1.6l1.1-2-2.1-2.1-2 1.1a7 7 0 0 0-1.6-.7L10.5 1h-3l-.7 2.5a7 7 0 0 0-1.6.7l-2-1.1-2.1 2.1 1.1 2a7 7 0 0 0-.7 1.6L-1 9.5v3l2.5.7a7 7 0 0 0 .7 1.6l-1.1 2 2.1 2.1 2-1.1a7 7 0 0 0 1.6.7l.7 2.5h3l.7-2.5a7 7 0 0 0 1.6-.7l2 1.1 2.1-2.1-1.1-2a7 7 0 0 0 .7-1.6Z"
+            transform="translate(3)" />
+        </svg>
+        <span>Settings</span>
+      </button>
+    </aside>
+
+    <!-- ── 2. MAIN WORKSPACE (Center) ── -->
+    <main class="workspace">
+
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="control-row">
+          <!-- Search Bar -->
+          <div class="search-bar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="m15.5 15.5 5 5" />
+            </svg>
+            <input id="searchInput" placeholder="Search your memories…" autocomplete="off" spellcheck="false" />
+            <button class="search-clear" id="searchClear">×</button>
+          </div>
+
+          <!-- Add Button -->
+          <div class="add-container">
+            <button class="add-btn" id="addBtn" aria-label="Add memory">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m8 10 4 4 4-4" />
+              </svg>
+            </button>
+            <div class="add-menu" id="addMenu">
+              <div class="add-menu-item" id="menuAddCode">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                Save Code Snippet or GitHub…
+              </div>
+              <div class="add-menu-item" id="menuAddSocial">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+                Save Social Post (𝕏, Reddit…)
+              </div>
+              <div class="add-menu-item" id="menuAddDoc">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                Save PDF, Paper, or Excel…
+              </div>
+              <div class="add-menu-item" id="menuAddAudio">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/></svg>
+                Save Audio or Spotify link…
+              </div>
+              <div class="add-menu-item" id="menuAddMedia">Save Images or Files…</div>
+              <div class="add-menu-item" id="menuNewNote">New Note</div>
+              <div class="add-menu-item" id="menuNewQuote">New Quote…</div>
+              <div class="add-menu-item" id="menuPaste">Paste from Clipboard</div>
+              <div class="add-menu-item" id="menuExport">Export Backup…</div>
+              <div class="add-menu-item" id="menuImport">Restore Backup…</div>
+            </div>
+          </div>
+
+          <div class="spacer"></div>
+
+          <!-- Mode Tabs -->
+          <div class="segmented-tabs">
+            <button class="segmented-tab active" data-tab="Everything">Everything</button>
+            <button class="segmented-tab" data-tab="Articles">Articles</button>
+            <button class="segmented-tab" data-tab="Documents">Documents</button>
+            <button class="segmented-tab" data-tab="Audio">Audio</button>
+            <button class="segmented-tab" data-tab="Social">Social</button>
+            <button class="segmented-tab" data-tab="Code">Code</button>
+          </div>
+
+          <!-- Select Button -->
+          <button class="select-btn" id="selectBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9" />
+              <path d="m8 12 2.5 2.5L16 9" />
+            </svg>
+            <span id="selectBtnLabel">Select</span>
           </button>
-          <div class="color-dropdown" id="colorMenu">
-            <div class="color-item" data-color=""><span class="color-dot" style="background:transparent; border-style:dashed;"></span> All</div>
-            <div class="color-item" data-color="orange"><span class="color-dot" style="background:#EF4444;"></span> Orange / Red</div>
-            <div class="color-item" data-color="yellow"><span class="color-dot" style="background:#EAB308;"></span> Yellow</div>
-            <div class="color-item" data-color="blue"><span class="color-dot" style="background:#3B82F6;"></span> Blue</div>
-            <div class="color-item" data-color="dark"><span class="color-dot" style="background:#1F2937;"></span> Dark</div>
-            <div class="color-item" data-color="light"><span class="color-dot" style="background:#F9FAFB;"></span> Light</div>
+
+          <!-- Bulk Delete Button (Visible in Select mode when 1+ cards are selected) -->
+          <button class="bulk-delete-btn" id="bulkDeleteBtn" style="display:none;" title="Delete Selected">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6" />
+            </svg>
+            <span id="bulkDeleteLabel">Delete</span>
+          </button>
+
+          <!-- ── User Profile & Cloud Sync (Top-Right Header) ── -->
+          <div class="header-auth-section">
+            <button class="header-auth-btn" id="sidebarSignInBtn" title="Sign in with Google to sync across all your devices">
+              <svg class="google-icon" width="15" height="15" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+              </svg>
+              <span>Sign in</span>
+            </button>
+
+            <div class="header-user-pill" id="sidebarUserProfile" style="display: none;">
+              <img class="header-user-avatar" id="sidebarUserAvatar" src="" alt="Avatar" />
+              <div class="header-user-meta">
+                <span class="header-user-name" id="sidebarUserName">User</span>
+                <span class="header-sync-badge"><span class="sync-live-dot"></span> Synced</span>
+              </div>
+              <button class="header-user-signout" id="sidebarSignOutBtn" title="Sign out">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="analysis-status">
-          <span class="status-dot" id="statusDot"></span>
-          <span id="statusText">On-device analysis complete</span>
+        <!-- Filter Row -->
+        <div class="filter-row">
+          <button class="filter-chip" id="filterImages" data-filter="images">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <circle cx="8.5" cy="9" r="1.5" />
+              <path d="m4 18 5-5 3 3 3-4 5 6" />
+            </svg>
+            <span>Images</span>
+            <span class="filter-chevron">▾</span>
+          </button>
+
+          <button class="filter-chip" id="filterNotes" data-filter="notes">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="4" y="3" width="16" height="18" rx="2" />
+              <path d="M8 8h8M8 12h8M8 16h5" />
+            </svg>
+            <span>Notes</span>
+            <span class="filter-chevron">▾</span>
+          </button>
+
+          <button class="filter-chip" id="filterArticles" data-filter="articles">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M6 2h9l4 4v16H6z" />
+              <path d="M15 2v5h4M9 12h7M9 16h7" />
+            </svg>
+            <span>Articles</span>
+            <span class="filter-chevron">▾</span>
+          </button>
+
+          <button class="filter-chip" id="filterVideos" data-filter="videos">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            <span>Videos</span>
+            <span class="filter-chevron">▾</span>
+          </button>
+
+          <button class="filter-chip" id="filterCode" data-filter="code">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <polyline points="16 18 22 12 16 6"/>
+              <polyline points="8 6 2 12 8 18"/>
+            </svg>
+            <span>Code</span>
+            <span class="filter-chevron">▾</span>
+          </button>
+
+          <button class="filter-chip" id="filterLiked" data-filter="liked">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path
+                d="M20.8 5.8c-1.7-1.8-4.5-1.8-6.2 0L12 8.4 9.4 5.8a4.38 4.38 0 0 0-6.2 6.2l2.6 2.6L12 20.8l6.2-6.2 2.6-2.6a4.38 4.38 0 0 0 0-6.2Z" />
+            </svg>
+            <span>Liked</span>
+            <span class="filter-chevron">▾</span>
+          </button>
+
+          <!-- Color Filter -->
+          <div style="position:relative;">
+            <button class="filter-chip" id="colorFilterBtn">
+              <span class="color-dot-indicator" id="colorFilterDot"
+                style="display:none; width:10px; height:10px; border-radius:50%; border:1px solid rgba(0,0,0,0.15); margin-right:4px;"></span>
+              <span id="colorFilterLabel">Color</span>
+              <span class="filter-chevron">▾</span>
+            </button>
+            <div class="color-dropdown" id="colorMenu">
+              <div class="color-item" data-color=""><span class="color-dot"
+                  style="background:transparent; border:1px dashed #888;"></span> All colors</div>
+              <div class="color-item" data-color="Red"><span class="color-dot" style="background:#FF3B30;"></span> Red
+              </div>
+              <div class="color-item" data-color="Orange"><span class="color-dot" style="background:#FF9500;"></span>
+                Orange</div>
+              <div class="color-item" data-color="Yellow"><span class="color-dot" style="background:#FFCC00;"></span>
+                Yellow</div>
+              <div class="color-item" data-color="Green"><span class="color-dot" style="background:#34C759;"></span>
+                Green</div>
+              <div class="color-item" data-color="Teal"><span class="color-dot" style="background:#30B0C7;"></span> Teal
+              </div>
+              <div class="color-item" data-color="Blue"><span class="color-dot" style="background:#007AFF;"></span> Blue
+              </div>
+              <div class="color-item" data-color="Purple"><span class="color-dot" style="background:#AF52DE;"></span>
+                Purple</div>
+              <div class="color-item" data-color="Pink"><span class="color-dot" style="background:#FF2D55;"></span> Pink
+              </div>
+              <div class="color-item" data-color="Brown"><span class="color-dot" style="background:#A2845E;"></span>
+                Brown</div>
+              <div class="color-item" data-color="Black"><span class="color-dot" style="background:#1C1C1E;"></span>
+                Dark / Black</div>
+              <div class="color-item" data-color="White"><span class="color-dot"
+                  style="background:#F2F2F7; border:1px solid #ccc;"></span> Light / White</div>
+            </div>
+          </div>
+
+          <div class="analysis-status">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">AI Analysis Ready</span>
+          </div>
         </div>
+      </header>
+
+      <!-- Subhead Row -->
+      <div class="subhead-row">
+        <span id="subheadGreeting">Good Morning</span>
+        <span id="subheadCount">0 memories</span>
+      </div>
+
+      <!-- Gallery Scroll Container -->
+      <div class="gallery-scroll" id="galleryScroll">
+        <div class="masonry-5col" id="masonryContainer">
+
+          <!-- Column 1 -->
+          <div class="masonry-col" id="col0">
+            <!-- Add New Note Card -->
+            <div class="card-item card-add-note" id="noteAddCard">
+              <span class="note-label">ADD NEW NOTE</span>
+              <span class="note-heading">Start typing here…</span>
+              <span class="note-rule"></span>
+              <span class="note-rule"></span>
+              <span class="note-rule"></span>
+              <span class="note-rule"></span>
+              <span class="note-rule"></span>
+            </div>
+          </div>
+
+          <!-- Column 2 -->
+          <div class="masonry-col" id="col1"></div>
+
+          <!-- Column 3 -->
+          <div class="masonry-col" id="col2"></div>
+
+          <!-- Column 4 -->
+          <div class="masonry-col" id="col3"></div>
+
+          <!-- Column 5 -->
+          <div class="masonry-col" id="col4"></div>
+
+        </div><!-- /masonry-5col -->
+        <div id="scrollSentinel" style="height: 30px; width: 100%; pointer-events: none;"></div>
+      </div><!-- /gallery-scroll -->
+
+    </main>
+
+  </div><!-- /app-shell -->
+
+  <!-- ══════════════════════════════════════════════════════
+       MEMORY DETAIL MODAL (Matching User Reference Image)
+  ══════════════════════════════════════════════════════ -->
+  <div id="memoryDetailModal" class="memory-detail-overlay" style="display:none;">
+    <div class="memory-detail-backdrop" id="memoryDetailBackdrop"></div>
+    <div class="memory-detail-card" id="memoryDetailCard">
+      <!-- Left Column: Media & Editorial Preview -->
+      <div class="modal-left-column">
+        <!-- Article Preview Mode -->
+        <div class="modal-preview-article" id="modalArticlePreview">
+          <div class="modal-hero-wrap">
+            <img id="modalHeroImg" class="modal-hero-img" src="" alt="Hero Image" />
+          </div>
+          <div class="modal-masthead" id="modalMasthead">The New York Times</div>
+          <h1 class="modal-article-title" id="modalArticleTitle">Grand Theft Auto VI Review: It Will Steal Your Heart
+          </h1>
+          <p class="modal-article-subtitle" id="modalArticleSubtitle">The series matures beyond its memorable car
+            crashes and stickups with a game about love, relationships and nurturing your partner.</p>
+          <div class="modal-article-actions">
+            <button class="modal-btn-reading-mode" id="modalReadingModeBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+              </svg>
+              <span>VIEW IN READING MODE</span>
+            </button>
+            <a class="modal-link-original" id="modalLinkOriginal" href="#" target="_blank" rel="noopener">OR VISIT
+              ORIGINAL ARTICLE</a>
+          </div>
+        </div>
+
+        <!-- Quote Preview Mode -->
+        <div class="modal-preview-quote" id="modalQuotePreview" style="display:none;">
+          <div class="modal-quote-mark">&ldquo;</div>
+          <div class="modal-quote-text" id="modalQuoteBody"></div>
+          <div class="modal-quote-mark">&rdquo;</div>
+          <div class="modal-quote-caption" id="modalQuoteCaption" style="display:none;"></div>
+        </div>
+
+        <!-- Video Preview Mode -->
+        <div class="modal-preview-video" id="modalVideoPreview" style="display:none;">
+          <div class="modal-video-frame-wrap" id="modalVideoFrameWrap">
+            <iframe id="modalVideoIframe" class="modal-video-iframe" src="" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+            <video id="modalVideoPlayer" class="modal-video-player" controls style="display:none;"></video>
+          </div>
+          <div class="modal-video-info">
+            <div class="modal-masthead" id="modalVideoChannel">YouTube</div>
+            <h1 class="modal-article-title" id="modalVideoTitle"></h1>
+            <p class="modal-article-subtitle" id="modalVideoDesc"></p>
+            <div class="modal-article-actions">
+              <a class="modal-btn-reading-mode modal-btn-watch" id="modalWatchOriginalBtn" href="#" target="_blank" rel="noopener">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                <span>WATCH ON ORIGINAL SITE</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audio & Music (Spotify, SoundCloud, Audio Files) Preview Mode -->
+        <div class="modal-preview-audio" id="modalAudioPreview" style="display:none;">
+          <div class="modal-audio-card" id="modalAudioCard">
+            <!-- Embedded Spotify / SoundCloud / Apple Player -->
+            <div id="modalAudioEmbedWrap" class="modal-audio-embed-wrap" style="display:none;">
+              <iframe id="modalAudioIframe" class="modal-audio-iframe" src="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+
+            <!-- Direct Audio Track Player -->
+            <div id="modalAudioDirectWrap" class="modal-audio-direct-wrap">
+              <div class="modal-audio-header">
+                <span class="audio-badge-pill" id="modalAudioBadgePill">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
+                  <span id="modalAudioBadgeLabel">AUDIO</span>
+                </span>
+                <span class="modal-audio-duration" id="modalAudioDuration">0:00</span>
+              </div>
+              <div class="modal-audio-player-box" id="modalAudioPlayerBox">
+                <button class="modal-audio-play-btn" id="modalAudioPlayBtn" title="Play audio">
+                  <svg class="modal-play-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                  <svg class="modal-pause-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                </button>
+                <div class="modal-audio-track">
+                  <div class="modal-audio-waveform" id="modalAudioWaveform"></div>
+                </div>
+              </div>
+              <div class="modal-audio-transcript-wrap" id="modalAudioInfoWrap">
+                <div class="modal-audio-transcript-label" id="modalAudioInfoLabel">TRACK INFO</div>
+                <p class="modal-audio-transcript" id="modalAudioTranscript"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Document & Research Paper / Excel Preview Mode -->
+        <div class="modal-preview-doc" id="modalDocPreview" style="display:none;">
+          <div class="modal-doc-viewer-card">
+            <!-- PDF Document / Research Paper Viewer -->
+            <div id="modalPdfViewerWrap" class="modal-doc-inner-wrap" style="display:none;">
+              <div class="modal-doc-toolbar">
+                <div class="modal-doc-pill pdf" id="modalDocPill">PDF DOCUMENT</div>
+                <div class="modal-doc-meta-info" id="modalDocMetaInfo"></div>
+                <a id="modalDocDownloadBtn" class="modal-doc-action-btn" href="#" target="_blank" download>Open / Download</a>
+              </div>
+              <iframe id="modalPdfIframe" class="modal-pdf-iframe" src="" allowfullscreen></iframe>
+            </div>
+
+            <!-- Excel / Spreadsheet / CSV Data Table Viewer -->
+            <div id="modalSpreadsheetWrap" class="modal-doc-inner-wrap" style="display:none;">
+              <div class="modal-doc-toolbar">
+                <div class="modal-doc-pill excel" id="modalSheetPill">EXCEL SPREADSHEET</div>
+                <div class="modal-doc-meta-info" id="modalSheetMetaInfo">0 rows • 0 columns</div>
+                <input type="text" id="modalSheetSearchInput" class="modal-sheet-search" placeholder="Search table…" />
+              </div>
+              <div class="modal-spreadsheet-table-wrap" id="modalSpreadsheetTableWrap">
+                <table class="modal-spreadsheet-table" id="modalSpreadsheetTable"></table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Post Preview Mode -->
+        <div class="modal-preview-social" id="modalSocialPreview" style="display:none;">
+          <div class="modal-social-card">
+            <div class="modal-social-header">
+              <div class="modal-social-avatar-wrap">
+                <img id="modalSocialAvatar" class="modal-social-avatar" src="" alt="Avatar" style="display:none;" />
+                <div id="modalSocialAvatarFallback" class="modal-social-avatar-fallback">𝕏</div>
+              </div>
+              <div class="modal-social-author-meta">
+                <div class="modal-social-name-row">
+                  <span id="modalSocialName" class="modal-social-name"></span>
+                  <span id="modalSocialVerified" class="modal-social-verified" style="display:none;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#1d9bf0"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7l-4.2-4.2 1.4-1.4 2.8 2.8 7.3-7.3 1.4 1.4-8.7 8.7z"/></svg>
+                  </span>
+                </div>
+                <div id="modalSocialHandle" class="modal-social-handle"></div>
+              </div>
+              <div class="modal-social-platform-badge" id="modalSocialPlatformBadge">
+                <span id="modalSocialBadgeText">𝕏 Post</span>
+              </div>
+            </div>
+            <div class="modal-social-body" id="modalSocialBody"></div>
+            <div class="modal-social-media" id="modalSocialMedia" style="display:none;">
+              <img id="modalSocialMediaImg" src="" alt="Social media" />
+              <iframe id="modalSocialIframe" src="" style="display:none; width:100%; min-height:480px; border:none; border-radius:12px;" scrolling="no" allowtransparency="true"></iframe>
+            </div>
+            <div class="modal-social-footer">
+              <div class="modal-social-stats">
+                <div class="modal-social-stat-item" id="modalSocialLikesWrap">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  <span id="modalSocialLikes">0</span>
+                </div>
+                <div class="modal-social-stat-item" id="modalSocialRepostsWrap">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                  <span id="modalSocialReposts">0</span>
+                </div>
+                <div class="modal-social-stat-item" id="modalSocialRepliesWrap">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  <span id="modalSocialReplies">0</span>
+                </div>
+              </div>
+              <a id="modalSocialExternalLink" class="modal-social-open-btn" href="#" target="_blank" rel="noopener noreferrer">
+                <span id="modalSocialExternalLabel">Open Post</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Code Snippet & Repository Preview Mode -->
+        <div class="modal-preview-code" id="modalCodePreview" style="display:none;">
+          <div class="modal-code-card">
+            <div class="modal-code-toolbar">
+              <div class="modal-code-left">
+                <span class="code-card-icon" aria-hidden="true">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="16 18 22 12 16 6"></polyline>
+                    <polyline points="8 6 2 12 8 18"></polyline>
+                  </svg>
+                </span>
+                <span class="modal-code-filename" id="modalCodeFilename">code.py</span>
+                <span class="code-lang-pill" id="modalCodeLang">PYTHON</span>
+              </div>
+              <div class="modal-code-right">
+                <span class="modal-code-meta" id="modalCodeMeta">0 lines</span>
+                <button class="modal-code-action-btn" id="modalCodeCopyBtn" title="Copy code to clipboard">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                  <span id="modalCodeCopyLabel">Copy Code</span>
+                </button>
+                <a class="modal-code-action-btn" id="modalCodeDownloadBtn" href="#" download title="Download file">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  <span>Download</span>
+                </a>
+              </div>
+            </div>
+            <div class="modal-code-body" id="modalCodeBody">
+              <div class="modal-code-gutter" id="modalCodeGutter"></div>
+              <pre class="modal-code-pre"><code class="modal-code-content" id="modalCodeContent"></code></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- Generic Image / Visual Preview Mode -->
+        <div class="modal-preview-image" id="modalImagePreview" style="display:none;">
+          <img id="modalFullImage" class="modal-full-img" src="" alt="Memory Image" />
+          <div class="modal-image-palette" id="modalImagePalette"></div>
+        </div>
+
+        <!-- Note Preview Mode -->
+        <div class="modal-preview-note" id="modalNotePreview" style="display:none;">
+          <div class="modal-note-badge">NOTE</div>
+          <h2 class="modal-note-title" id="modalNoteTitle"></h2>
+          <div class="modal-note-body" id="modalNoteBody"></div>
+        </div>
+      </div>
+
+      <!-- Right Column: Mind Metadata & Actions -->
+      <div class="modal-right-column">
+        <!-- Header: Title & Time/Source -->
+        <div class="modal-meta-header">
+          <div class="modal-meta-title-line">
+            <h2 class="modal-meta-title" id="modalMetaTitle"></h2>
+            <button class="modal-close-btn" id="modalCloseBtn" title="Close">✕</button>
+          </div>
+          <div class="modal-meta-source-row">
+            <span class="modal-meta-time" id="modalMetaTime">1 minute ago</span>
+            <a class="modal-meta-source-link" id="modalMetaSourceLink" href="#" target="_blank" rel="noopener">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+              <span id="modalMetaSourceName">The New York Times</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- TLDR Section -->
+        <div class="modal-section-group">
+          <div class="modal-section-label modal-label-tldr">TLDR</div>
+          <div class="modal-tldr-box" id="modalTldrBox"></div>
+        </div>
+
+        <!-- Mind Tags Section -->
+        <div class="modal-section-group">
+          <div class="modal-section-label">
+            <span>MIND TAGS</span>
+            <span class="modal-help-icon" title="AI and user generated memory tags">?</span>
+          </div>
+          <div class="modal-tags-flow" id="modalTagsFlow">
+            <button class="modal-add-tag-pill" id="modalAddTagBtn">+ Add tag</button>
+            <input type="text" class="modal-new-tag-input" id="modalNewTagInput" placeholder="Add tag…"
+              style="display:none;" />
+          </div>
+        </div>
+
+        <!-- Mind Notes Section -->
+        <div class="modal-section-group" style="flex:1;">
+          <div class="modal-section-label">
+            <span>MIND NOTES</span>
+            <span class="modal-help-icon" title="Add personal thoughts and observations">?</span>
+          </div>
+          <textarea class="modal-notes-textarea" id="modalNotesTextarea"
+            placeholder="Type here to add a note..."></textarea>
+        </div>
+
+        <!-- Bottom Action Bar -->
+        <div class="modal-bottom-actions">
+          <button class="modal-action-circle-btn" id="modalActionShareBtn" title="Share / Copy Link">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+              <polyline points="16 6 12 2 8 6" />
+              <line x1="12" y1="2" x2="12" y2="15" />
+            </svg>
+          </button>
+          <button class="modal-action-circle-btn modal-action-trash" id="modalActionTrashBtn" title="Delete memory">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+              <line x1="10" y1="11" x2="10" y2="17" />
+              <line x1="14" y1="11" x2="14" y2="17" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       ARTICLE READING MODE (Distraction-Free Reader)
+  ══════════════════════════════════════════════════════ -->
+  <div id="articleReaderModal" class="article-reader-overlay" style="display:none;">
+    <div class="reader-progress-bar" id="readerProgressBar"></div>
+    <header class="reader-top-bar">
+      <button class="reader-back-btn" id="readerBackBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+        <span>Back to memory</span>
+      </button>
+
+      <div class="reader-pub-badge" id="readerPubBadge">
+        <span id="readerDomain">nytimes.com</span>
+        <span class="reader-dot">•</span>
+        <span id="readerReadTime">4 min read</span>
+      </div>
+
+      <div class="reader-controls">
+        <div class="reader-theme-switcher">
+          <button class="reader-theme-btn active" data-reader-theme="light" title="Light theme">Aa</button>
+          <button class="reader-theme-btn sepia" data-reader-theme="sepia" title="Sepia theme">Aa</button>
+          <button class="reader-theme-btn dark" data-reader-theme="dark" title="Dark theme">Aa</button>
+        </div>
+        <div class="reader-font-toggle" id="readerFontToggle" title="Toggle Serif / Sans">Serif</div>
+        <button class="reader-size-btn" id="readerSizeMinus" title="Decrease font size">A-</button>
+        <button class="reader-size-btn" id="readerSizePlus" title="Increase font size">A+</button>
+        <button class="reader-close-btn" id="readerCloseBtn" title="Close Reader">✕</button>
       </div>
     </header>
 
-    <!-- Subhead Row -->
-    <div class="subhead-row">
-      <span id="subheadGreeting">Good Morning</span>
-      <span id="subheadCount">11 memories</span>
-    </div>
-
-    <!-- Gallery Scroll Container -->
-    <div class="gallery-scroll" id="galleryScroll">
-      <div class="masonry-5col" id="masonryContainer">
-
-        <!-- Column 1 -->
-        <div class="masonry-col" id="col0">
-          <!-- Add New Note Card -->
-          <div class="card-item card-add-note" id="noteAddCard">
-            <span class="note-label">ADD NEW NOTE</span>
-            <span class="note-heading">Start typing here…</span>
-            <span class="note-rule"></span>
-            <span class="note-rule"></span>
-            <span class="note-rule"></span>
-            <span class="note-rule"></span>
-            <span class="note-rule"></span>
-          </div>
-
-          <!-- Tables Always Turn Card -->
-          <div class="card-item" data-id="tables" data-title="Tables always turn." data-source="in.pinterest.com" data-type="structure" data-tags="typography,red,black,tables always turn">
-            <button class="card-trash-btn" title="Delete">🗑</button>
-            <img src="memories_exact/tables.jpg" alt="Tables always turn." />
-            <div class="card-badge">
-              <span class="card-badge-title">A black structure ima...</span>
-              <span class="card-badge-heart">♡</span>
-            </div>
-          </div>
-
-          <!-- You Attract Better Card -->
-          <div class="card-item" data-id="youattract" data-title="You attract better WHEN YOU-" data-source="in.pinterest.com" data-type="document" data-tags="typography,manifesto,self care,white,document">
-            <button class="card-trash-btn" title="Delete">🗑</button>
-            <img src="memories_exact/youattract.jpg" alt="You attract better WHEN YOU-" />
-            <div class="card-badge">
-              <span class="card-badge-title">A white document imag...</span>
-              <span class="card-badge-heart">♡</span>
-            </div>
-          </div>
+    <div class="reader-scroll-container" id="readerScrollContainer">
+      <article class="reader-article-body" id="readerArticleContent">
+        <div class="reader-masthead" id="readerMasthead">The New York Times</div>
+        <h1 class="reader-title" id="readerTitle"></h1>
+        <div class="reader-byline" id="readerByline">
+          <span class="reader-author" id="readerAuthor">The New York Times</span>
+          <span class="reader-dot">•</span>
+          <span class="reader-date" id="readerDate"></span>
         </div>
-
-        <!-- Column 2 -->
-        <div class="masonry-col" id="col1">
-          <!-- Fran Lebowitz Quote Card -->
-          <div class="card-item" data-id="fran" data-title="In real life, I assure you, there is no such thing as algebra." data-source="www.google.com" data-type="quote" data-tags="quote,fran lebowitz,author,algebra,blue,portrait">
-            <button class="card-trash-btn" title="Delete">🗑</button>
-            <img src="memories_exact/fran.jpg" alt="In real life, I assure you, there is no such thing as algebra." />
-            <div class="card-badge">
-              <span class="card-badge-title">A blue face image featu...</span>
-              <span class="card-badge-heart">♡</span>
-            </div>
-          </div>
-
-          <!-- Try Again Card -->
-          <div class="card-item" data-id="tryagain" data-title="TRY AGAIN UNTIL YOU SUCCEED" data-source="in.pinterest.com" data-type="sign" data-tags="typography,flame,motivation,sign">
-            <button class="card-trash-btn" title="Delete">🗑</button>
-            <img src="memories_exact/tryagain.jpg" alt="TRY AGAIN UNTIL YOU SUCCEED" />
-            <div class="card-badge">
-              <span class="card-badge-title">A white sign image fe...</span>
-              <span class="card-badge-heart">♡</span>
-            </div>
-          </div>
-
-          <!-- Giving Up Card -->
-          <div class="card-item" data-id="givingup" data-title="Giving up is not in the blood sir" data-source="in.pinterest.com" data-type="document" data-tags="mountain,mountaineer,snow,perseverance">
-            <button class="card-trash-btn" title="Delete">🗑</button>
-            <img src="memories_exact/givingup.jpg" alt="Giving up is not in the blood sir" />
-            <div class="card-badge">
-              <span class="card-badge-title">A white document im...</span>
-              <span class="card-badge-heart">♡</span>
-            </div>
-          </div>
+        <div class="reader-hero-wrapper" id="readerHeroWrapper">
+          <img class="reader-hero-img" id="readerHeroImg" src="" alt="Article hero" />
         </div>
-
-        <!-- Column 3 -->
-        <div class="masonry-col" id="col2">
-          <!-- Lion Portrait Card (Active / Selected by default) -->
-          <div class="card-item selected" data-id="lion" data-title="Redirect Notice" data-source="www.google.com" data-tldr="A black animal image featuring feline, lion" data-type="animal" data-tags="animal,feline,lion,mammal,black,brown,orange,grass">
-            <button class="card-trash-btn" title="Delete">🗑</button>
-            <img src="memories_exact/lion_card.jpg" alt="Lion Portrait" />
-            <div class="card-badge">
-              <span class="card-badge-title">A black animal image fe...</span>
-              <span class="card-badge-heart">♡</span>
-            </div>
-          </div>
-
-          <!-- Orange Silhouette Card -->
-          <div class="card-item" data-id="orange_silhouette" data-title="GO THE EXTRA MILE, IT'S NEVER CROWDED." data-source="in.pinterest.com" data-type="structure" data-tags="orange,silhouette,motivation,extra mile">
-            <button class="card-trash-btn" title="Delete">🗑</button>
-            <img src="memories_exact/orange_silhouette.jpg" alt="GO THE EXTRA MILE, IT'S NEVER CROWDED." />
-            <div class="card-badge">
-              <span class="card-badge-title">A orange structure ima...</span>
-              <span class="card-badge-heart">♡</span>
-            </div>
-          </div>
+        <p class="reader-lead-subtitle" id="readerLeadSubtitle"></p>
+        <div class="reader-paragraphs" id="readerParagraphs"></div>
+        <div class="reader-footer-actions">
+          <a class="reader-visit-link" id="readerVisitLink" href="#" target="_blank" rel="noopener">Visit Original
+            Publication ↗</a>
         </div>
-
-        <!-- Column 4 -->
-        <div class="masonry-col" id="col3">
-          <!-- Studio Coder Card -->
-          <div class="card-item" data-id="studio" data-title="GET RICH OR DIE TRYIN'" data-source="in.pinterest.com" data-type="person" data-tags="studio,coder,person,get rich,audio,monitors,desk">
-            <button class="card-trash-btn" title="Delete">🗑</button>
-            <img src="memories_exact/studio.jpg" alt="GET RICH OR DIE TRYIN'" />
-            <div class="card-badge">
-              <span class="card-badge-title">A black person image f...</span>
-              <span class="card-badge-heart">♡</span>
-            </div>
-          </div>
-
-          <!-- Believe in Universe Card -->
-          <div class="card-item" data-id="believe" data-title="BELIEVE YOU DESERVE IT AND THE UNIVERSE WILL SERVE IT." data-source="in.pinterest.com" data-type="document" data-tags="red,universe,believe,texture,motivational">
-            <button class="card-trash-btn" title="Delete">🗑</button>
-            <img src="memories_exact/believe.jpg" alt="BELIEVE YOU DESERVE IT AND THE UNIVERSE WILL SERVE IT." />
-            <div class="card-badge">
-              <span class="card-badge-title">A red document imag f...</span>
-              <span class="card-badge-heart">♡</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Column 5 -->
-        <div class="masonry-col" id="col4">
-          <!-- Red Bull Helmet Card -->
-          <div class="card-item" data-id="redbull" data-title="fall in love with the work." data-source="in.pinterest.com" data-type="clothing" data-tags="red bull,helmet,racing,fall in love with the work">
-            <button class="card-trash-btn" title="Delete">🗑</button>
-            <img src="memories_exact/redbull.jpg" alt="fall in love with the work." />
-            <div class="card-badge">
-              <span class="card-badge-title">A red clothing image fe...</span>
-              <span class="card-badge-heart">♡</span>
-            </div>
-          </div>
-
-          <!-- Nokia Memo Card -->
-          <div class="card-item" data-id="memo" data-title="Memo — You struggle for 4 years..." data-source="in.pinterest.com" data-type="document" data-tags="nokia,memo,retro,blue screen,trust your grind">
-            <button class="card-trash-btn" title="Delete">🗑</button>
-            <img src="memories_exact/memo.jpg" alt="Memo — You struggle for 4 years..." />
-            <div class="card-badge">
-              <span class="card-badge-title">A blue document image...</span>
-              <span class="card-badge-heart">♡</span>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- /masonry-5col -->
-    </div><!-- /gallery-scroll -->
-
-  </main>
-
-  <!-- ── 3. RIGHT INSPECTOR PANEL (260px) ── -->
-  <aside class="inspector" id="inspectorPanel">
-    <div class="inspector-top">
-      <span class="inspector-type">Web image</span>
-      <button class="inspector-close-btn" id="inspectorCloseBtn">✕</button>
-    </div>
-
-    <!-- Hero Image Thumbnail -->
-    <img class="inspector-hero-img" id="inspectorHeroImg" src="memories_exact/lion_hero.jpg" alt="Hero Preview" />
-
-    <!-- Title & Date -->
-    <h2 class="inspector-title" id="inspectorTitle">Redirect Notice</h2>
-    <div class="inspector-date" id="inspectorDate">Nov 17, 2026 at 11:04 PM</div>
-
-    <!-- TLDR Section -->
-    <div class="section-lbl">TLDR</div>
-    <div class="tldr-text" id="inspectorTldr">A black animal image featuring feline, lion</div>
-
-    <!-- SOURCE Section -->
-    <div class="section-lbl">SOURCE</div>
-    <div class="source-row">
-      <div class="source-link">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2" /><path d="m9 15 6-6M9 9h6v6" /></svg>
-        <span id="inspectorSource">www.google.com</span>
-      </div>
-      <span style="color:#8e8e93; font-size:12px;">›</span>
-    </div>
-
-    <!-- COLOR PALETTE Section -->
-    <div class="section-lbl">COLOR PALETTE</div>
-    <div class="palette-row" id="inspectorPalette">
-      <div class="swatch-box" style="background:#130F0C;"></div>
-      <div class="swatch-box" style="background:#583515;"></div>
-      <div class="swatch-box" style="background:#7F532E;"></div>
-      <div class="swatch-box" style="background:#D08B54;"></div>
-      <div class="swatch-box" style="background:#E5AB7E;"></div>
-    </div>
-
-    <!-- MIND TAGS Section -->
-    <div class="section-lbl">MIND TAGS</div>
-    <div class="tags-flow" id="inspectorTags">
-      <span class="mind-tag">animal</span>
-      <span class="mind-tag">feline</span>
-      <span class="mind-tag">lion</span>
-      <span class="mind-tag">mammal</span>
-      <span class="mind-tag">black</span>
-      <span class="mind-tag">brown</span>
-      <span class="mind-tag">orange</span>
-      <span class="mind-tag">grass</span>
-    </div>
-
-    <!-- MIND NOTES Section -->
-    <div class="section-lbl">MIND NOTES</div>
-    <div class="mind-notes-placeholder" id="inspectorNotes">Add a personal note in full details.</div>
-
-    <!-- Inspector Toolbar -->
-    <div class="inspector-toolbar">
-      <button class="tool-icon-btn" id="toolFavBtn" title="Favorite">☆</button>
-      <button class="tool-icon-btn" id="toolExpandBtn" title="Open in Lightbox">⤢</button>
-      <button class="tool-icon-btn" title="More">···</button>
-      <button class="tool-icon-btn" id="toolDeleteBtn" title="Delete">🗑</button>
-    </div>
-  </aside>
-
-</div><!-- /app-shell -->
-
-<!-- ══ Quick Note Modal ══ -->
-<div id="noteModal" class="modal-backdrop">
-  <div class="modal-box">
-    <div style="font-size:18px; font-weight:600; color:#1c1c1e;">New Note</div>
-    <input type="text" id="noteTitleInput" style="padding:10px 12px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; outline:none;" placeholder="Note title…" />
-    <textarea id="noteContentInput" style="padding:10px 12px; border:1px solid #d1d5db; border-radius:8px; font-size:14px; outline:none; height:120px; resize:vertical;" placeholder="Start typing here…"></textarea>
-    <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:4px;">
-      <button id="btnCancelNote" style="padding:8px 16px; border:1px solid #d1d5db; border-radius:8px; font-size:13px;">Cancel</button>
-      <button id="btnSaveNote" style="padding:8px 18px; background:#ff8500; color:white; border-radius:8px; font-size:13px; font-weight:600;">Save Note</button>
+      </article>
     </div>
   </div>
-</div>
 
-<!-- ══ Toast ══ -->
-<div class="toast" id="toast"></div>
+  <!-- ══ Delete Confirmation Warning Modal (macOS Native Dialog) ══ -->
+  <div id="deleteModal" class="delete-modal-overlay">
+    <div class="delete-modal-card" id="deleteModalCard">
+      <div class="delete-preview-container">
+        <img id="deleteModalThumb" class="delete-modal-thumb" src="" alt="Memory Preview" />
+        <div id="deleteModalNoteThumb" class="delete-modal-note-thumb" style="display:none;">
+          <span id="deleteModalNoteTitle"></span>
+        </div>
+        <div class="delete-corner-badge">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m-6 5v6m4-6v6" />
+          </svg>
+        </div>
+      </div>
+      <div class="delete-modal-title">Remove this memory?</div>
+      <div class="delete-modal-sub" id="deleteModalSub">Memory description</div>
+      <div class="delete-modal-pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+          <path d="M3 3v5h5" />
+        </svg>
+        <span>Recoverable from macOS Trash</span>
+      </div>
+      <div class="delete-modal-actions">
+        <button class="delete-btn-keep" id="deleteModalKeepBtn">Keep it</button>
+        <button class="delete-btn-trash" id="deleteModalTrashBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m-6 5v6m4-6v6" />
+          </svg>
+          <span>Move to Trash</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
-<!-- ══ Hidden File Input ══ -->
-<input type="file" id="fileInput" multiple accept="image/*,.pdf,.txt,.md" style="display:none;" />
+  <!-- ══ Quick Note Modal (macOS Native Dialog) ══ -->
+  <div id="noteModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="note-modal-header">New Note</div>
+      <input type="text" id="noteTitleInput" class="note-modal-title-input" placeholder="Title" autocomplete="off" />
+      <textarea id="noteContentInput" class="note-modal-body-input" placeholder="Start typing here…"
+        rows="7"></textarea>
+      <div class="note-modal-footer">
+        <span class="note-modal-privacy">Saved privately on this Mac</span>
+        <div class="note-modal-actions">
+          <button id="btnCancelNote" class="note-modal-btn cancel">Cancel</button>
+          <button id="btnSaveNote" class="note-modal-btn save">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<!-- Scripts with cache busting -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="js/db.js?v=20261119_v4"></script>
-<script src="js/ocr.js?v=20261119_v4"></script>
-<script src="js/search.js?v=20261119_v4"></script>
-<script src="js/app.js?v=20261119_v4"></script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(regs => {
-      for (const reg of regs) reg.unregister();
-    });
-  }
-  if ('caches' in window) {
-    caches.keys().then(names => {
-      for (const name of names) caches.delete(name);
-    });
-  }
-</script>
+  <!-- ══ Code Snippet Modal (Clean Terminal Aesthetic) ══ -->
+  <div id="codeModal" class="modal-backdrop">
+    <div class="modal-box code-modal-box">
+      <div class="code-modal-header">
+        <span class="code-modal-title">New Code Snippet</span>
+        <select id="codeLangSelect" class="code-modal-lang-select">
+          <option value="auto">Auto-detect</option>
+          <option value="python">Python</option>
+          <option value="javascript">JavaScript</option>
+          <option value="typescript">TypeScript</option>
+          <option value="html">HTML</option>
+          <option value="css">CSS</option>
+          <option value="rust">Rust</option>
+          <option value="go">Go</option>
+          <option value="cpp">C++</option>
+          <option value="c">C</option>
+          <option value="java">Java</option>
+          <option value="sql">SQL</option>
+          <option value="shell">Shell / Bash</option>
+          <option value="json">JSON</option>
+          <option value="yaml">YAML</option>
+          <option value="markdown">Markdown</option>
+          <option value="swift">Swift</option>
+          <option value="kotlin">Kotlin</option>
+          <option value="php">PHP</option>
+        </select>
+      </div>
+      <input type="text" id="codeTitleInput" class="code-modal-title-input" placeholder="Title or filename (e.g. useDebounce.ts, auth_service.py)" autocomplete="off" />
+      <textarea id="codeContentInput" class="code-modal-body-input" placeholder="// Paste or write your code here..." rows="12" spellcheck="false"></textarea>
+      <div class="code-modal-footer">
+        <span class="code-modal-privacy">Syntax highlighted & synced</span>
+        <div class="code-modal-actions">
+          <button id="btnCancelCode" class="note-modal-btn cancel">Cancel</button>
+          <button id="btnSaveCode" class="note-modal-btn save">Save Code</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ macOS Native Settings Modal (5 Categories) ══ -->
+  <div id="settingsModal" class="settings-modal-overlay">
+    <div class="settings-modal-card">
+      <!-- Window Titlebar -->
+      <div class="settings-titlebar">
+        <span class="settings-window-title">Settings</span>
+        <button class="settings-x-close" id="settingsXCloseBtn" title="Close">✕</button>
+      </div>
+
+      <div class="settings-body">
+        <!-- Sidebar Navigation -->
+        <nav class="settings-sidebar">
+          <button class="settings-tab-btn active" data-tab="general">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+            <span>General & AI</span>
+          </button>
+
+          <button class="settings-tab-btn" data-tab="capture">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="3" rx="2" />
+              <path d="m9 15 6-6M9 9h6v6" />
+            </svg>
+            <span>Extension & Capture</span>
+          </button>
+
+          <button class="settings-tab-btn" data-tab="data">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="12" cy="5" rx="9" ry="3" />
+              <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+              <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3" />
+            </svg>
+            <span>Account & Data</span>
+          </button>
+        </nav>
+
+        <!-- Right Content Panels -->
+        <div class="settings-content">
+          <!-- 1. GENERAL & AI TAB -->
+          <div class="settings-panel active" id="settingsPanel-general">
+            <div class="settings-panel-title">General & AI Settings</div>
+
+            <div class="settings-group">
+              <div class="settings-row">
+                <div class="settings-row-text">
+                  <div class="settings-label">Appearance</div>
+                  <div class="settings-sub">Select your preferred color theme</div>
+                </div>
+                <div class="segmented-control" id="themeSegmented">
+                  <button class="seg-btn active" data-theme="system">System</button>
+                  <button class="seg-btn" data-theme="light">Light</button>
+                  <button class="seg-btn" data-theme="dark">Dark</button>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-text">
+                  <div class="settings-label">Greeting Banner</div>
+                  <div class="settings-sub">Display time-of-day greeting & memory counter banner</div>
+                </div>
+                <label class="apple-switch">
+                  <input type="checkbox" id="settingShowGreeting" checked>
+                  <span class="apple-slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-text">
+                  <div class="settings-label">Default Tab on Launch</div>
+                  <div class="settings-sub">Initial view loaded when opening Recall</div>
+                </div>
+                <select class="settings-select" id="settingDefaultTab">
+                  <option value="Everything">Everything</option>
+                  <option value="Articles">Articles</option>
+                  <option value="Liked">Liked</option>
+                </select>
+              </div>
+
+              <!-- Groq Vision AI -->
+              <div class="settings-row" style="flex-direction:column; align-items:flex-start; padding-top:16px; padding-bottom:16px;">
+                <div class="groq-config-box">
+                  <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+                    <div class="settings-row-text">
+                      <div class="settings-label">Groq Vision AI (Cloud Accelerated)</div>
+                      <div class="settings-sub">High-speed OCR & intelligent scene analysis on Groq LPUs</div>
+                    </div>
+                    <span class="settings-badge" id="groqStatusBadge" style="background:#e5e5ea; color:#636366;">Not Configured</span>
+                  </div>
+                  <div class="groq-input-row">
+                    <input type="password" id="settingGroqKey" class="groq-key-input" placeholder="Paste Groq API Key (gsk_...)" />
+                    <button id="btnSaveGroqKey" type="button" class="groq-btn-save">Save Key</button>
+                    <button id="btnTestGroqKey" type="button" class="groq-btn-test">Test API</button>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:8px; width:100%; margin-top:2px;">
+                    <span style="font-size:12px; font-weight:500; color:#8e8e93;">Model:</span>
+                    <select id="settingGroqModel" class="groq-model-select">
+                      <option value="qwen/qwen3.8-27b" selected>qwen/qwen3.8-27b (Qwen Multimodal Vision)</option>
+                      <option value="meta-models/muse-spark-open">meta-models/muse-spark-open (Meta Multimodal)</option>
+                      <option value="grok-2-vision-1212">grok-2-vision-1212 (xAI Grok Vision)</option>
+                    </select>
+                  </div>
+                  <div id="groqTestResult" class="groq-test-result" style="display:none;"></div>
+                  <div class="settings-sub" style="margin-top:2px;">Free API key from <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" style="color:#f97316; font-weight:600; text-decoration:none;">console.groq.com</a>.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. CAPTURE & EXTENSION TAB -->
+          <div class="settings-panel" id="settingsPanel-capture">
+            <div class="settings-panel-title">Capture & Browser Extension</div>
+
+            <!-- Download Extension Card -->
+            <div class="settings-group" style="padding:16px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                  <div style="width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg, #ff5e3a, #ff9500); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:16px; box-shadow:0 3px 10px rgba(255,94,58,0.3);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                  </div>
+                  <div>
+                    <div style="font-size:14px; font-weight:700; color:var(--text-primary, #1c1c1e);">"Save to Recall" Browser Extension</div>
+                    <div style="font-size:12px; color:var(--text-secondary, #8e8e93);">1-Click capture for Chrome, Edge, Brave, and Arc</div>
+                  </div>
+                </div>
+                <a href="/recall-extension.zip" download="recall-extension.zip" class="settings-btn-primary" style="background:#ff5e3a; color:#fff; text-decoration:none; padding:8px 16px; border-radius:20px; font-weight:600; font-size:12px; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(255,94,58,0.35);">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  Download Extension (.zip)
+                </a>
+              </div>
+
+              <div style="background:rgba(0,0,0,0.025); border-radius:10px; padding:12px 14px; font-size:12.5px; line-height:1.6; color:var(--text-primary, #3a3a3c); border:1px solid rgba(0,0,0,0.06);">
+                <div style="font-weight:600; margin-bottom:6px; color:var(--text-primary, #1c1c1e); display:flex; align-items:center; gap:6px;">
+                  <span>⚡ 30-Second Setup:</span>
+                </div>
+                <ol style="margin:0; padding-left:18px;">
+                  <li>Click <strong>Download Extension (.zip)</strong> above and unzip it to your computer.</li>
+                  <li>In your browser, open <code>chrome://extensions</code> (or <code>edge://extensions</code>).</li>
+                  <li>Toggle on <strong>Developer mode</strong> in the top-right corner.</li>
+                  <li>Click <strong>Load unpacked</strong> and select the unzipped <code>recall-extension</code> folder.</li>
+                </ol>
+                <div style="margin-top:8px; font-size:11.5px; color:#8e8e93;">✓ Done! The orange Recall brain icon will appear in your browser toolbar. Click it on any tab to save instantly into your library.</div>
+              </div>
+            </div>
+
+            <div class="settings-group">
+              <div class="settings-row">
+                <div class="settings-row-text">
+                  <div class="settings-label">Auto-Scrape Pasted URLs</div>
+                  <div class="settings-sub">Extract high-res product photos, prices, and article layouts on paste</div>
+                </div>
+                <label class="apple-switch">
+                  <input type="checkbox" id="settingAutoScrape" checked>
+                  <span class="apple-slider"></span>
+                </label>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-text">
+                  <div class="settings-label">Delete Confirmation Dialog</div>
+                  <div class="settings-sub">Show "Remove this memory?" warning modal before deleting</div>
+                </div>
+                <label class="apple-switch">
+                  <input type="checkbox" id="settingConfirmDelete" checked>
+                  <span class="apple-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. ACCOUNT & DATA TAB -->
+          <div class="settings-panel" id="settingsPanel-data">
+            <div class="settings-panel-title">Account & Data Management</div>
+
+            <div class="settings-group">
+              <div class="settings-row">
+                <div class="settings-row-text">
+                  <div class="settings-label">Active Memories</div>
+                  <div class="settings-sub">Total memories persisted in client database & cloud sync</div>
+                </div>
+                <span class="settings-stat-number" id="settingActiveMemoryCount">0</span>
+              </div>
+
+              <div class="settings-row settings-sync-row">
+                <div class="settings-row-text">
+                  <div class="settings-label">Google Account Cloud Sync</div>
+                  <div class="settings-sub">Sign in with Google to automatically sync all your memories across all devices in real-time.</div>
+                </div>
+                <div id="settingsAuthLoggedOut">
+                  <button class="settings-btn-primary" id="settingsSignInBtn" style="background:#ff5e3a; color:#fff; display:inline-flex; align-items:center; gap:8px; border:none; border-radius:20px; padding:8px 16px; cursor:pointer; font-weight:600; font-size:12.5px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24"><path fill="#fff" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#fff" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#fff" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#fff" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                    Sign in with Google
+                  </button>
+                </div>
+                <div id="settingsAuthLoggedIn" style="display:none; align-items:center; gap:12px;">
+                  <span id="settingsUserEmail" style="font-size:12px; font-weight:600; color:#4a5568;"></span>
+                  <button class="settings-btn-secondary" id="settingsSignOutBtn">Sign Out</button>
+                </div>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-text">
+                  <div class="settings-label">Backup & Export</div>
+                  <div class="settings-sub">Download complete database as a single portable JSON file</div>
+                </div>
+                <button class="settings-btn-secondary" id="settingExportBtn">Export Backup…</button>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-text">
+                  <div class="settings-label">Restore from Backup</div>
+                  <div class="settings-sub">Import and merge memories from a previously exported JSON backup</div>
+                </div>
+                <button class="settings-btn-secondary" id="settingRestoreBtn">Restore Backup…</button>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-text">
+                  <div class="settings-label">Force Cloud Sync Now</div>
+                  <div class="settings-sub">Immediately push all active local memories from this browser up to Firestore</div>
+                </div>
+                <button class="settings-btn-primary" id="settingForceSyncBtn" style="background:#ff5e3a; color:#fff; border:none; padding:8px 14px; border-radius:18px; font-weight:600; font-size:12px; cursor:pointer;">Push to Cloud Now</button>
+              </div>
+
+              <div class="settings-row">
+                <div class="settings-row-text">
+                  <div class="settings-label">Purge Stale & Deleted Cloud Cards</div>
+                  <div class="settings-sub">Clean up lingering old memories and synchronize deletions across all your devices</div>
+                </div>
+                <button class="settings-btn-secondary" id="settingCleanStaleBtn">Clean Cloud Memories</button>
+              </div>
+            </div>
+
+            <div class="settings-group danger-zone">
+              <div class="settings-row">
+                <div class="settings-row-text">
+                  <div class="settings-label" style="color: #ff3b30;">Reset All Data</div>
+                  <div class="settings-sub">Permanently delete all memories and start with a fresh canvas</div>
+                </div>
+                <button class="settings-btn-danger" id="settingClearAllBtn">Clear All Memories</button>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /settings-content -->
+      </div><!-- /settings-body -->
+    </div><!-- /settings-modal-card -->
+  </div><!-- /settingsModal -->
+
+  <!-- ══ Toast ══ -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ══ Hidden File Input ══ -->
+  <input type="file" id="fileInput" multiple
+    accept=".pdf,.xlsx,.xls,.csv,.tsv,.doc,.docx,.pptx,.txt,.md,.py,.js,.jsx,.ts,.tsx,.rs,.go,.cpp,.c,.h,.hpp,.java,.sql,.sh,.bash,.zsh,.yaml,.yml,.json,.toml,.css,.html,.swift,.kt,.rb,.php,.lua,image/png,image/jpeg,image/webp,image/gif,image/heic,audio/mp3,audio/wav,audio/m4a,audio/webm,audio/ogg,audio/aac"
+    style="display:none;" />
+
+  <!-- Firebase Real-Time Cloud Sync & Google Auth SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-sync.js?v=20261125_v84"></script>
+
+  <!-- Prism.js Code Syntax Highlighting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+  <!-- On-Device AI: TensorFlow.js & MobileNet Vision Classifier (Apple Vision 1000+ Category Equivalent) -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.17.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0/dist/mobilenet.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.20.1/dist/ort.all.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <!-- Document Parsers (SheetJS Excel & PDF.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script>
+    if (typeof pdfjsLib !== 'undefined') {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+  </script>
+  <script src="js/db.js?v=20261125_v84"></script>
+  <script src="js/mobileclip.js?v=20261125_v84"></script>
+  <script src="js/ocr.js?v=20261125_v84"></script>
+  <script src="js/search.js?v=20261125_v84"></script>
+  <script src="js/app.js?v=20261125_v85"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        for (const reg of regs) reg.unregister();
+      });
+    }
+  </script>
 </body>
+
 </html>
