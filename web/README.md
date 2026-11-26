@@ -1,46 +1,45 @@
-# 🧠 Recall Web (PWA)
+# 🧠 Recall Web
 
-> **Private, local-first visual memory library that runs 100% in your browser.**  
-> Works on any device: Windows, macOS, Linux, iPad, Android, and Chromebook.
+> **Your private, visual second brain on the web.**  
+> Live at **[recall-web-puce.vercel.app](https://recall-web-puce.vercel.app)** — works across macOS, Windows, Linux, iOS, and Android.
 
 ---
 
 ## ✨ Features
 
-- **🔒 100% Client-Side & Private**: All memories, screenshots, and notes are saved directly in your browser's local **IndexedDB**. Nothing is ever sent to any remote server.
-- **👁️ In-Browser OCR**: Extracts text from screenshots, documents, and receipts client-side with Tesseract.js.
-- **⚡ Hybrid Semantic Search**:
-  - Semantic vector similarity + OCR matching + exact keywords.
-  - Natural query filters: `type:image`, `type:note`, `liked:true`, `today`, `yesterday`.
-  - Color filters: search by `red`, `blue`, `green`, `dark`, `white`, etc.
-- **🎨 Automatic Palette Extraction**: Identifies the dominant hex color and color family for each saved image.
-- **📋 Clipboard Paste & Drag-and-Drop**:
-  - Press `Ctrl + V` or `Cmd + V` anywhere to instantly paste screenshots from your clipboard.
-  - Drag and drop image files or PDFs directly into the browser window.
-- **📱 Installable Progressive Web App (PWA)**:
-  - Click **Install** in Chrome or Edge to run Recall as a standalone desktop app without browser tabs.
-  - Fully functional offline via Service Worker caching.
-- **💾 Local Backup & Restore**: One-click JSON backup export and restore to migrate between computers or browsers.
+### 🔄 Local-First + Real-Time Cloud Sync
+- **Instant Local Persistence**: All memories are cached locally in **IndexedDB** for zero-flicker loading.
+- **Firebase Cloud Sync**: Sign in with Google to sync memories, tags, notes, deletions, and your optional Groq API key in real time across browsers and devices.
+- **JSON Backup & Restore**: Export or import your entire memory library at any time.
+
+### 🧩 Rich Memory Types
+- **🖼️ Images & Screenshots**: Paste (`Cmd/Ctrl + V`) or drag & drop images. Includes client-side **Tesseract.js OCR**, **MobileCLIP** visual embeddings, and automatic color palette extraction.
+- **📄 Documents, Research Papers & Spreadsheets**:
+  - Save **PDFs** and **arXiv** research papers with an inline PDF reader.
+  - Upload or link **Excel (`.xlsx`, `.xls`)**, **CSV/TSV**, and **Google Sheets** with an interactive searchable table viewer.
+- **💬 Social Posts**: Save and preview posts from **𝕏 / Twitter**, **Reddit**, **LinkedIn**, **Threads**, **Bluesky**, and **Instagram**.
+- **💻 Code Snippets & GitHub**:
+  - Save **GitHub files**, **Gists**, **Repositories**, direct code URLs, or local code files (`.py`, `.js`, `.ts`, `.rs`, `.go`, `.cpp`, `.sql`, `.sh`, etc.).
+  - Syntax-highlighted cards and modal viewer (Prism.js), line numbers, one-click **Copy** & **Download**, and a built-in code editor (`Tab` indentation, `Cmd/Ctrl + Enter` to save).
+- **🎵 Audio & Video**: Embedded **Spotify**, **SoundCloud**, **YouTube**, and uploaded audio/video playback.
+- **📰 Articles, Quotes & Notes**: Clean Reader Mode for web articles, automatic quote attribution detection, and quick notes.
+
+### ⚡ Search & AI Enrichment
+- **Hybrid Semantic & Color Search**: Search by keywords, OCR text, visual concepts, or color filters (`red`, `blue`, `dark`, etc.), and filter by category (`Articles`, `Documents`, `Audio`, `Social`, `Code`, `Images`, `Notes`, `Videos`, `Liked`).
+- **Optional Groq AI**: Add your Groq API key (`gsk_...`) in Settings (synced securely to your account) for automatic titles, TL;DR summaries, and smart tagging.
 
 ---
 
-## 🚀 How to Run
+## 🚀 Running Locally
 
-### Method 1: Instant Local Open (Zero Install)
-You can directly double-click `index.html` to open it in Chrome, Edge, Safari, Brave, or Firefox!
+1. **Start the backend + static server** (supports `/api/scrape-url` for links, GitHub, PDFs, and social posts):
+   ```bash
+   cd recall-web
+   python3 server.py
+   ```
+   Or deploy directly to **Vercel** (`vercel --prod`), which uses `vercel.json` and `api/index.py`.
 
-### Method 2: Local HTTP Server (Recommended for PWA & Service Workers)
-Run any local server in the `web` folder:
-
-```bash
-# Using Python
-python3 -m http.server 8080
-
-# Or using npx
-npx serve .
-```
-
-Then open [http://localhost:8080](http://localhost:8080) in your browser.
+2. Open [http://localhost:8080](http://localhost:8080) in your browser.
 
 ---
 
@@ -49,5 +48,6 @@ Then open [http://localhost:8080](http://localhost:8080) in your browser.
 | Shortcut | Action |
 | :--- | :--- |
 | `Cmd/Ctrl + K` or `/` | Focus search bar |
-| `Cmd/Ctrl + V` | Paste screenshot from clipboard into memory |
-| `Esc` | Close open lightbox / note modal |
+| `Cmd/Ctrl + V` | Paste screenshot, URL, text, or code snippet into memory |
+| `Cmd/Ctrl + Enter` | Save inside the New Code Snippet editor |
+| `Esc` | Close open modal or clear selection |

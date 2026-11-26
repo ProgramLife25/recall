@@ -163,19 +163,19 @@ open outputs/Recall.dmg
 
 ### Option D: Browser / Web Version (Cross-Platform PWA)
 
-Recall is also available as a **zero-install, 100% private Progressive Web App (PWA)** that runs inside any modern browser (Chrome, Edge, Safari, Brave, Firefox) on macOS, Windows, Linux, iPad, Android, or Chromebook:
+Recall is also available as a **cross-platform Web App & PWA** live at **[recall-web-puce.vercel.app](https://recall-web-puce.vercel.app)** (works in Chrome, Edge, Safari, and Firefox on macOS, Windows, Linux, iOS, and Android):
 
-1. Open `web/index.html` directly in your browser, or start a local server:
+1. Run locally with the Python metadata/scraper server inside `web/`:
    ```bash
    cd web
-   python3 -m http.server 8080
+   python3 server.py
    ```
-2. Navigate to [http://localhost:8080](http://localhost:8080).
-3. **Key Web Features**:
-   - **Local IndexedDB**: Memories, images, and notes stay 100% on your device.
-   - **In-Browser OCR**: Client-side text extraction using Tesseract.js.
-   - **Clipboard Paste**: Press `Cmd + V` / `Ctrl + V` anywhere to save a screenshot directly.
-   - **Installable PWA**: Click **Install** in your browser's address bar to run Recall as a standalone desktop app!
+   Then open [http://localhost:8080](http://localhost:8080) (or deploy `web/` directly to Vercel via `vercel.json` and `web/api/index.py`).
+2. **Key Web Features**:
+   - **Local-First + Real-Time Cloud Sync**: Instant IndexedDB storage with optional Google Sign-In (Firebase) for live cross-device sync.
+   - **Rich Content Types**: Images/screenshots (Tesseract.js OCR + MobileCLIP), PDFs & arXiv papers, Excel/CSV/Google Sheets with interactive table search, Social posts (𝕏, Reddit, LinkedIn, Threads, Bluesky, Instagram), Code snippets & GitHub files/repos (Prism.js syntax highlighting), plus Spotify/YouTube embeds.
+   - **Clipboard Paste & Drag-and-Drop**: Press `Cmd + V` / `Ctrl + V` anywhere to save screenshots, URLs, or code snippets directly.
+   - **Installable PWA**: Click **Install** in your browser's address bar to run Recall as a standalone app.
 
 ---
 
